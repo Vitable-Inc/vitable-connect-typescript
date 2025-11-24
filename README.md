@@ -1,0 +1,1 @@
+# vitable-partner-api-typescript
