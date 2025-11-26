@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as BenefitProductsAPI from './benefit-products/benefit-products';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -33,21 +34,12 @@ export interface Enrollment {
   status: 'pending' | 'enrolled' | 'waived' | 'inactive';
 }
 
-export interface Plan {
-  id: string;
-
-  /**
-   * Plan name (e.g., MEC, MEC Plus)
-   */
-  plan_name: string;
-}
-
 export interface ReissueEnrollmentRequest {
   qualifying_life_event_id: string;
 }
 
 export interface EnrollmentGetEligiblePlansResponse {
-  data?: Array<Plan>;
+  data?: Array<BenefitProductsAPI.Plan>;
 }
 
 export interface EnrollmentReissueParams {
@@ -57,7 +49,6 @@ export interface EnrollmentReissueParams {
 export declare namespace Enrollments {
   export {
     type Enrollment as Enrollment,
-    type Plan as Plan,
     type ReissueEnrollmentRequest as ReissueEnrollmentRequest,
     type EnrollmentGetEligiblePlansResponse as EnrollmentGetEligiblePlansResponse,
     type EnrollmentReissueParams as EnrollmentReissueParams,

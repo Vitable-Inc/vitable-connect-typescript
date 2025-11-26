@@ -54,22 +54,6 @@ export class Employees extends APIResource {
   }
 }
 
-export interface CreateDependentRequest {
-  date_of_birth: string;
-
-  first_name: string;
-
-  last_name: string;
-
-  relationship: 'SPOUSE' | 'CHILD';
-
-  gender?: 'MALE' | 'FEMALE' | 'TRANSGENDER' | 'NON_BINARY' | 'PREFER_NOT_TO_RESPOND';
-
-  sex?: 'MALE' | 'FEMALE' | 'OTHER' | 'UNKNOWN';
-
-  suffix?: string;
-}
-
 export interface CreateQualifyingLifeEventRequest {
   event_date: string;
 
@@ -89,10 +73,6 @@ export interface CreateQualifyingLifeEventRequest {
   description?: string;
 
   proof_document_url?: string;
-}
-
-export interface Dependent extends Member {
-  relationship: 'SPOUSE' | 'CHILD';
 }
 
 export interface ElectBenefitsRequest {
@@ -128,18 +108,6 @@ export interface Employee {
   dependents?: Array<DependentsAPI.Dependent>;
 
   terminated_at?: string | null;
-}
-
-export interface Enrollment {
-  id: string;
-
-  decision: 'enrolled' | 'waived';
-
-  employee_id: string;
-
-  plan_year_id: string;
-
-  status: 'pending' | 'enrolled' | 'waived' | 'inactive';
 }
 
 export interface Member {
@@ -191,22 +159,6 @@ export interface QualifyingLifeEvent {
   reviewed_by_user_id?: string | null;
 }
 
-export interface UpdateDependentRequest {
-  date_of_birth?: string;
-
-  first_name?: string;
-
-  gender?: 'MALE' | 'FEMALE' | 'TRANSGENDER' | 'NON_BINARY' | 'PREFER_NOT_TO_RESPOND';
-
-  last_name?: string;
-
-  relationship?: 'SPOUSE' | 'CHILD';
-
-  sex?: 'MALE' | 'FEMALE' | 'OTHER' | 'UNKNOWN';
-
-  suffix?: string;
-}
-
 export interface EmployeeUpdateParams {
   date_of_birth?: string;
 
@@ -229,15 +181,11 @@ Employees.Enrollments = Enrollments;
 
 export declare namespace Employees {
   export {
-    type CreateDependentRequest as CreateDependentRequest,
     type CreateQualifyingLifeEventRequest as CreateQualifyingLifeEventRequest,
-    type Dependent as Dependent,
     type ElectBenefitsRequest as ElectBenefitsRequest,
     type Employee as Employee,
-    type Enrollment as Enrollment,
     type Member as Member,
     type QualifyingLifeEvent as QualifyingLifeEvent,
-    type UpdateDependentRequest as UpdateDependentRequest,
     type EmployeeUpdateParams as EmployeeUpdateParams,
   };
 

@@ -15,6 +15,22 @@ export class Dependents extends APIResource {
   }
 }
 
+export interface CreateDependentRequest {
+  date_of_birth: string;
+
+  first_name: string;
+
+  last_name: string;
+
+  relationship: 'SPOUSE' | 'CHILD';
+
+  gender?: 'MALE' | 'FEMALE' | 'TRANSGENDER' | 'NON_BINARY' | 'PREFER_NOT_TO_RESPOND';
+
+  sex?: 'MALE' | 'FEMALE' | 'OTHER' | 'UNKNOWN';
+
+  suffix?: string;
+}
+
 export interface Dependent extends EmployeesAPI.Member {
   relationship: 'SPOUSE' | 'CHILD';
 }
@@ -53,6 +69,7 @@ export interface DependentUpdateParams {
 
 export declare namespace Dependents {
   export {
+    type CreateDependentRequest as CreateDependentRequest,
     type Dependent as Dependent,
     type UpdateDependentRequest as UpdateDependentRequest,
     type DependentUpdateParams as DependentUpdateParams,

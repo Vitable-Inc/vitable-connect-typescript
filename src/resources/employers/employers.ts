@@ -4,7 +4,6 @@ import { APIResource } from '../../core/resource';
 import * as EmployeesAPI from './employees';
 import {
   CreateEmployeeRequest,
-  Employee,
   EmployeeCreateParams,
   EmployeeListParams,
   EmployeeListResponse,
@@ -199,7 +198,6 @@ export declare namespace Employers {
   export {
     Employees as Employees,
     type CreateEmployeeRequest as CreateEmployeeRequest,
-    type Employee as Employee,
     type UpdateEmployeeRequest as UpdateEmployeeRequest,
     type EmployeeListResponse as EmployeeListResponse,
     type EmployeeCreateParams as EmployeeCreateParams,
