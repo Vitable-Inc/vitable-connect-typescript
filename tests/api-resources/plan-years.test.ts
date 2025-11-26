@@ -7,10 +7,10 @@ const client = new VitablePartnerAPI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource externalQualifyingLifeEvents', () => {
+describe('resource planYears', () => {
   // Prism tests are disabled
-  test.skip('submit: only required params', async () => {
-    const responsePromise = client.externalQualifyingLifeEvents.submit({ event: 'Married' });
+  test.skip('update', async () => {
+    const responsePromise = client.planYears.update('plyr__1k--w2KifJ1', {});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -18,13 +18,5 @@ describe('resource externalQualifyingLifeEvents', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('submit: required and optional params', async () => {
-    const response = await client.externalQualifyingLifeEvents.submit({
-      event: 'Married',
-      other_event: 'other_event',
-    });
   });
 });

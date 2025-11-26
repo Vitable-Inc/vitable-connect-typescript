@@ -16,65 +16,52 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
+import { Dependent, DependentUpdateParams, Dependents, UpdateDependentRequest } from './resources/dependents';
 import {
-  BenefitEnrollment,
-  CompanyBenefitsEnrollmentElectParams,
-  CompanyBenefitsEnrollmentElectResponse,
-  CompanyBenefitsEnrollmentListParams,
-  CompanyBenefitsEnrollmentListResponse,
-  CompanyBenefitsEnrollmentReissueParams,
-  CompanyBenefitsEnrollmentReissueResponse,
-  CompanyBenefitsEnrollments,
-} from './resources/company-benefits-enrollments';
+  Enrollment,
+  EnrollmentGetEligiblePlansResponse,
+  EnrollmentReissueParams,
+  Enrollments,
+  Plan,
+  ReissueEnrollmentRequest,
+} from './resources/enrollments';
+import { PlanYear, PlanYearUpdateParams, PlanYears, UpdatePlanYearRequest } from './resources/plan-years';
 import {
-  CompanyMemberDeactivateParams,
-  CompanyMemberListParams,
-  CompanyMemberListResponse,
-  CompanyMemberRetrieveResponse,
-  CompanyMemberUpdateParams,
-  CompanyMemberUpdateResponse,
-  CompanyMembers,
-} from './resources/company-members';
+  BenefitProduct,
+  BenefitProductGenerateQuoteParams,
+  BenefitProductListParams,
+  BenefitProductListResponse,
+  BenefitProducts,
+  Plan as BenefitProductsAPIPlan,
+  Quote,
+  QuoteRequest,
+} from './resources/benefit-products/benefit-products';
 import {
-  ExpenseCategories,
-  ExpenseCategory,
-  ExpenseCategoryListParams,
-  ExpenseCategoryListResponse,
-} from './resources/expense-categories';
+  CreateDependentRequest,
+  CreateQualifyingLifeEventRequest,
+  Dependent as EmployeesAPIDependent,
+  ElectBenefitsRequest,
+  Employee,
+  EmployeeUpdateParams,
+  Employees,
+  Enrollment as EmployeesAPIEnrollment,
+  Member,
+  QualifyingLifeEvent,
+  UpdateDependentRequest as EmployeesAPIUpdateDependentRequest,
+} from './resources/employees/employees';
 import {
-  ExternalQualifyingLifeEventSubmitParams,
-  ExternalQualifyingLifeEventSubmitResponse,
-  ExternalQualifyingLifeEventType,
-  ExternalQualifyingLifeEvents,
-} from './resources/external-qualifying-life-events';
-import {
-  MarketplacePlanSearchParams,
-  MarketplacePlanSearchResponse,
-  MarketplacePlans,
-} from './resources/marketplace-plans';
-import {
-  MemberListActiveBenefitsResponse,
-  MemberListOpenEnrollmentBenefitsResponse,
-  MemberListPendingBenefitEnrollmentsResponse,
-  Members,
-} from './resources/members';
-import {
-  Address,
-  Companies,
-  CompanyCreateBenefitEligibilityPolicyParams,
-  CompanyCreateBenefitEligibilityPolicyResponse,
-  CompanyCreateEmployeeParams,
-  CompanyCreateEmployeeResponse,
-  CompanyListBenefitEligibilitiesParams,
-  CompanyListBenefitEligibilitiesResponse,
-  CompanyListPayrollDeductionStatementsParams,
-  CompanyListPayrollDeductionStatementsResponse,
-  CompanyMember,
-  CompanySearchBenefitsParams,
-  CompanySearchBenefitsResponse,
-  EmployeeBenefitEligibilityPolicyClassification,
-  EmployeeBenefitEligibilityPolicyWaitingPeriod,
-} from './resources/companies/companies';
+  CreateEligibilityPolicyRequest,
+  CreateEmployerRequest,
+  EligibilityPolicy,
+  Employer,
+  EmployerCreateEligibilityPolicyParams,
+  EmployerCreateParams,
+  EmployerListParams,
+  EmployerListResponse,
+  EmployerUpdateParams,
+  Employers,
+  UpdateEmployerRequest,
+} from './resources/employers/employers';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -286,10 +273,6 @@ export class VitablePartnerAPI {
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
     return;
-  }
-
-  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    return buildHeaders([{ 'X-Partner-API-Key': this.apiKey }]);
   }
 
   /**
@@ -729,7 +712,6 @@ export class VitablePartnerAPI {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
-      await this.authHeaders(options),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -796,89 +778,83 @@ export class VitablePartnerAPI {
 
   static toFile = Uploads.toFile;
 
-  companies: API.Companies = new API.Companies(this);
-  expenseCategories: API.ExpenseCategories = new API.ExpenseCategories(this);
-  companyMembers: API.CompanyMembers = new API.CompanyMembers(this);
-  externalQualifyingLifeEvents: API.ExternalQualifyingLifeEvents = new API.ExternalQualifyingLifeEvents(this);
-  members: API.Members = new API.Members(this);
-  marketplacePlans: API.MarketplacePlans = new API.MarketplacePlans(this);
-  companyBenefitsEnrollments: API.CompanyBenefitsEnrollments = new API.CompanyBenefitsEnrollments(this);
+  employers: API.Employers = new API.Employers(this);
+  employees: API.Employees = new API.Employees(this);
+  dependents: API.Dependents = new API.Dependents(this);
+  benefitProducts: API.BenefitProducts = new API.BenefitProducts(this);
+  planYears: API.PlanYears = new API.PlanYears(this);
+  enrollments: API.Enrollments = new API.Enrollments(this);
 }
 
-VitablePartnerAPI.Companies = Companies;
-VitablePartnerAPI.ExpenseCategories = ExpenseCategories;
-VitablePartnerAPI.CompanyMembers = CompanyMembers;
-VitablePartnerAPI.ExternalQualifyingLifeEvents = ExternalQualifyingLifeEvents;
-VitablePartnerAPI.Members = Members;
-VitablePartnerAPI.MarketplacePlans = MarketplacePlans;
-VitablePartnerAPI.CompanyBenefitsEnrollments = CompanyBenefitsEnrollments;
+VitablePartnerAPI.Employers = Employers;
+VitablePartnerAPI.Employees = Employees;
+VitablePartnerAPI.Dependents = Dependents;
+VitablePartnerAPI.BenefitProducts = BenefitProducts;
+VitablePartnerAPI.PlanYears = PlanYears;
+VitablePartnerAPI.Enrollments = Enrollments;
 
 export declare namespace VitablePartnerAPI {
   export type RequestOptions = Opts.RequestOptions;
 
   export {
-    Companies as Companies,
-    type Address as Address,
-    type CompanyMember as CompanyMember,
-    type EmployeeBenefitEligibilityPolicyClassification as EmployeeBenefitEligibilityPolicyClassification,
-    type EmployeeBenefitEligibilityPolicyWaitingPeriod as EmployeeBenefitEligibilityPolicyWaitingPeriod,
-    type CompanyCreateBenefitEligibilityPolicyResponse as CompanyCreateBenefitEligibilityPolicyResponse,
-    type CompanyCreateEmployeeResponse as CompanyCreateEmployeeResponse,
-    type CompanyListBenefitEligibilitiesResponse as CompanyListBenefitEligibilitiesResponse,
-    type CompanyListPayrollDeductionStatementsResponse as CompanyListPayrollDeductionStatementsResponse,
-    type CompanySearchBenefitsResponse as CompanySearchBenefitsResponse,
-    type CompanyCreateBenefitEligibilityPolicyParams as CompanyCreateBenefitEligibilityPolicyParams,
-    type CompanyCreateEmployeeParams as CompanyCreateEmployeeParams,
-    type CompanyListBenefitEligibilitiesParams as CompanyListBenefitEligibilitiesParams,
-    type CompanyListPayrollDeductionStatementsParams as CompanyListPayrollDeductionStatementsParams,
-    type CompanySearchBenefitsParams as CompanySearchBenefitsParams,
+    Employers as Employers,
+    type CreateEligibilityPolicyRequest as CreateEligibilityPolicyRequest,
+    type CreateEmployerRequest as CreateEmployerRequest,
+    type EligibilityPolicy as EligibilityPolicy,
+    type Employer as Employer,
+    type UpdateEmployerRequest as UpdateEmployerRequest,
+    type EmployerListResponse as EmployerListResponse,
+    type EmployerCreateParams as EmployerCreateParams,
+    type EmployerUpdateParams as EmployerUpdateParams,
+    type EmployerListParams as EmployerListParams,
+    type EmployerCreateEligibilityPolicyParams as EmployerCreateEligibilityPolicyParams,
   };
 
   export {
-    ExpenseCategories as ExpenseCategories,
-    type ExpenseCategory as ExpenseCategory,
-    type ExpenseCategoryListResponse as ExpenseCategoryListResponse,
-    type ExpenseCategoryListParams as ExpenseCategoryListParams,
+    Employees as Employees,
+    type CreateDependentRequest as CreateDependentRequest,
+    type CreateQualifyingLifeEventRequest as CreateQualifyingLifeEventRequest,
+    type EmployeesAPIDependent as Dependent,
+    type ElectBenefitsRequest as ElectBenefitsRequest,
+    type Employee as Employee,
+    type EmployeesAPIEnrollment as Enrollment,
+    type Member as Member,
+    type QualifyingLifeEvent as QualifyingLifeEvent,
+    type EmployeesAPIUpdateDependentRequest as UpdateDependentRequest,
+    type EmployeeUpdateParams as EmployeeUpdateParams,
   };
 
   export {
-    CompanyMembers as CompanyMembers,
-    type CompanyMemberRetrieveResponse as CompanyMemberRetrieveResponse,
-    type CompanyMemberUpdateResponse as CompanyMemberUpdateResponse,
-    type CompanyMemberListResponse as CompanyMemberListResponse,
-    type CompanyMemberUpdateParams as CompanyMemberUpdateParams,
-    type CompanyMemberListParams as CompanyMemberListParams,
-    type CompanyMemberDeactivateParams as CompanyMemberDeactivateParams,
+    Dependents as Dependents,
+    type Dependent as Dependent,
+    type UpdateDependentRequest as UpdateDependentRequest,
+    type DependentUpdateParams as DependentUpdateParams,
   };
 
   export {
-    ExternalQualifyingLifeEvents as ExternalQualifyingLifeEvents,
-    type ExternalQualifyingLifeEventType as ExternalQualifyingLifeEventType,
-    type ExternalQualifyingLifeEventSubmitResponse as ExternalQualifyingLifeEventSubmitResponse,
-    type ExternalQualifyingLifeEventSubmitParams as ExternalQualifyingLifeEventSubmitParams,
+    BenefitProducts as BenefitProducts,
+    type BenefitProduct as BenefitProduct,
+    type BenefitProductsAPIPlan as Plan,
+    type Quote as Quote,
+    type QuoteRequest as QuoteRequest,
+    type BenefitProductListResponse as BenefitProductListResponse,
+    type BenefitProductListParams as BenefitProductListParams,
+    type BenefitProductGenerateQuoteParams as BenefitProductGenerateQuoteParams,
   };
 
   export {
-    Members as Members,
-    type MemberListActiveBenefitsResponse as MemberListActiveBenefitsResponse,
-    type MemberListOpenEnrollmentBenefitsResponse as MemberListOpenEnrollmentBenefitsResponse,
-    type MemberListPendingBenefitEnrollmentsResponse as MemberListPendingBenefitEnrollmentsResponse,
+    PlanYears as PlanYears,
+    type PlanYear as PlanYear,
+    type UpdatePlanYearRequest as UpdatePlanYearRequest,
+    type PlanYearUpdateParams as PlanYearUpdateParams,
   };
 
   export {
-    MarketplacePlans as MarketplacePlans,
-    type MarketplacePlanSearchResponse as MarketplacePlanSearchResponse,
-    type MarketplacePlanSearchParams as MarketplacePlanSearchParams,
-  };
-
-  export {
-    CompanyBenefitsEnrollments as CompanyBenefitsEnrollments,
-    type BenefitEnrollment as BenefitEnrollment,
-    type CompanyBenefitsEnrollmentListResponse as CompanyBenefitsEnrollmentListResponse,
-    type CompanyBenefitsEnrollmentElectResponse as CompanyBenefitsEnrollmentElectResponse,
-    type CompanyBenefitsEnrollmentReissueResponse as CompanyBenefitsEnrollmentReissueResponse,
-    type CompanyBenefitsEnrollmentListParams as CompanyBenefitsEnrollmentListParams,
-    type CompanyBenefitsEnrollmentElectParams as CompanyBenefitsEnrollmentElectParams,
-    type CompanyBenefitsEnrollmentReissueParams as CompanyBenefitsEnrollmentReissueParams,
+    Enrollments as Enrollments,
+    type Enrollment as Enrollment,
+    type Plan as Plan,
+    type ReissueEnrollmentRequest as ReissueEnrollmentRequest,
+    type EnrollmentGetEligiblePlansResponse as EnrollmentGetEligiblePlansResponse,
+    type EnrollmentReissueParams as EnrollmentReissueParams,
   };
 }
