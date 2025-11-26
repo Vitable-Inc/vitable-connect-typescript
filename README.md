@@ -26,13 +26,13 @@ The full API of this library can be found in [api.md](api.md).
 import VitablePartnerAPI from 'vitable-partner-api';
 
 const client = new VitablePartnerAPI({
-  apiKey: 'My API Key',
+  apiKey: process.env['VITABLE_API_KEY'], // This is the default and can be omitted
   environment: 'environment_1', // defaults to 'production'
 });
 
-const employer = await client.employers.create({ legal_name: 'legal_name', name: 'name' });
+const employers = await client.employers.list({ limit: 20 });
 
-console.log(employer.id);
+console.log(employers.data);
 ```
 
 ### Request & Response types
@@ -44,12 +44,12 @@ This library includes TypeScript definitions for all request params and response
 import VitablePartnerAPI from 'vitable-partner-api';
 
 const client = new VitablePartnerAPI({
-  apiKey: 'My API Key',
+  apiKey: process.env['VITABLE_API_KEY'], // This is the default and can be omitted
   environment: 'environment_1', // defaults to 'production'
 });
 
-const params: VitablePartnerAPI.EmployerCreateParams = { legal_name: 'legal_name', name: 'name' };
-const employer: VitablePartnerAPI.Employer = await client.employers.create(params);
+const params: VitablePartnerAPI.EmployerListParams = { limit: 20 };
+const employers: VitablePartnerAPI.EmployerListResponse = await client.employers.list(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -62,17 +62,15 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const employer = await client.employers
-  .create({ legal_name: 'legal_name', name: 'name' })
-  .catch(async (err) => {
-    if (err instanceof VitablePartnerAPI.APIError) {
-      console.log(err.status); // 400
-      console.log(err.name); // BadRequestError
-      console.log(err.headers); // {server: 'nginx', ...}
-    } else {
-      throw err;
-    }
-  });
+const employers = await client.employers.list({ limit: 20 }).catch(async (err) => {
+  if (err instanceof VitablePartnerAPI.APIError) {
+    console.log(err.status); // 400
+    console.log(err.name); // BadRequestError
+    console.log(err.headers); // {server: 'nginx', ...}
+  } else {
+    throw err;
+  }
+});
 ```
 
 Error codes are as follows:
@@ -100,12 +98,11 @@ You can use the `maxRetries` option to configure or disable this:
 ```js
 // Configure the default for all requests:
 const client = new VitablePartnerAPI({
-  apiKey: 'My API Key',
   maxRetries: 0, // default is 2
 });
 
 // Or, configure per-request:
-await client.employers.create({ legal_name: 'legal_name', name: 'name' }, {
+await client.employers.list({ limit: 20 }, {
   maxRetries: 5,
 });
 ```
@@ -118,12 +115,11 @@ Requests time out after 1 minute by default. You can configure this with a `time
 ```ts
 // Configure the default for all requests:
 const client = new VitablePartnerAPI({
-  apiKey: 'My API Key',
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
 // Override per-request:
-await client.employers.create({ legal_name: 'legal_name', name: 'name' }, {
+await client.employers.list({ limit: 20 }, {
   timeout: 5 * 1000,
 });
 ```
@@ -146,15 +142,13 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new VitablePartnerAPI();
 
-const response = await client.employers.create({ legal_name: 'legal_name', name: 'name' }).asResponse();
+const response = await client.employers.list({ limit: 20 }).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: employer, response: raw } = await client.employers
-  .create({ legal_name: 'legal_name', name: 'name' })
-  .withResponse();
+const { data: employers, response: raw } = await client.employers.list({ limit: 20 }).withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(employer.id);
+console.log(employers.data);
 ```
 
 ### Logging
@@ -234,7 +228,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.employers.create({
+client.employers.list({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',

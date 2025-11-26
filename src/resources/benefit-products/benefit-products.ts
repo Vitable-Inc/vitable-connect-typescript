@@ -1,13 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as EnrollmentsAPI from '../enrollments';
 import * as PlanYearsAPI from './plan-years';
 import {
   CreatePlanYearRequest,
   PlanContributionClass,
   PlanCost,
-  PlanYear,
   PlanYearCreateParams,
   PlanYearListParams,
   PlanYearListResponse,
@@ -51,7 +49,7 @@ export interface BenefitProduct {
 
   product_type: string;
 
-  plans?: Array<EnrollmentsAPI.Plan>;
+  plans?: Array<Plan>;
 }
 
 export interface Plan {
@@ -137,7 +135,6 @@ export declare namespace BenefitProducts {
     type CreatePlanYearRequest as CreatePlanYearRequest,
     type PlanContributionClass as PlanContributionClass,
     type PlanCost as PlanCost,
-    type PlanYear as PlanYear,
     type PlanYearListResponse as PlanYearListResponse,
     type PlanYearCreateParams as PlanYearCreateParams,
     type PlanYearListParams as PlanYearListParams,

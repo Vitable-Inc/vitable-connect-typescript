@@ -2,7 +2,6 @@
 
 import { APIResource } from '../../core/resource';
 import * as PlanYearsAPI from '../plan-years';
-import * as BenefitProductsAPI from './benefit-products';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
@@ -110,28 +109,6 @@ export interface PlanCost {
   plan_year_id: string;
 }
 
-export interface PlanYear {
-  id: string;
-
-  benefit_product: BenefitProductsAPI.BenefitProduct;
-
-  configured: boolean;
-
-  coverage_end_date: string;
-
-  coverage_start_date: string;
-
-  employer_id: string;
-
-  open_enrollment_end_date: string;
-
-  open_enrollment_start_date: string;
-
-  contribution_classes?: Array<PlanContributionClass>;
-
-  plan_costs?: Array<PlanCost>;
-}
-
 export interface PlanYearListResponse {
   data?: Array<PlanYearsAPI.PlanYear>;
 }
@@ -191,7 +168,6 @@ export declare namespace PlanYears {
     type CreatePlanYearRequest as CreatePlanYearRequest,
     type PlanContributionClass as PlanContributionClass,
     type PlanCost as PlanCost,
-    type PlanYear as PlanYear,
     type PlanYearListResponse as PlanYearListResponse,
     type PlanYearCreateParams as PlanYearCreateParams,
     type PlanYearListParams as PlanYearListParams,

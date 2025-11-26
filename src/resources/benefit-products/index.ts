@@ -15,7 +15,6 @@ export {
   type CreatePlanYearRequest,
   type PlanContributionClass,
   type PlanCost,
-  type PlanYear,
   type PlanYearListResponse,
   type PlanYearCreateParams,
   type PlanYearListParams,

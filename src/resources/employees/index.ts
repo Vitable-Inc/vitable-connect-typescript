@@ -3,15 +3,11 @@
 export { Dependents, type DependentListResponse, type DependentCreateParams } from './dependents';
 export {
   Employees,
-  type CreateDependentRequest,
   type CreateQualifyingLifeEventRequest,
-  type Dependent,
   type ElectBenefitsRequest,
   type Employee,
-  type Enrollment,
   type Member,
   type QualifyingLifeEvent,
-  type UpdateDependentRequest,
   type EmployeeUpdateParams,
 } from './employees';
 export {

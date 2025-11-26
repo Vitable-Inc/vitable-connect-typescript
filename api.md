@@ -22,7 +22,6 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/employers/employees.ts">CreateEmployeeRequest</a></code>
-- <code><a href="./src/resources/employers/employees.ts">Employee</a></code>
 - <code><a href="./src/resources/employers/employees.ts">UpdateEmployeeRequest</a></code>
 - <code><a href="./src/resources/employers/employees.ts">EmployeeListResponse</a></code>
 
@@ -35,15 +34,11 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/employees/employees.ts">CreateDependentRequest</a></code>
 - <code><a href="./src/resources/employees/employees.ts">CreateQualifyingLifeEventRequest</a></code>
-- <code><a href="./src/resources/employees/employees.ts">Dependent</a></code>
 - <code><a href="./src/resources/employees/employees.ts">ElectBenefitsRequest</a></code>
 - <code><a href="./src/resources/employees/employees.ts">Employee</a></code>
-- <code><a href="./src/resources/employees/employees.ts">Enrollment</a></code>
 - <code><a href="./src/resources/employees/employees.ts">Member</a></code>
 - <code><a href="./src/resources/employees/employees.ts">QualifyingLifeEvent</a></code>
-- <code><a href="./src/resources/employees/employees.ts">UpdateDependentRequest</a></code>
 
 Methods:
 
@@ -89,6 +84,7 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/dependents.ts">CreateDependentRequest</a></code>
 - <code><a href="./src/resources/dependents.ts">Dependent</a></code>
 - <code><a href="./src/resources/dependents.ts">UpdateDependentRequest</a></code>
 
@@ -118,7 +114,6 @@ Types:
 - <code><a href="./src/resources/benefit-products/plan-years.ts">CreatePlanYearRequest</a></code>
 - <code><a href="./src/resources/benefit-products/plan-years.ts">PlanContributionClass</a></code>
 - <code><a href="./src/resources/benefit-products/plan-years.ts">PlanCost</a></code>
-- <code><a href="./src/resources/benefit-products/plan-years.ts">PlanYear</a></code>
 - <code><a href="./src/resources/benefit-products/plan-years.ts">PlanYearListResponse</a></code>
 
 Methods:
@@ -142,7 +137,6 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/enrollments.ts">Enrollment</a></code>
-- <code><a href="./src/resources/enrollments.ts">Plan</a></code>
 - <code><a href="./src/resources/enrollments.ts">ReissueEnrollmentRequest</a></code>
 - <code><a href="./src/resources/enrollments.ts">EnrollmentGetEligiblePlansResponse</a></code>
 

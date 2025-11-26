@@ -12,21 +12,18 @@ export {
 } from './benefit-products/benefit-products';
 export {
   Dependents,
+  type CreateDependentRequest,
   type Dependent,
   type UpdateDependentRequest,
   type DependentUpdateParams,
 } from './dependents';
 export {
   Employees,
-  type CreateDependentRequest,
   type CreateQualifyingLifeEventRequest,
-  type Dependent,
   type ElectBenefitsRequest,
   type Employee,
-  type Enrollment,
   type Member,
   type QualifyingLifeEvent,
-  type UpdateDependentRequest,
   type EmployeeUpdateParams,
 } from './employees/employees';
 export {
@@ -45,7 +42,6 @@ export {
 export {
   Enrollments,
   type Enrollment,
-  type Plan,
   type ReissueEnrollmentRequest,
   type EnrollmentGetEligiblePlansResponse,
   type EnrollmentReissueParams,

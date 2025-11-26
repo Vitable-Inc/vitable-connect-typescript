@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as DependentsAPI from '../dependents';
 import * as EmployeesAPI from '../employees/employees';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
@@ -51,22 +50,6 @@ export interface CreateEmployeeRequest {
   ssn?: string;
 
   suffix?: string;
-}
-
-export interface Employee {
-  id: string;
-
-  active: boolean;
-
-  employer_id: string;
-
-  member: EmployeesAPI.Member;
-
-  start_date: string;
-
-  dependents?: Array<DependentsAPI.Dependent>;
-
-  terminated_at?: string | null;
 }
 
 export interface UpdateEmployeeRequest {
@@ -137,7 +120,6 @@ export interface EmployeeListParams {
 export declare namespace Employees {
   export {
     type CreateEmployeeRequest as CreateEmployeeRequest,
-    type Employee as Employee,
     type UpdateEmployeeRequest as UpdateEmployeeRequest,
     type EmployeeListResponse as EmployeeListResponse,
     type EmployeeCreateParams as EmployeeCreateParams,

@@ -16,13 +16,18 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { Dependent, DependentUpdateParams, Dependents, UpdateDependentRequest } from './resources/dependents';
+import {
+  CreateDependentRequest,
+  Dependent,
+  DependentUpdateParams,
+  Dependents,
+  UpdateDependentRequest,
+} from './resources/dependents';
 import {
   Enrollment,
   EnrollmentGetEligiblePlansResponse,
   EnrollmentReissueParams,
   Enrollments,
-  Plan,
   ReissueEnrollmentRequest,
 } from './resources/enrollments';
 import { PlanYear, PlanYearUpdateParams, PlanYears, UpdatePlanYearRequest } from './resources/plan-years';
@@ -32,22 +37,18 @@ import {
   BenefitProductListParams,
   BenefitProductListResponse,
   BenefitProducts,
-  Plan as BenefitProductsAPIPlan,
+  Plan,
   Quote,
   QuoteRequest,
 } from './resources/benefit-products/benefit-products';
 import {
-  CreateDependentRequest,
   CreateQualifyingLifeEventRequest,
-  Dependent as EmployeesAPIDependent,
   ElectBenefitsRequest,
   Employee,
   EmployeeUpdateParams,
   Employees,
-  Enrollment as EmployeesAPIEnrollment,
   Member,
   QualifyingLifeEvent,
-  UpdateDependentRequest as EmployeesAPIUpdateDependentRequest,
 } from './resources/employees/employees';
 import {
   CreateEligibilityPolicyRequest,
@@ -186,7 +187,7 @@ export class VitablePartnerAPI {
   /**
    * API Client for interfacing with the Vitable Partner API API.
    *
-   * @param {string | undefined} [opts.apiKey=process.env['VITABLE_PARTNER_API_API_KEY'] ?? undefined]
+   * @param {string | undefined} [opts.apiKey=process.env['VITABLE_API_KEY'] ?? undefined]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
    * @param {string} [opts.baseURL=process.env['VITABLE_PARTNER_API_BASE_URL'] ?? https://api.vitablehealth.com] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
@@ -198,12 +199,12 @@ export class VitablePartnerAPI {
    */
   constructor({
     baseURL = readEnv('VITABLE_PARTNER_API_BASE_URL'),
-    apiKey = readEnv('VITABLE_PARTNER_API_API_KEY'),
+    apiKey = readEnv('VITABLE_API_KEY'),
     ...opts
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
       throw new Errors.VitablePartnerAPIError(
-        "The VITABLE_PARTNER_API_API_KEY environment variable is missing or empty; either provide it, or instantiate the VitablePartnerAPI client with an apiKey option, like new VitablePartnerAPI({ apiKey: 'My API Key' }).",
+        "The VITABLE_API_KEY environment variable is missing or empty; either provide it, or instantiate the VitablePartnerAPI client with an apiKey option, like new VitablePartnerAPI({ apiKey: 'My API Key' }).",
       );
     }
 
@@ -273,6 +274,10 @@ export class VitablePartnerAPI {
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
     return;
+  }
+
+  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
   /**
@@ -712,6 +717,7 @@ export class VitablePartnerAPI {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
+      await this.authHeaders(options),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -812,20 +818,17 @@ export declare namespace VitablePartnerAPI {
 
   export {
     Employees as Employees,
-    type CreateDependentRequest as CreateDependentRequest,
     type CreateQualifyingLifeEventRequest as CreateQualifyingLifeEventRequest,
-    type EmployeesAPIDependent as Dependent,
     type ElectBenefitsRequest as ElectBenefitsRequest,
     type Employee as Employee,
-    type EmployeesAPIEnrollment as Enrollment,
     type Member as Member,
     type QualifyingLifeEvent as QualifyingLifeEvent,
-    type EmployeesAPIUpdateDependentRequest as UpdateDependentRequest,
     type EmployeeUpdateParams as EmployeeUpdateParams,
   };
 
   export {
     Dependents as Dependents,
+    type CreateDependentRequest as CreateDependentRequest,
     type Dependent as Dependent,
     type UpdateDependentRequest as UpdateDependentRequest,
     type DependentUpdateParams as DependentUpdateParams,
@@ -834,7 +837,7 @@ export declare namespace VitablePartnerAPI {
   export {
     BenefitProducts as BenefitProducts,
     type BenefitProduct as BenefitProduct,
-    type BenefitProductsAPIPlan as Plan,
+    type Plan as Plan,
     type Quote as Quote,
     type QuoteRequest as QuoteRequest,
     type BenefitProductListResponse as BenefitProductListResponse,
@@ -852,7 +855,6 @@ export declare namespace VitablePartnerAPI {
   export {
     Enrollments as Enrollments,
     type Enrollment as Enrollment,
-    type Plan as Plan,
     type ReissueEnrollmentRequest as ReissueEnrollmentRequest,
     type EnrollmentGetEligiblePlansResponse as EnrollmentGetEligiblePlansResponse,
     type EnrollmentReissueParams as EnrollmentReissueParams,

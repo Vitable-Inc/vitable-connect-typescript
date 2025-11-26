@@ -3,7 +3,6 @@
 export {
   Employees,
   type CreateEmployeeRequest,
-  type Employee,
   type UpdateEmployeeRequest,
   type EmployeeListResponse,
   type EmployeeCreateParams,
