@@ -7,10 +7,27 @@ const client = new VitablePartnerAPI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource companyMembers', () => {
+describe('resource employers', () => {
+  // Prism tests are disabled
+  test.skip('create: only required params', async () => {
+    const responsePromise = client.employers.create({ legal_name: 'legal_name', name: 'name' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism tests are disabled
+  test.skip('create: required and optional params', async () => {
+    const response = await client.employers.create({ legal_name: 'legal_name', name: 'name', active: true });
+  });
+
   // Prism tests are disabled
   test.skip('retrieve', async () => {
-    const responsePromise = client.companyMembers.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.employers.retrieve('empr__1k--w2KifJ1');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,7 +39,7 @@ describe('resource companyMembers', () => {
 
   // Prism tests are disabled
   test.skip('update', async () => {
-    const responsePromise = client.companyMembers.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {});
+    const responsePromise = client.employers.update('empr__1k--w2KifJ1', {});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -33,9 +50,30 @@ describe('resource companyMembers', () => {
   });
 
   // Prism tests are disabled
-  test.skip('list: only required params', async () => {
-    const responsePromise = client.companyMembers.list({
-      company_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  test.skip('list', async () => {
+    const responsePromise = client.employers.list();
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism tests are disabled
+  test.skip('list: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.employers.list({ limit: 1, offset: 0 }, { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(VitablePartnerAPI.NotFoundError);
+  });
+
+  // Prism tests are disabled
+  test.skip('createEligibilityPolicy: only required params', async () => {
+    const responsePromise = client.employers.createEligibilityPolicy('empr__1k--w2KifJ1', {
+      classification: 'FULL_TIME',
+      waiting_period: 'FIRST_OF_FOLLOWING_MONTH',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -47,35 +85,11 @@ describe('resource companyMembers', () => {
   });
 
   // Prism tests are disabled
-  test.skip('list: required and optional params', async () => {
-    const response = await client.companyMembers.list({
-      company_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      active_in: true,
-      benefits_eligible_in: true,
-      employee_class: 'Full Time',
-      limit: 0,
-      page: 0,
-    });
-  });
-
-  // Prism tests are disabled
-  test.skip('deactivate: only required params', async () => {
-    const responsePromise = client.companyMembers.deactivate('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      termination_date: '2019-12-27',
-    });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('deactivate: required and optional params', async () => {
-    const response = await client.companyMembers.deactivate('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      termination_date: '2019-12-27',
+  test.skip('createEligibilityPolicy: required and optional params', async () => {
+    const response = await client.employers.createEligibilityPolicy('empr__1k--w2KifJ1', {
+      classification: 'FULL_TIME',
+      waiting_period: 'FIRST_OF_FOLLOWING_MONTH',
+      policy_to_replace_id: 'policy_to_replace_id',
     });
   });
 });

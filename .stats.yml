@@ -1,4 +1,4 @@
 configured_endpoints: 24
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/test-felippemr%2Fvitable-partner-api-241487aed72b2be79db0b727ac6f47648e8067570e2ed5d911fc67ea912e3008.yml
-openapi_spec_hash: 06aaa9e71d679a2bfae871832f51706d
-config_hash: 7f70db745e04475a664822978a2bc84b
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/test-felippemr%2Fvitable-partner-api-51e11e82f821091c5b307a9a7ecaa136bba78885fcd42976e5836ef012d3ac4c.yml
+openapi_spec_hash: b75e6a0a1a31460b0249d57d22f283d0
+config_hash: 80cadc3b9ee8e8e9f089b5fd89032a06
