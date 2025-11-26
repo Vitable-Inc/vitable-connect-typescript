@@ -1,4 +1,4 @@
-import { createPathTagFunction, encodeURIPath } from 'vitable-partner-api/internal/utils/path';
+import { createPathTagFunction, encodeURIPath } from 'vitable-connect-api/internal/utils/path';
 import { inspect } from 'node:util';
 import { runInNewContext } from 'node:vm';
 

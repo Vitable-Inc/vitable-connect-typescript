@@ -1,8 +1,8 @@
 {
-  "name": "vitable-partner-api",
+  "name": "vitable-connect-api",
   "version": "0.0.1",
-  "description": "The official TypeScript library for the Vitable Partner API API",
-  "author": "Vitable Partner API <>",
+  "description": "The official TypeScript library for the Vitable Connect API API",
+  "author": "Vitable Connect API <>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "type": "commonjs",

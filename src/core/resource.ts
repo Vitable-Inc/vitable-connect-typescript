@@ -1,11 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import type { VitablePartnerAPI } from '../client';
+import type { VitableConnectAPI } from '../client';
 
 export abstract class APIResource {
-  protected _client: VitablePartnerAPI;
+  protected _client: VitableConnectAPI;
 
-  constructor(client: VitablePartnerAPI) {
+  constructor(client: VitableConnectAPI) {
     this._client = client;
   }
 }
