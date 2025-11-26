@@ -1,6 +1,6 @@
 import fs from 'fs';
-import type { ResponseLike } from 'vitable-partner-api/internal/to-file';
-import { toFile } from 'vitable-partner-api/core/uploads';
+import type { ResponseLike } from 'vitable-connect-api/internal/to-file';
+import { toFile } from 'vitable-connect-api/core/uploads';
 import { File } from 'node:buffer';
 
 class MyClass {
@@ -97,7 +97,7 @@ describe('missing File error message', () => {
   });
 
   test('is thrown', async () => {
-    const uploads = await import('vitable-partner-api/core/uploads');
+    const uploads = await import('vitable-connect-api/core/uploads');
     await expect(
       uploads.toFile(mockResponse({ url: 'https://example.com/my/audio.mp3' })),
     ).rejects.toMatchInlineSnapshot(

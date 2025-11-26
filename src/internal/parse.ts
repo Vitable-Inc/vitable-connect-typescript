@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import type { FinalRequestOptions } from './request-options';
-import { type VitablePartnerAPI } from '../client';
+import { type VitableConnectAPI } from '../client';
 import { formatRequestDetails, loggerFor } from './utils/log';
 
 export type APIResponseProps = {
@@ -14,7 +14,7 @@ export type APIResponseProps = {
 };
 
 export async function defaultParseResponse<T>(
-  client: VitablePartnerAPI,
+  client: VitableConnectAPI,
   props: APIResponseProps,
 ): Promise<T> {
   const { response, requestLogID, retryOfRequestLogID, startTime } = props;

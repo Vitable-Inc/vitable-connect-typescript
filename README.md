@@ -1,8 +1,8 @@
-# Vitable Partner API TypeScript API Library
+# Vitable Connect API TypeScript API Library
 
-[![NPM version](<https://img.shields.io/npm/v/vitable-partner-api.svg?label=npm%20(stable)>)](https://npmjs.org/package/vitable-partner-api) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/vitable-partner-api)
+[![NPM version](<https://img.shields.io/npm/v/vitable-connect-api.svg?label=npm%20(stable)>)](https://npmjs.org/package/vitable-connect-api) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/vitable-connect-api)
 
-This library provides convenient access to the Vitable Partner API REST API from server-side TypeScript or JavaScript.
+This library provides convenient access to the Vitable Connect API REST API from server-side TypeScript or JavaScript.
 
 The full API of this library can be found in [api.md](api.md).
 
@@ -15,7 +15,7 @@ npm install git+ssh://git@github.com:stainless-sdks/vitable-partner-api-typescri
 ```
 
 > [!NOTE]
-> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install vitable-partner-api`
+> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install vitable-connect-api`
 
 ## Usage
 
@@ -23,9 +23,9 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import VitablePartnerAPI from 'vitable-partner-api';
+import VitableConnectAPI from 'vitable-connect-api';
 
-const client = new VitablePartnerAPI({
+const client = new VitableConnectAPI({
   apiKey: process.env['VITABLE_API_KEY'], // This is the default and can be omitted
   environment: 'environment_1', // defaults to 'production'
 });
@@ -41,15 +41,15 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import VitablePartnerAPI from 'vitable-partner-api';
+import VitableConnectAPI from 'vitable-connect-api';
 
-const client = new VitablePartnerAPI({
+const client = new VitableConnectAPI({
   apiKey: process.env['VITABLE_API_KEY'], // This is the default and can be omitted
   environment: 'environment_1', // defaults to 'production'
 });
 
-const params: VitablePartnerAPI.EmployerListParams = { limit: 20 };
-const employers: VitablePartnerAPI.EmployerListResponse = await client.employers.list(params);
+const params: VitableConnectAPI.EmployerListParams = { limit: 20 };
+const employers: VitableConnectAPI.EmployerListResponse = await client.employers.list(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -63,7 +63,7 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 const employers = await client.employers.list({ limit: 20 }).catch(async (err) => {
-  if (err instanceof VitablePartnerAPI.APIError) {
+  if (err instanceof VitableConnectAPI.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
     console.log(err.headers); // {server: 'nginx', ...}
@@ -97,7 +97,7 @@ You can use the `maxRetries` option to configure or disable this:
 <!-- prettier-ignore -->
 ```js
 // Configure the default for all requests:
-const client = new VitablePartnerAPI({
+const client = new VitableConnectAPI({
   maxRetries: 0, // default is 2
 });
 
@@ -114,7 +114,7 @@ Requests time out after 1 minute by default. You can configure this with a `time
 <!-- prettier-ignore -->
 ```ts
 // Configure the default for all requests:
-const client = new VitablePartnerAPI({
+const client = new VitableConnectAPI({
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
@@ -140,7 +140,7 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 
 <!-- prettier-ignore -->
 ```ts
-const client = new VitablePartnerAPI();
+const client = new VitableConnectAPI();
 
 const response = await client.employers.list({ limit: 20 }).asResponse();
 console.log(response.headers.get('X-My-Header'));
@@ -161,13 +161,13 @@ console.log(employers.data);
 
 The log level can be configured in two ways:
 
-1. Via the `VITABLE_PARTNER_API_LOG` environment variable
+1. Via the `VITABLE_CONNECT_API_LOG` environment variable
 2. Using the `logLevel` client option (overrides the environment variable if set)
 
 ```ts
-import VitablePartnerAPI from 'vitable-partner-api';
+import VitableConnectAPI from 'vitable-connect-api';
 
-const client = new VitablePartnerAPI({
+const client = new VitableConnectAPI({
   logLevel: 'debug', // Show all log messages
 });
 ```
@@ -193,13 +193,13 @@ When providing a custom logger, the `logLevel` option still controls which messa
 below the configured level will not be sent to your logger.
 
 ```ts
-import VitablePartnerAPI from 'vitable-partner-api';
+import VitableConnectAPI from 'vitable-connect-api';
 import pino from 'pino';
 
 const logger = pino();
 
-const client = new VitablePartnerAPI({
-  logger: logger.child({ name: 'VitablePartnerAPI' }),
+const client = new VitableConnectAPI({
+  logger: logger.child({ name: 'VitableConnectAPI' }),
   logLevel: 'debug', // Send all messages to pino, allowing it to filter
 });
 ```
@@ -262,10 +262,10 @@ globalThis.fetch = fetch;
 Or pass it to the client:
 
 ```ts
-import VitablePartnerAPI from 'vitable-partner-api';
+import VitableConnectAPI from 'vitable-connect-api';
 import fetch from 'my-fetch';
 
-const client = new VitablePartnerAPI({ fetch });
+const client = new VitableConnectAPI({ fetch });
 ```
 
 ### Fetch options
@@ -273,9 +273,9 @@ const client = new VitablePartnerAPI({ fetch });
 If you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)
 
 ```ts
-import VitablePartnerAPI from 'vitable-partner-api';
+import VitableConnectAPI from 'vitable-connect-api';
 
-const client = new VitablePartnerAPI({
+const client = new VitableConnectAPI({
   fetchOptions: {
     // `RequestInit` options
   },
@@ -290,11 +290,11 @@ options to requests:
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg" align="top" width="18" height="21"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>
 
 ```ts
-import VitablePartnerAPI from 'vitable-partner-api';
+import VitableConnectAPI from 'vitable-connect-api';
 import * as undici from 'undici';
 
 const proxyAgent = new undici.ProxyAgent('http://localhost:8888');
-const client = new VitablePartnerAPI({
+const client = new VitableConnectAPI({
   fetchOptions: {
     dispatcher: proxyAgent,
   },
@@ -304,9 +304,9 @@ const client = new VitablePartnerAPI({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg" align="top" width="18" height="21"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>
 
 ```ts
-import VitablePartnerAPI from 'vitable-partner-api';
+import VitableConnectAPI from 'vitable-connect-api';
 
-const client = new VitablePartnerAPI({
+const client = new VitableConnectAPI({
   fetchOptions: {
     proxy: 'http://localhost:8888',
   },
@@ -316,10 +316,10 @@ const client = new VitablePartnerAPI({
 <img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg" align="top" width="18" height="21"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>
 
 ```ts
-import VitablePartnerAPI from 'npm:vitable-partner-api';
+import VitableConnectAPI from 'npm:vitable-connect-api';
 
 const httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });
-const client = new VitablePartnerAPI({
+const client = new VitableConnectAPI({
   fetchOptions: {
     client: httpClient,
   },
