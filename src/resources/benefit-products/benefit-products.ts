@@ -1,140 +1,192 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as BenefitProductsAPI from './benefit-products';
 import * as PlanYearsAPI from './plan-years';
 import {
-  CreatePlanYearRequest,
-  PlanContributionClass,
-  PlanCost,
+  PlanYear,
   PlanYearCreateParams,
   PlanYearListParams,
   PlanYearListResponse,
+  PlanYearStatus,
   PlanYears,
 } from './plan-years';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
-import { path } from '../../internal/utils/path';
 
 export class BenefitProducts extends APIResource {
   planYears: PlanYearsAPI.PlanYears = new PlanYearsAPI.PlanYears(this._client);
 
   /**
-   * Lists all Benefit Products that an Organization has access to that they can
-   * offer to their Employers.
+   * Retrieves a paginated list of all benefit products that the authenticated
+   * organization has access to and can offer to their employers. Use query
+   * parameters to filter by category, product code, or active status.
    */
   list(
     query: BenefitProductListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<BenefitProductListResponse> {
-    return this._client.get('/benefit-products', { query, ...options });
-  }
-
-  /**
-   * Generates a quote with pricing for an Employer with metadata for a specific
-   * Product. Employer/metadata would be in request body.
-   */
-  generateQuote(
-    id: string,
-    body: BenefitProductGenerateQuoteParams,
-    options?: RequestOptions,
-  ): APIPromise<Quote> {
-    return this._client.post(path`/benefit-products/${id}/quote`, { body, ...options });
+    return this._client.get('/v1/benefit-products', { query, ...options });
   }
 }
 
-export interface BenefitProduct {
-  id: string;
+/**
+ * - `Medical` - Medical
+ * - `Dental` - Dental
+ * - `Vision` - Vision
+ * - `Hospital` - Hospital
+ */
+export type Category = 'Medical' | 'Dental' | 'Vision' | 'Hospital';
 
-  name: string;
+/**
+ * - `EBA` - Eba Mec
+ * - `VPC` - Vpc Enhanced
+ * - `VPC_CORE` - Vpc Core
+ * - `MEC` - Vpc Mec
+ * - `MEC2` - Mec2
+ * - `MEC_PLUS` - Mec Plus
+ * - `MVP` - Mvp
+ * - `MVP2` - Mvp2
+ * - `MVPSL` - Mvpsl
+ * - `MVPSL2` - Mvpsl2
+ * - `VD` - Dental
+ * - `VV` - Vision
+ * - `ICHRA` - Ichra
+ * - `ICHRA_PREMIUM_PLUS` - Ichra Premium Plus
+ * - `ICHRA_REIMBURSEMENT_ONLY` - Ichra Reimbursement Only
+ */
+export type ProductCode =
+  | 'EBA'
+  | 'VPC'
+  | 'VPC_CORE'
+  | 'MEC'
+  | 'MEC2'
+  | 'MEC_PLUS'
+  | 'MVP'
+  | 'MVP2'
+  | 'MVPSL'
+  | 'MVPSL2'
+  | 'VD'
+  | 'VV'
+  | 'ICHRA'
+  | 'ICHRA_PREMIUM_PLUS'
+  | 'ICHRA_REIMBURSEMENT_ONLY';
 
-  product_type: string;
-
-  plans?: Array<Plan>;
-}
-
-export interface Plan {
-  id: string;
-
-  /**
-   * Plan name (e.g., MEC, MEC Plus)
-   */
-  plan_name: string;
-}
-
-export interface Quote {
-  benefit_product_id: string;
-
-  employer_id: string;
-
-  total_cost_in_cents: number;
-
-  breakdown?: { [key: string]: unknown };
-}
-
-export interface QuoteRequest {
-  employer_id: string;
-
-  /**
-   * Additional metadata for quote generation
-   */
-  metadata?: { [key: string]: unknown };
-}
-
-export interface BenefitProductListResponse {
-  data?: Array<BenefitProduct>;
-
-  pagination?: BenefitProductListResponse.Pagination;
-}
+export type BenefitProductListResponse = Array<BenefitProductListResponse.BenefitProductListResponseItem>;
 
 export namespace BenefitProductListResponse {
-  export interface Pagination {
-    limit: number;
+  /**
+   * Serializer for Benefit Product entity in public API responses.
+   *
+   * Benefit Products represent types of benefits (dental, vision, medical, etc.)
+   * that an Organization can offer to their Employers.
+   */
+  export interface BenefitProductListResponseItem {
+    /**
+     * Unique benefit product identifier with 'bprd\_' prefix
+     */
+    id: string;
 
-    offset: number;
+    /**
+     * Whether this product is currently available for offering
+     */
+    active: boolean;
 
-    total: number;
+    /**
+     * - `Medical` - Medical
+     * - `Dental` - Dental
+     * - `Vision` - Vision
+     * - `Hospital` - Hospital
+     */
+    category: BenefitProductsAPI.Category;
+
+    /**
+     * Timestamp when the product was created
+     */
+    created_at: string;
+
+    /**
+     * Display name of the benefit product
+     */
+    name: string;
+
+    /**
+     * - `EBA` - Eba Mec
+     * - `VPC` - Vpc Enhanced
+     * - `VPC_CORE` - Vpc Core
+     * - `MEC` - Vpc Mec
+     * - `MEC2` - Mec2
+     * - `MEC_PLUS` - Mec Plus
+     * - `MVP` - Mvp
+     * - `MVP2` - Mvp2
+     * - `MVPSL` - Mvpsl
+     * - `MVPSL2` - Mvpsl2
+     * - `VD` - Dental
+     * - `VV` - Vision
+     * - `ICHRA` - Ichra
+     * - `ICHRA_PREMIUM_PLUS` - Ichra Premium Plus
+     * - `ICHRA_REIMBURSEMENT_ONLY` - Ichra Reimbursement Only
+     */
+    product_code: BenefitProductsAPI.ProductCode;
+
+    /**
+     * Timestamp when the product was last updated
+     */
+    updated_at: string;
+
+    /**
+     * Name of the insurance carrier providing this product
+     */
+    carrier_name?: string | null;
+
+    /**
+     * Detailed description of the benefit product
+     */
+    description?: string | null;
   }
 }
 
 export interface BenefitProductListParams {
   /**
-   * Number of results to return
+   * Filter by active status
+   */
+  active_in?: boolean;
+
+  /**
+   * Filter by product category
+   */
+  category?: Category;
+
+  /**
+   * Items per page (default: 20, max: 100)
    */
   limit?: number;
 
   /**
-   * Number of results to skip
+   * Page number (default: 1)
    */
-  offset?: number;
-}
-
-export interface BenefitProductGenerateQuoteParams {
-  employer_id: string;
+  page?: number;
 
   /**
-   * Additional metadata for quote generation
+   * Filter by product code
    */
-  metadata?: { [key: string]: unknown };
+  product_code?: ProductCode;
 }
 
 BenefitProducts.PlanYears = PlanYears;
 
 export declare namespace BenefitProducts {
   export {
-    type BenefitProduct as BenefitProduct,
-    type Plan as Plan,
-    type Quote as Quote,
-    type QuoteRequest as QuoteRequest,
+    type Category as Category,
+    type ProductCode as ProductCode,
     type BenefitProductListResponse as BenefitProductListResponse,
     type BenefitProductListParams as BenefitProductListParams,
-    type BenefitProductGenerateQuoteParams as BenefitProductGenerateQuoteParams,
   };
 
   export {
     PlanYears as PlanYears,
-    type CreatePlanYearRequest as CreatePlanYearRequest,
-    type PlanContributionClass as PlanContributionClass,
-    type PlanCost as PlanCost,
+    type PlanYear as PlanYear,
+    type PlanYearStatus as PlanYearStatus,
     type PlanYearListResponse as PlanYearListResponse,
     type PlanYearCreateParams as PlanYearCreateParams,
     type PlanYearListParams as PlanYearListParams,

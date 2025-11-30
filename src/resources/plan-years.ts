@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as BenefitProductsAPI from './benefit-products/benefit-products';
+import * as EnrollmentsAPI from './enrollments';
 import * as BenefitProductsPlanYearsAPI from './benefit-products/plan-years';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
@@ -9,128 +9,78 @@ import { path } from '../internal/utils/path';
 
 export class PlanYears extends APIResource {
   /**
-   * Updates a specific Plan Year with configuration details for a Benefit Product
-   * for an Employer. Can only be edited up until open enrollment starts.
+   * Retrieves detailed configuration for a specific plan year by ID. Returns
+   * coverage dates, open enrollment period, available plans, and contribution
+   * structure.
    */
-  update(id: string, body: PlanYearUpdateParams, options?: RequestOptions): APIPromise<PlanYear> {
-    return this._client.put(path`/plan-years/${id}`, { body, ...options });
-  }
-}
-
-export interface PlanYear {
-  id: string;
-
-  benefit_product: BenefitProductsAPI.BenefitProduct;
-
-  configured: boolean;
-
-  coverage_end_date: string;
-
-  coverage_start_date: string;
-
-  employer_id: string;
-
-  open_enrollment_end_date: string;
-
-  open_enrollment_start_date: string;
-
-  contribution_classes?: Array<BenefitProductsPlanYearsAPI.PlanContributionClass>;
-
-  plan_costs?: Array<BenefitProductsPlanYearsAPI.PlanCost>;
-}
-
-export interface UpdatePlanYearRequest {
-  contribution_classes?: Array<UpdatePlanYearRequest.ContributionClass>;
-
-  coverage_end_date?: string;
-
-  coverage_start_date?: string;
-
-  open_enrollment_end_date?: string;
-
-  open_enrollment_start_date?: string;
-
-  plan_costs?: Array<UpdatePlanYearRequest.PlanCost>;
-}
-
-export namespace UpdatePlanYearRequest {
-  export interface ContributionClass {
-    compensation?: string;
-
-    employer_contribution_in_cents?: number;
-
-    employment?: string;
-
-    family_status?: string;
-
-    location?: string;
-
-    location_value?: string;
-
-    max_age?: number;
-
-    min_age?: number;
-
-    plan_id?: string;
+  retrieve(planYearID: string, options?: RequestOptions): APIPromise<BenefitProductsPlanYearsAPI.PlanYear> {
+    return this._client.get(path`/v1/plan-years/${planYearID}`, options);
   }
 
-  export interface PlanCost {
-    dependent_cost_in_cents?: number;
-
-    employee_cost_in_cents?: number;
-
-    plan_id?: string;
+  /**
+   * Updates an existing plan year's configuration. Important: Plan years can only be
+   * edited until open enrollment starts. All fields are optional. Monetary values
+   * must be in cents.
+   */
+  update(
+    planYearID: string,
+    body: PlanYearUpdateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<BenefitProductsPlanYearsAPI.PlanYear> {
+    return this._client.put(path`/v1/plan-years/${planYearID}`, { body, ...options });
   }
 }
 
 export interface PlanYearUpdateParams {
-  contribution_classes?: Array<PlanYearUpdateParams.ContributionClass>;
+  /**
+   * Updated contribution classes
+   */
+  contribution_classes?: Array<PlanYearUpdateParams.ContributionClass> | null;
 
-  coverage_end_date?: string;
+  /**
+   * Open enrollment end date
+   */
+  open_enrollment_end?: string | null;
 
-  coverage_start_date?: string;
+  /**
+   * Open enrollment start date
+   */
+  open_enrollment_start?: string | null;
 
-  open_enrollment_end_date?: string;
-
-  open_enrollment_start_date?: string;
-
-  plan_costs?: Array<PlanYearUpdateParams.PlanCost>;
+  /**
+   * Plan year status
+   */
+  status?: string | null;
 }
 
 export namespace PlanYearUpdateParams {
   export interface ContributionClass {
-    compensation?: string;
+    /**
+     * Employee's monthly contribution in cents
+     */
+    employee_contribution_cents: number;
 
-    employer_contribution_in_cents?: number;
+    /**
+     * Employer's monthly contribution in cents
+     */
+    employer_contribution_cents: number;
 
-    employment?: string;
+    /**
+     * Employment type
+     */
+    employment: string;
 
-    family_status?: string;
-
-    location?: string;
-
-    location_value?: string;
-
-    max_age?: number;
-
-    min_age?: number;
-
-    plan_id?: string;
-  }
-
-  export interface PlanCost {
-    dependent_cost_in_cents?: number;
-
-    employee_cost_in_cents?: number;
-
-    plan_id?: string;
+    /**
+     * - `Unspecified` - Unspecified
+     * - `EE` - Ee
+     * - `ES` - Es
+     * - `EC` - Ec
+     * - `EF` - Ef
+     */
+    family_status: EnrollmentsAPI.CoverageTier;
   }
 }
 
 export declare namespace PlanYears {
-  export {
-    type PlanYear as PlanYear,
-    type UpdatePlanYearRequest as UpdatePlanYearRequest,
-    type PlanYearUpdateParams as PlanYearUpdateParams,
-  };
+  export { type PlanYearUpdateParams as PlanYearUpdateParams };
 }

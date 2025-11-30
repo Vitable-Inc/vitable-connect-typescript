@@ -4,7 +4,7 @@
 
 This library provides convenient access to the Vitable Connect API REST API from server-side TypeScript or JavaScript.
 
-The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [vitablehealth.com](https://vitablehealth.com/support). The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainless.com/).
 
@@ -26,13 +26,13 @@ The full API of this library can be found in [api.md](api.md).
 import VitableConnectAPI from 'vitable-connect-api';
 
 const client = new VitableConnectAPI({
-  apiKey: process.env['VITABLE_API_KEY'], // This is the default and can be omitted
+  apiKey: process.env['VITABLE_connect_API_API_KEY'], // This is the default and can be omitted
   environment: 'environment_1', // defaults to 'production'
 });
 
-const employers = await client.employers.list({ limit: 20 });
+const benefitEligibilityPolicy = await client.benefitEligibilityPolicy.retrieve('REPLACE_ME');
 
-console.log(employers.data);
+console.log(benefitEligibilityPolicy.id);
 ```
 
 ### Request & Response types
@@ -44,12 +44,12 @@ This library includes TypeScript definitions for all request params and response
 import VitableConnectAPI from 'vitable-connect-api';
 
 const client = new VitableConnectAPI({
-  apiKey: process.env['VITABLE_API_KEY'], // This is the default and can be omitted
+  apiKey: process.env['VITABLE_connect_API_API_KEY'], // This is the default and can be omitted
   environment: 'environment_1', // defaults to 'production'
 });
 
-const params: VitableConnectAPI.EmployerListParams = { limit: 20 };
-const employers: VitableConnectAPI.EmployerListResponse = await client.employers.list(params);
+const benefitEligibilityPolicy: VitableConnectAPI.BenefitEligibilityPolicy =
+  await client.benefitEligibilityPolicy.retrieve('REPLACE_ME');
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -62,15 +62,17 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const employers = await client.employers.list({ limit: 20 }).catch(async (err) => {
-  if (err instanceof VitableConnectAPI.APIError) {
-    console.log(err.status); // 400
-    console.log(err.name); // BadRequestError
-    console.log(err.headers); // {server: 'nginx', ...}
-  } else {
-    throw err;
-  }
-});
+const benefitEligibilityPolicy = await client.benefitEligibilityPolicy
+  .retrieve('REPLACE_ME')
+  .catch(async (err) => {
+    if (err instanceof VitableConnectAPI.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 ```
 
 Error codes are as follows:
@@ -102,7 +104,7 @@ const client = new VitableConnectAPI({
 });
 
 // Or, configure per-request:
-await client.employers.list({ limit: 20 }, {
+await client.benefitEligibilityPolicy.retrieve('REPLACE_ME', {
   maxRetries: 5,
 });
 ```
@@ -119,7 +121,7 @@ const client = new VitableConnectAPI({
 });
 
 // Override per-request:
-await client.employers.list({ limit: 20 }, {
+await client.benefitEligibilityPolicy.retrieve('REPLACE_ME', {
   timeout: 5 * 1000,
 });
 ```
@@ -142,13 +144,15 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new VitableConnectAPI();
 
-const response = await client.employers.list({ limit: 20 }).asResponse();
+const response = await client.benefitEligibilityPolicy.retrieve('REPLACE_ME').asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: employers, response: raw } = await client.employers.list({ limit: 20 }).withResponse();
+const { data: benefitEligibilityPolicy, response: raw } = await client.benefitEligibilityPolicy
+  .retrieve('REPLACE_ME')
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(employers.data);
+console.log(benefitEligibilityPolicy.id);
 ```
 
 ### Logging
@@ -228,7 +232,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.employers.list({
+client.benefitEligibilityPolicy.retrieve({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',

@@ -2,19 +2,15 @@
 
 export {
   BenefitProducts,
-  type BenefitProduct,
-  type Plan,
-  type Quote,
-  type QuoteRequest,
+  type Category,
+  type ProductCode,
   type BenefitProductListResponse,
   type BenefitProductListParams,
-  type BenefitProductGenerateQuoteParams,
 } from './benefit-products';
 export {
   PlanYears,
-  type CreatePlanYearRequest,
-  type PlanContributionClass,
-  type PlanCost,
+  type PlanYear,
+  type PlanYearStatus,
   type PlanYearListResponse,
   type PlanYearCreateParams,
   type PlanYearListParams,

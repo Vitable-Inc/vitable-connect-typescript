@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as DependentsAPI from '../dependents';
 import * as EmployeesAPI from '../employees/employees';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
@@ -8,119 +9,183 @@ import { path } from '../../internal/utils/path';
 
 export class Employees extends APIResource {
   /**
-   * Creates a new Employee for an Employer. Only the create Employee endpoint allows
-   * specifying the SSN.
+   * Creates a new employee for a specific employer. Requires personal information
+   * (name, DOB, SSN) and employment details (start date). Note: SSN can only be
+   * specified at creation time and cannot be updated later. Returns the created
+   * employee with assigned ID.
    */
   create(
-    id: string,
+    employerID: string,
     body: EmployeeCreateParams,
     options?: RequestOptions,
   ): APIPromise<EmployeesAPI.Employee> {
-    return this._client.post(path`/employers/${id}/employees`, { body, ...options });
+    return this._client.post(path`/v1/employers/${employerID}/employees`, { body, ...options });
   }
 
   /**
-   * Lists all Employees for an Employer.
+   * Retrieves a paginated list of all employees for a specific employer. Use query
+   * parameters to filter by active status or employment classification. Results are
+   * paginated using page and limit parameters.
    */
   list(
-    id: string,
+    employerID: string,
     query: EmployeeListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<EmployeeListResponse> {
-    return this._client.get(path`/employers/${id}/employees`, { query, ...options });
+    return this._client.get(path`/v1/employers/${employerID}/employees`, { query, ...options });
   }
 }
 
-export interface CreateEmployeeRequest {
-  date_of_birth: string;
+/**
+ * - `Full Time` - Full Time
+ * - `Part Time` - Part Time
+ * - `Temporary` - Temporary
+ * - `Intern` - Intern
+ * - `Seasonal` - Seasonal
+ * - `Individual Contractor` - Individual Contractor
+ */
+export type EmployeeClass =
+  | 'Full Time'
+  | 'Part Time'
+  | 'Temporary'
+  | 'Intern'
+  | 'Seasonal'
+  | 'Individual Contractor';
 
-  first_name: string;
-
-  last_name: string;
-
-  start_date: string;
-
-  gender?: 'MALE' | 'FEMALE' | 'TRANSGENDER' | 'NON_BINARY' | 'PREFER_NOT_TO_RESPOND';
-
-  sex?: 'MALE' | 'FEMALE' | 'OTHER' | 'UNKNOWN';
-
-  /**
-   * Social Security Number (only allowed on create)
-   */
-  ssn?: string;
-
-  suffix?: string;
-}
-
-export interface UpdateEmployeeRequest {
-  date_of_birth?: string;
-
-  first_name?: string;
-
-  gender?: 'MALE' | 'FEMALE' | 'TRANSGENDER' | 'NON_BINARY' | 'PREFER_NOT_TO_RESPOND';
-
-  last_name?: string;
-
-  sex?: 'MALE' | 'FEMALE' | 'OTHER' | 'UNKNOWN';
-
-  start_date?: string;
-
-  suffix?: string;
-}
-
-export interface EmployeeListResponse {
-  data?: Array<EmployeesAPI.Employee>;
-
-  pagination?: EmployeeListResponse.Pagination;
-}
-
-export namespace EmployeeListResponse {
-  export interface Pagination {
-    limit: number;
-
-    offset: number;
-
-    total: number;
-  }
-}
+export type EmployeeListResponse = Array<EmployeesAPI.Employee>;
 
 export interface EmployeeCreateParams {
+  /**
+   * Date of birth (YYYY-MM-DD)
+   */
   date_of_birth: string;
 
-  first_name: string;
-
-  last_name: string;
-
-  start_date: string;
-
-  gender?: 'MALE' | 'FEMALE' | 'TRANSGENDER' | 'NON_BINARY' | 'PREFER_NOT_TO_RESPOND';
-
-  sex?: 'MALE' | 'FEMALE' | 'OTHER' | 'UNKNOWN';
+  /**
+   * Email address
+   */
+  email: string;
 
   /**
-   * Social Security Number (only allowed on create)
+   * Employee's legal first name
    */
-  ssn?: string;
+  first_name: string;
 
-  suffix?: string;
+  /**
+   * Employee's legal last name
+   */
+  last_name: string;
+
+  /**
+   * - `Male` - Male
+   * - `Female` - Female
+   * - `Other` - Other
+   * - `Unknown` - Unknown
+   */
+  sex: DependentsAPI.Sex;
+
+  /**
+   * Social Security Number (XXX-XX-XXXX or XXXXXXXXX). Only accepted on create.
+   */
+  ssn: string;
+
+  /**
+   * Employment start/hire date
+   */
+  start_date: string;
+
+  /**
+   * Employee's residential address
+   */
+  address?: EmployeeCreateParams.Address | null;
+
+  /**
+   * - `Full Time` - Full Time
+   * - `Part Time` - Part Time
+   * - `Temporary` - Temporary
+   * - `Intern` - Intern
+   * - `Seasonal` - Seasonal
+   * - `Individual Contractor` - Individual Contractor
+   */
+  employee_class?: EmployeeClass | null;
+
+  /**
+   * Gender identity
+   */
+  gender?: string | null;
+
+  /**
+   * Phone number
+   */
+  phone?: string | null;
+
+  /**
+   * Name suffix (Jr., Sr., III)
+   */
+  suffix?: string | null;
+}
+
+export namespace EmployeeCreateParams {
+  /**
+   * Employee's residential address
+   */
+  export interface Address {
+    /**
+     * City name
+     */
+    city: string;
+
+    /**
+     * Two-letter state code
+     */
+    state: string;
+
+    /**
+     * Primary street address
+     */
+    street_1: string;
+
+    /**
+     * ZIP code
+     */
+    zip_code: string;
+
+    /**
+     * Country code
+     */
+    country?: string;
+
+    /**
+     * Secondary street address
+     */
+    street_2?: string | null;
+  }
 }
 
 export interface EmployeeListParams {
   /**
-   * Number of results to return
+   * Filter by active status
+   */
+  active_in?: boolean;
+
+  /**
+   * Filter by employment classification
+   */
+  employee_class?: EmployeeClass;
+
+  /**
+   * Items per page (default: 20, max: 100)
    */
   limit?: number;
 
   /**
-   * Number of results to skip
+   * Page number (default: 1)
    */
-  offset?: number;
+  page?: number;
 }
 
 export declare namespace Employees {
   export {
-    type CreateEmployeeRequest as CreateEmployeeRequest,
-    type UpdateEmployeeRequest as UpdateEmployeeRequest,
+    type EmployeeClass as EmployeeClass,
     type EmployeeListResponse as EmployeeListResponse,
     type EmployeeCreateParams as EmployeeCreateParams,
     type EmployeeListParams as EmployeeListParams,
