@@ -8,66 +8,120 @@ import { path } from '../../internal/utils/path';
 
 export class Enrollments extends APIResource {
   /**
-   * Gets the Enrollments (pending, enrolled, or inactive) for a specific Employee
-   * with additional filters.
+   * Retrieves a paginated list of benefit enrollments for an employee. Enrollments
+   * have statuses: 'pending' (in enrollment period), 'enrolled' (active coverage),
+   * or 'inactive' (terminated, expired, or unanswered). Filter by status, plan year,
+   * or coverage year.
    */
   list(
-    id: string,
+    employeeID: string,
     query: EnrollmentListParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<EnrollmentListResponse> {
-    return this._client.get(path`/employees/${id}/enrollments`, { query, ...options });
+    return this._client.get(path`/v1/employees/${employeeID}/enrollments`, { query, ...options });
   }
 
   /**
-   * Benefits election process of all pending enrollments. Consists of all pending
-   * enrollments, whether enrolled/waived, and IDs of the dependents.
+   * Completes the benefits election process for all pending enrollments for an
+   * employee. Processes enrollment decisions: which benefits to enroll/waive, plan
+   * selections, and dependent coverage. Pending enrollments transition to enrolled
+   * or waived status based on elections.
    */
-  elect(
-    id: string,
-    body: EnrollmentElectParams,
+  submitElections(
+    employeeID: string,
+    body: EnrollmentSubmitElectionsParams,
     options?: RequestOptions,
-  ): APIPromise<EnrollmentElectResponse> {
-    return this._client.post(path`/employees/${id}/enrollments/elect`, { body, ...options });
+  ): APIPromise<EnrollmentSubmitElectionsResponse> {
+    return this._client.post(path`/v1/employees/${employeeID}/enrollments/elect`, { body, ...options });
   }
 }
 
-export interface EnrollmentListResponse {
-  data?: Array<EnrollmentsAPI.Enrollment>;
-}
+/**
+ * - `pending` - Pending
+ * - `enrolled` - Enrolled
+ * - `waived` - Waived
+ * - `inactive` - Inactive
+ */
+export type EnrollmentStatus = 'pending' | 'enrolled' | 'waived' | 'inactive';
 
-export interface EnrollmentElectResponse {
-  data?: Array<EnrollmentsAPI.Enrollment>;
-}
+export type EnrollmentListResponse = Array<EnrollmentsAPI.Enrollment>;
+
+export type EnrollmentSubmitElectionsResponse = Array<EnrollmentsAPI.Enrollment>;
 
 export interface EnrollmentListParams {
-  status?: 'pending' | 'enrolled' | 'waived' | 'inactive';
+  /**
+   * Filter by coverage year
+   */
+  coverage_effective_start_year?: number;
+
+  /**
+   * Items per page (default: 20, max: 100)
+   */
+  limit?: number;
+
+  /**
+   * Page number (default: 1)
+   */
+  page?: number;
+
+  /**
+   * Filter by plan year start (YYYY)
+   */
+  plan_year?: number;
+
+  /**
+   * Filter by enrollment status
+   */
+  status?: EnrollmentStatus;
 }
 
-export interface EnrollmentElectParams {
-  elections: Array<EnrollmentElectParams.Election>;
+export interface EnrollmentSubmitElectionsParams {
+  /**
+   * List of enrollment elections
+   */
+  elections: Array<EnrollmentSubmitElectionsParams.Election>;
 }
 
-export namespace EnrollmentElectParams {
+export namespace EnrollmentSubmitElectionsParams {
   export interface Election {
-    decision: 'enrolled' | 'waived';
-
-    enrollment_id: string;
-
-    dependent_ids?: Array<string>;
+    /**
+     * - `Enrolled` - Enrolled
+     * - `Waived` - Waived
+     */
+    decision: 'Enrolled' | 'Waived';
 
     /**
-     * Required if decision is enrolled
+     * ID of the enrollment (enrl\_\*)
      */
-    plan_id?: string;
+    enrollment_id: string;
+
+    /**
+     * - `Unspecified` - Unspecified
+     * - `EE` - Ee
+     * - `ES` - Es
+     * - `EC` - Ec
+     * - `EF` - Ef
+     */
+    coverage_tier?: EnrollmentsAPI.CoverageTier | null;
+
+    /**
+     * List of dependent IDs to include in coverage (dpnd\_\*)
+     */
+    dependent_ids?: Array<string> | null;
+
+    /**
+     * ID of the selected plan (plan\_\*). Required if decision is 'Enrolled'
+     */
+    selected_plan_id?: string | null;
   }
 }
 
 export declare namespace Enrollments {
   export {
+    type EnrollmentStatus as EnrollmentStatus,
     type EnrollmentListResponse as EnrollmentListResponse,
-    type EnrollmentElectResponse as EnrollmentElectResponse,
+    type EnrollmentSubmitElectionsResponse as EnrollmentSubmitElectionsResponse,
     type EnrollmentListParams as EnrollmentListParams,
-    type EnrollmentElectParams as EnrollmentElectParams,
+    type EnrollmentSubmitElectionsParams as EnrollmentSubmitElectionsParams,
   };
 }

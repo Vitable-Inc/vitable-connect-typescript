@@ -10,7 +10,7 @@ const client = new VitableConnectAPI({
 describe('resource enrollments', () => {
   // Prism tests are disabled
   test.skip('list', async () => {
-    const responsePromise = client.employees.enrollments.list('empl__1k--w2KifJ1');
+    const responsePromise = client.employees.enrollments.list('empl_abc123def456');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -25,17 +25,17 @@ describe('resource enrollments', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.employees.enrollments.list(
-        'empl__1k--w2KifJ1',
-        { status: 'pending' },
+        'empl_abc123def456',
+        { coverage_effective_start_year: 2025, limit: 20, page: 1, plan_year: 2025, status: 'pending' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(VitableConnectAPI.NotFoundError);
   });
 
   // Prism tests are disabled
-  test.skip('elect: only required params', async () => {
-    const responsePromise = client.employees.enrollments.elect('empl__1k--w2KifJ1', {
-      elections: [{ decision: 'enrolled', enrollment_id: 'enrl__1k--w2KifJ1' }],
+  test.skip('submitElections: only required params', async () => {
+    const responsePromise = client.employees.enrollments.submitElections('empl_abc123def456', {
+      elections: [{ decision: 'Enrolled', enrollment_id: 'enrollment_id' }],
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -47,14 +47,15 @@ describe('resource enrollments', () => {
   });
 
   // Prism tests are disabled
-  test.skip('elect: required and optional params', async () => {
-    const response = await client.employees.enrollments.elect('empl__1k--w2KifJ1', {
+  test.skip('submitElections: required and optional params', async () => {
+    const response = await client.employees.enrollments.submitElections('empl_abc123def456', {
       elections: [
         {
-          decision: 'enrolled',
-          enrollment_id: 'enrl__1k--w2KifJ1',
-          dependent_ids: ['dpnd__1k--w2KifJ1'],
-          plan_id: 'plan_id',
+          decision: 'Enrolled',
+          enrollment_id: 'enrollment_id',
+          coverage_tier: 'Unspecified',
+          dependent_ids: ['string'],
+          selected_plan_id: 'selected_plan_id',
         },
       ],
     });

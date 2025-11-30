@@ -7,10 +7,10 @@ const client = new VitableConnectAPI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource benefitProducts', () => {
+describe('resource qualifyingLifeEvents', () => {
   // Prism tests are disabled
-  test.skip('list', async () => {
-    const responsePromise = client.benefitProducts.list();
+  test.skip('retrieve', async () => {
+    const responsePromise = client.qualifyingLifeEvents.retrieve('qle_abc123def456');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -18,16 +18,5 @@ describe('resource benefitProducts', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('list: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.benefitProducts.list(
-        { active_in: true, category: 'Medical', limit: 20, page: 1, product_code: 'EBA' },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(VitableConnectAPI.NotFoundError);
   });
 });

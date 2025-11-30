@@ -17,43 +17,29 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import {
-  CreateDependentRequest,
-  Dependent,
-  DependentUpdateParams,
-  Dependents,
-  UpdateDependentRequest,
-} from './resources/dependents';
+  BenefitEligibilityPolicy,
+  BenefitEligibilityPolicyResource,
+} from './resources/benefit-eligibility-policy';
+import { Dependent, DependentUpdateParams, Dependents, Sex } from './resources/dependents';
 import {
+  CoverageTier,
   Enrollment,
-  EnrollmentGetEligiblePlansResponse,
+  EnrollmentListPlansResponse,
   EnrollmentReissueParams,
   Enrollments,
-  ReissueEnrollmentRequest,
+  PlanTier,
 } from './resources/enrollments';
-import { PlanYear, PlanYearUpdateParams, PlanYears, UpdatePlanYearRequest } from './resources/plan-years';
+import { PlanYearUpdateParams, PlanYears } from './resources/plan-years';
+import { QualifyingLifeEvents } from './resources/qualifying-life-events';
 import {
-  BenefitProduct,
-  BenefitProductGenerateQuoteParams,
   BenefitProductListParams,
   BenefitProductListResponse,
   BenefitProducts,
-  Plan,
-  Quote,
-  QuoteRequest,
+  Category,
+  ProductCode,
 } from './resources/benefit-products/benefit-products';
+import { Employee, EmployeeUpdateParams, Employees } from './resources/employees/employees';
 import {
-  CreateQualifyingLifeEventRequest,
-  ElectBenefitsRequest,
-  Employee,
-  EmployeeUpdateParams,
-  Employees,
-  Member,
-  QualifyingLifeEvent,
-} from './resources/employees/employees';
-import {
-  CreateEligibilityPolicyRequest,
-  CreateEmployerRequest,
-  EligibilityPolicy,
   Employer,
   EmployerCreateEligibilityPolicyParams,
   EmployerCreateParams,
@@ -61,8 +47,8 @@ import {
   EmployerListResponse,
   EmployerUpdateParams,
   Employers,
-  UpdateEmployerRequest,
 } from './resources/employers/employers';
+import { Members } from './resources/members/members';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -78,13 +64,13 @@ import { isEmptyObj } from './internal/utils/values';
 
 const environments = {
   production: 'https://api.vitablehealth.com',
-  environment_1: 'https://api-staging.vitablehealth.com',
+  environment_1: 'https://api.uat.vitablehealth.com',
 };
 type Environment = keyof typeof environments;
 
 export interface ClientOptions {
   /**
-   * Partner API key for external integrations
+   * API Key authentication using Bearer token in Authorization header
    */
   apiKey?: string | undefined;
 
@@ -93,7 +79,7 @@ export interface ClientOptions {
    *
    * Each environment maps to a different base URL:
    * - `production` corresponds to `https://api.vitablehealth.com`
-   * - `environment_1` corresponds to `https://api-staging.vitablehealth.com`
+   * - `environment_1` corresponds to `https://api.uat.vitablehealth.com`
    */
   environment?: Environment | undefined;
 
@@ -187,7 +173,7 @@ export class VitableConnectAPI {
   /**
    * API Client for interfacing with the Vitable Connect API API.
    *
-   * @param {string | undefined} [opts.apiKey=process.env['VITABLE_API_KEY'] ?? undefined]
+   * @param {string | undefined} [opts.apiKey=process.env['VITABLE_connect_API_API_KEY'] ?? undefined]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
    * @param {string} [opts.baseURL=process.env['VITABLE_CONNECT_API_BASE_URL'] ?? https://api.vitablehealth.com] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
@@ -199,12 +185,12 @@ export class VitableConnectAPI {
    */
   constructor({
     baseURL = readEnv('VITABLE_CONNECT_API_BASE_URL'),
-    apiKey = readEnv('VITABLE_API_KEY'),
+    apiKey = readEnv('VITABLE_connect_API_API_KEY'),
     ...opts
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
       throw new Errors.VitableConnectAPIError(
-        "The VITABLE_API_KEY environment variable is missing or empty; either provide it, or instantiate the VitableConnectAPI client with an apiKey option, like new VitableConnectAPI({ apiKey: 'My API Key' }).",
+        "The VITABLE_connect_API_API_KEY environment variable is missing or empty; either provide it, or instantiate the VitableConnectAPI client with an apiKey option, like new VitableConnectAPI({ apiKey: 'My API Key' }).",
       );
     }
 
@@ -784,31 +770,61 @@ export class VitableConnectAPI {
 
   static toFile = Uploads.toFile;
 
-  employers: API.Employers = new API.Employers(this);
-  employees: API.Employees = new API.Employees(this);
-  dependents: API.Dependents = new API.Dependents(this);
+  benefitEligibilityPolicy: API.BenefitEligibilityPolicyResource = new API.BenefitEligibilityPolicyResource(
+    this,
+  );
   benefitProducts: API.BenefitProducts = new API.BenefitProducts(this);
-  planYears: API.PlanYears = new API.PlanYears(this);
+  dependents: API.Dependents = new API.Dependents(this);
+  employees: API.Employees = new API.Employees(this);
+  employers: API.Employers = new API.Employers(this);
   enrollments: API.Enrollments = new API.Enrollments(this);
+  members: API.Members = new API.Members(this);
+  planYears: API.PlanYears = new API.PlanYears(this);
+  qualifyingLifeEvents: API.QualifyingLifeEvents = new API.QualifyingLifeEvents(this);
 }
 
-VitableConnectAPI.Employers = Employers;
-VitableConnectAPI.Employees = Employees;
-VitableConnectAPI.Dependents = Dependents;
+VitableConnectAPI.BenefitEligibilityPolicyResource = BenefitEligibilityPolicyResource;
 VitableConnectAPI.BenefitProducts = BenefitProducts;
-VitableConnectAPI.PlanYears = PlanYears;
+VitableConnectAPI.Dependents = Dependents;
+VitableConnectAPI.Employees = Employees;
+VitableConnectAPI.Employers = Employers;
 VitableConnectAPI.Enrollments = Enrollments;
+VitableConnectAPI.Members = Members;
+VitableConnectAPI.PlanYears = PlanYears;
+VitableConnectAPI.QualifyingLifeEvents = QualifyingLifeEvents;
 
 export declare namespace VitableConnectAPI {
   export type RequestOptions = Opts.RequestOptions;
 
   export {
+    BenefitEligibilityPolicyResource as BenefitEligibilityPolicyResource,
+    type BenefitEligibilityPolicy as BenefitEligibilityPolicy,
+  };
+
+  export {
+    BenefitProducts as BenefitProducts,
+    type Category as Category,
+    type ProductCode as ProductCode,
+    type BenefitProductListResponse as BenefitProductListResponse,
+    type BenefitProductListParams as BenefitProductListParams,
+  };
+
+  export {
+    Dependents as Dependents,
+    type Dependent as Dependent,
+    type Sex as Sex,
+    type DependentUpdateParams as DependentUpdateParams,
+  };
+
+  export {
+    Employees as Employees,
+    type Employee as Employee,
+    type EmployeeUpdateParams as EmployeeUpdateParams,
+  };
+
+  export {
     Employers as Employers,
-    type CreateEligibilityPolicyRequest as CreateEligibilityPolicyRequest,
-    type CreateEmployerRequest as CreateEmployerRequest,
-    type EligibilityPolicy as EligibilityPolicy,
     type Employer as Employer,
-    type UpdateEmployerRequest as UpdateEmployerRequest,
     type EmployerListResponse as EmployerListResponse,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerUpdateParams as EmployerUpdateParams,
@@ -817,46 +833,17 @@ export declare namespace VitableConnectAPI {
   };
 
   export {
-    Employees as Employees,
-    type CreateQualifyingLifeEventRequest as CreateQualifyingLifeEventRequest,
-    type ElectBenefitsRequest as ElectBenefitsRequest,
-    type Employee as Employee,
-    type Member as Member,
-    type QualifyingLifeEvent as QualifyingLifeEvent,
-    type EmployeeUpdateParams as EmployeeUpdateParams,
-  };
-
-  export {
-    Dependents as Dependents,
-    type CreateDependentRequest as CreateDependentRequest,
-    type Dependent as Dependent,
-    type UpdateDependentRequest as UpdateDependentRequest,
-    type DependentUpdateParams as DependentUpdateParams,
-  };
-
-  export {
-    BenefitProducts as BenefitProducts,
-    type BenefitProduct as BenefitProduct,
-    type Plan as Plan,
-    type Quote as Quote,
-    type QuoteRequest as QuoteRequest,
-    type BenefitProductListResponse as BenefitProductListResponse,
-    type BenefitProductListParams as BenefitProductListParams,
-    type BenefitProductGenerateQuoteParams as BenefitProductGenerateQuoteParams,
-  };
-
-  export {
-    PlanYears as PlanYears,
-    type PlanYear as PlanYear,
-    type UpdatePlanYearRequest as UpdatePlanYearRequest,
-    type PlanYearUpdateParams as PlanYearUpdateParams,
-  };
-
-  export {
     Enrollments as Enrollments,
+    type CoverageTier as CoverageTier,
     type Enrollment as Enrollment,
-    type ReissueEnrollmentRequest as ReissueEnrollmentRequest,
-    type EnrollmentGetEligiblePlansResponse as EnrollmentGetEligiblePlansResponse,
+    type PlanTier as PlanTier,
+    type EnrollmentListPlansResponse as EnrollmentListPlansResponse,
     type EnrollmentReissueParams as EnrollmentReissueParams,
   };
+
+  export { Members as Members };
+
+  export { PlanYears as PlanYears, type PlanYearUpdateParams as PlanYearUpdateParams };
+
+  export { QualifyingLifeEvents as QualifyingLifeEvents };
 }

@@ -9,8 +9,20 @@ const client = new VitableConnectAPI({
 
 describe('resource enrollments', () => {
   // Prism tests are disabled
-  test.skip('getEligiblePlans', async () => {
-    const responsePromise = client.enrollments.getEligiblePlans('enrl__1k--w2KifJ1');
+  test.skip('retrieve', async () => {
+    const responsePromise = client.enrollments.retrieve('enrl_abc123def456');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism tests are disabled
+  test.skip('listPlans', async () => {
+    const responsePromise = client.enrollments.listPlans('enrl_abc123def456');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,9 +34,7 @@ describe('resource enrollments', () => {
 
   // Prism tests are disabled
   test.skip('reissue: only required params', async () => {
-    const responsePromise = client.enrollments.reissue('enrl__1k--w2KifJ1', {
-      qualifying_life_event_id: 'qle__1k--w2KifJ1',
-    });
+    const responsePromise = client.enrollments.reissue('enrl_abc123def456', { qle_id: 'qle_id' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -36,8 +46,9 @@ describe('resource enrollments', () => {
 
   // Prism tests are disabled
   test.skip('reissue: required and optional params', async () => {
-    const response = await client.enrollments.reissue('enrl__1k--w2KifJ1', {
-      qualifying_life_event_id: 'qle__1k--w2KifJ1',
+    const response = await client.enrollments.reissue('enrl_abc123def456', {
+      qle_id: 'qle_id',
+      reason: 'reason',
     });
   });
 });

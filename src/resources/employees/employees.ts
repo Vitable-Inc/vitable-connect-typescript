@@ -2,210 +2,300 @@
 
 import { APIResource } from '../../core/resource';
 import * as DependentsAPI from '../dependents';
-import * as EmployeesDependentsAPI from './dependents';
-import { DependentCreateParams, DependentListResponse, Dependents } from './dependents';
 import * as EnrollmentsAPI from './enrollments';
 import {
-  EnrollmentElectParams,
-  EnrollmentElectResponse,
   EnrollmentListParams,
   EnrollmentListResponse,
+  EnrollmentStatus,
+  EnrollmentSubmitElectionsParams,
+  EnrollmentSubmitElectionsResponse,
   Enrollments,
 } from './enrollments';
-import * as QualifyingLifeEventsAPI from './qualifying-life-events';
-import {
-  QualifyingLifeEventCreateParams,
-  QualifyingLifeEventListResponse,
-  QualifyingLifeEvents,
-} from './qualifying-life-events';
+import * as EmployersEmployeesAPI from '../employers/employees';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
 export class Employees extends APIResource {
-  dependents: EmployeesDependentsAPI.Dependents = new EmployeesDependentsAPI.Dependents(this._client);
-  qualifyingLifeEvents: QualifyingLifeEventsAPI.QualifyingLifeEvents =
-    new QualifyingLifeEventsAPI.QualifyingLifeEvents(this._client);
   enrollments: EnrollmentsAPI.Enrollments = new EnrollmentsAPI.Enrollments(this._client);
 
   /**
-   * Gets a specific Employee for an Employer.
+   * Retrieves detailed information for a specific employee by ID. Returns employee
+   * details including personal information and employment status.
    */
-  retrieve(id: string, options?: RequestOptions): APIPromise<Employee> {
-    return this._client.get(path`/employees/${id}`, options);
+  retrieve(employeeID: string, options?: RequestOptions): APIPromise<Employee> {
+    return this._client.get(path`/v1/employees/${employeeID}`, options);
   }
 
   /**
-   * Updates a specific Employee for an Employer.
+   * Updates an existing employee's information. All fields are optional - only
+   * provided fields will be updated. Note: SSN, name, date of birth, and sex cannot
+   * be changed after creation.
    */
-  update(id: string, body: EmployeeUpdateParams, options?: RequestOptions): APIPromise<Employee> {
-    return this._client.put(path`/employees/${id}`, { body, ...options });
+  update(
+    employeeID: string,
+    body: EmployeeUpdateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<Employee> {
+    return this._client.put(path`/v1/employees/${employeeID}`, { body, ...options });
   }
 
   /**
-   * Terminates a specific Employee for an Employer.
+   * Terminates a specific employee. This sets the employee's active status to false
+   * and records a termination date. The employee record is not permanently deleted
+   * for compliance reasons.
    */
-  terminate(id: string, options?: RequestOptions): APIPromise<void> {
-    return this._client.delete(path`/employees/${id}`, {
+  terminate(employeeID: string, options?: RequestOptions): APIPromise<void> {
+    return this._client.delete(path`/v1/employees/${employeeID}`, {
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
     });
   }
 }
 
-export interface CreateQualifyingLifeEventRequest {
-  event_date: string;
+/**
+ * Serializer for Employee entity in public API responses.
+ *
+ * Note: Employee is in the company module but exposed via account public API.
+ * Contains nested MemberEntity with personal identity information.
+ */
+export interface Employee {
+  /**
+   * Unique employee identifier with 'empl\_' prefix
+   */
+  id: string;
 
-  event_type:
-    | 'MARRIAGE'
-    | 'BIRTH'
-    | 'ADOPTION'
-    | 'DIVORCE'
-    | 'DEATH'
-    | 'JOB_LOSS'
-    | 'REDUCTION_IN_HOURS'
-    | 'EMPLOYER_BANKRUPTCY'
-    | 'MEDICARE_ENTITLEMENT'
-    | 'TERMINATION'
-    | 'OTHER';
+  /**
+   * Whether the employee is currently active
+   */
+  active: boolean;
 
-  description?: string;
+  /**
+   * Timestamp when the employee was created
+   */
+  created_at: string;
 
-  proof_document_url?: string;
+  /**
+   * ID of the employer this employee works for (empr\_\*)
+   */
+  employer_id: string;
+
+  /**
+   * Nested member entity containing personal identity information.
+   *
+   * Matches MemberEntity from account module domain.
+   */
+  member: Employee.Member;
+
+  /**
+   * Employee's start/hire date with the employer
+   */
+  start_date: string;
+
+  /**
+   * Timestamp when the employee was last updated
+   */
+  updated_at: string;
+
+  /**
+   * Nested address for employee.
+   */
+  address?: Employee.Address | null;
+
+  /**
+   * - `Full Time` - Full Time
+   * - `Part Time` - Part Time
+   * - `Temporary` - Temporary
+   * - `Intern` - Intern
+   * - `Seasonal` - Seasonal
+   * - `Individual Contractor` - Individual Contractor
+   */
+  employee_class?: EmployersEmployeesAPI.EmployeeClass | null;
+
+  /**
+   * Employee's termination date, if terminated
+   */
+  termination_date?: string | null;
 }
 
-export interface ElectBenefitsRequest {
-  elections: Array<ElectBenefitsRequest.Election>;
-}
-
-export namespace ElectBenefitsRequest {
-  export interface Election {
-    decision: 'enrolled' | 'waived';
-
-    enrollment_id: string;
-
-    dependent_ids?: Array<string>;
+export namespace Employee {
+  /**
+   * Nested member entity containing personal identity information.
+   *
+   * Matches MemberEntity from account module domain.
+   */
+  export interface Member {
+    /**
+     * Unique member identifier with 'mbr\_' prefix
+     */
+    id: string;
 
     /**
-     * Required if decision is enrolled
+     * Member's date of birth (YYYY-MM-DD)
      */
-    plan_id?: string;
+    date_of_birth: string;
+
+    /**
+     * Member's legal first name
+     */
+    first_name: string;
+
+    /**
+     * Member's legal last name
+     */
+    last_name: string;
+
+    /**
+     * - `Male` - Male
+     * - `Female` - Female
+     * - `Other` - Other
+     * - `Unknown` - Unknown
+     */
+    sex: DependentsAPI.Sex;
+
+    /**
+     * Email address for communications
+     */
+    email?: string | null;
+
+    /**
+     * Gender identity, if provided
+     */
+    gender?: string | null;
+
+    /**
+     * Phone number
+     */
+    phone?: string | null;
+
+    /**
+     * Name suffix (e.g., Jr., Sr., III)
+     */
+    suffix?: string | null;
+  }
+
+  /**
+   * Nested address for employee.
+   */
+  export interface Address {
+    /**
+     * City name
+     */
+    city: string;
+
+    /**
+     * Two-letter state code
+     */
+    state: string;
+
+    /**
+     * Primary street address
+     */
+    street_1: string;
+
+    /**
+     * ZIP code
+     */
+    zip_code: string;
+
+    /**
+     * Country code
+     */
+    country?: string;
+
+    /**
+     * Secondary street address
+     */
+    street_2?: string | null;
   }
 }
 
-export interface Employee {
-  id: string;
-
-  active: boolean;
-
-  employer_id: string;
-
-  member: Member;
-
-  start_date: string;
-
-  dependents?: Array<DependentsAPI.Dependent>;
-
-  terminated_at?: string | null;
-}
-
-export interface Member {
-  id: string;
-
-  date_of_birth: string;
-
-  first_name: string;
-
-  last_name: string;
-
-  gender?: 'MALE' | 'FEMALE' | 'TRANSGENDER' | 'NON_BINARY' | 'PREFER_NOT_TO_RESPOND' | null;
-
-  sex?: 'MALE' | 'FEMALE' | 'OTHER' | 'UNKNOWN' | null;
-
-  suffix?: string | null;
-}
-
-export interface QualifyingLifeEvent {
-  id: string;
-
-  event_date: string;
-
-  event_type:
-    | 'MARRIAGE'
-    | 'BIRTH'
-    | 'ADOPTION'
-    | 'DIVORCE'
-    | 'DEATH'
-    | 'JOB_LOSS'
-    | 'REDUCTION_IN_HOURS'
-    | 'EMPLOYER_BANKRUPTCY'
-    | 'MEDICARE_ENTITLEMENT'
-    | 'TERMINATION'
-    | 'OTHER';
-
-  member_id: string;
-
-  status: 'PENDING' | 'APPROVED' | 'DENIED';
-
-  description?: string | null;
-
-  proof_document_url?: string | null;
-
-  review_notes?: string | null;
-
-  reviewed_at?: string | null;
-
-  reviewed_by_user_id?: string | null;
-}
-
 export interface EmployeeUpdateParams {
-  date_of_birth?: string;
+  /**
+   * Employee's residential address
+   */
+  address?: EmployeeUpdateParams.Address | null;
 
-  first_name?: string;
+  /**
+   * Email address
+   */
+  email?: string | null;
 
-  gender?: 'MALE' | 'FEMALE' | 'TRANSGENDER' | 'NON_BINARY' | 'PREFER_NOT_TO_RESPOND';
+  /**
+   * - `Full Time` - Full Time
+   * - `Part Time` - Part Time
+   * - `Temporary` - Temporary
+   * - `Intern` - Intern
+   * - `Seasonal` - Seasonal
+   * - `Individual Contractor` - Individual Contractor
+   */
+  employee_class?: EmployersEmployeesAPI.EmployeeClass | null;
 
-  last_name?: string;
+  /**
+   * Gender identity
+   */
+  gender?: string | null;
 
-  sex?: 'MALE' | 'FEMALE' | 'OTHER' | 'UNKNOWN';
+  /**
+   * Phone number
+   */
+  phone?: string | null;
 
-  start_date?: string;
-
-  suffix?: string;
+  /**
+   * Termination date if terminating
+   */
+  termination_date?: string | null;
 }
 
-Employees.Dependents = Dependents;
-Employees.QualifyingLifeEvents = QualifyingLifeEvents;
+export namespace EmployeeUpdateParams {
+  /**
+   * Employee's residential address
+   */
+  export interface Address {
+    /**
+     * City name
+     */
+    city: string;
+
+    /**
+     * Two-letter state code
+     */
+    state: string;
+
+    /**
+     * Primary street address
+     */
+    street_1: string;
+
+    /**
+     * ZIP code
+     */
+    zip_code: string;
+
+    /**
+     * Country code
+     */
+    country?: string;
+
+    /**
+     * Secondary street address
+     */
+    street_2?: string | null;
+  }
+}
+
 Employees.Enrollments = Enrollments;
 
 export declare namespace Employees {
-  export {
-    type CreateQualifyingLifeEventRequest as CreateQualifyingLifeEventRequest,
-    type ElectBenefitsRequest as ElectBenefitsRequest,
-    type Employee as Employee,
-    type Member as Member,
-    type QualifyingLifeEvent as QualifyingLifeEvent,
-    type EmployeeUpdateParams as EmployeeUpdateParams,
-  };
-
-  export {
-    Dependents as Dependents,
-    type DependentListResponse as DependentListResponse,
-    type DependentCreateParams as DependentCreateParams,
-  };
-
-  export {
-    QualifyingLifeEvents as QualifyingLifeEvents,
-    type QualifyingLifeEventListResponse as QualifyingLifeEventListResponse,
-    type QualifyingLifeEventCreateParams as QualifyingLifeEventCreateParams,
-  };
+  export { type Employee as Employee, type EmployeeUpdateParams as EmployeeUpdateParams };
 
   export {
     Enrollments as Enrollments,
+    type EnrollmentStatus as EnrollmentStatus,
     type EnrollmentListResponse as EnrollmentListResponse,
-    type EnrollmentElectResponse as EnrollmentElectResponse,
+    type EnrollmentSubmitElectionsResponse as EnrollmentSubmitElectionsResponse,
     type EnrollmentListParams as EnrollmentListParams,
-    type EnrollmentElectParams as EnrollmentElectParams,
+    type EnrollmentSubmitElectionsParams as EnrollmentSubmitElectionsParams,
   };
 }
