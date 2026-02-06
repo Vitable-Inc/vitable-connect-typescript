@@ -38,7 +38,11 @@ describe('resource dependents', () => {
     await expect(
       client.dependents.update(
         'dpnd_abc123def456',
-        { active: true, gender: 'gender', relationship: 'Spouse' },
+        {
+          active: true,
+          gender: 'gender',
+          relationship: 'Spouse',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(VitableConnectAPI.NotFoundError);

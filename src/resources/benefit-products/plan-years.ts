@@ -11,12 +11,41 @@ export class PlanYears extends APIResource {
    * Creates a new plan year configuration for a benefit product and employer.
    * Configures coverage period dates, open enrollment window, and contribution
    * structure. All monetary values must be in cents.
+   *
+   * @example
+   * ```ts
+   * const planYear =
+   *   await client.benefitProducts.planYears.create(
+   *     'bprd_abc123def456',
+   *     {
+   *       contribution_classes: [
+   *         {
+   *           employment: 'full_time',
+   *           coverage_tier: 'EE',
+   *           employee_contribution_cents: 20000,
+   *           employer_contribution_cents: 45000,
+   *         },
+   *         {
+   *           employment: 'full_time',
+   *           coverage_tier: 'EF',
+   *           employee_contribution_cents: 50000,
+   *           employer_contribution_cents: 60000,
+   *         },
+   *       ],
+   *       coverage_end: '2026-12-31',
+   *       coverage_start: '2026-01-01',
+   *       employer_id: 'empr_abc123',
+   *       open_enrollment_end: '2025-11-30',
+   *       open_enrollment_start: '2025-10-15',
+   *     },
+   *   );
+   * ```
    */
   create(
     benefitProductID: string,
     body: PlanYearCreateParams,
     options?: RequestOptions,
-  ): APIPromise<PlanYear> {
+  ): APIPromise<PlanYearCreateResponse> {
     return this._client.post(path`/v1/benefit-products/${benefitProductID}/plan-years`, { body, ...options });
   }
 
@@ -24,6 +53,14 @@ export class PlanYears extends APIResource {
    * Retrieves a paginated list of plan years for a specific benefit product. Plan
    * years define the coverage periods, open enrollment windows, and cost structure.
    * Results are sorted by most recent plan year first.
+   *
+   * @example
+   * ```ts
+   * const planYears =
+   *   await client.benefitProducts.planYears.list(
+   *     'bprd_abc123def456',
+   *   );
+   * ```
    */
   list(
     benefitProductID: string,
@@ -87,7 +124,7 @@ export interface PlanYear {
   open_enrollment_start_date: string;
 
   /**
-   * List of insurance plans available in this plan year
+   * List of benefit plans available in this plan year
    */
   plans: Array<PlanYear.Plan>;
 
@@ -119,6 +156,15 @@ export namespace PlanYear {
     id: string;
 
     /**
+     * - `Unspecified` - Unspecified
+     * - `EE` - Ee
+     * - `ES` - Es
+     * - `EC` - Ec
+     * - `EF` - Ef
+     */
+    coverage_tier: EnrollmentsAPI.CoverageTier;
+
+    /**
      * Employee's monthly contribution amount in cents
      */
     employee_contribution_cents: number;
@@ -132,15 +178,6 @@ export namespace PlanYear {
      * Employment type for this contribution class (e.g., 'full_time', 'part_time')
      */
     employment: string;
-
-    /**
-     * - `Unspecified` - Unspecified
-     * - `EE` - Ee
-     * - `ES` - Es
-     * - `EC` - Ec
-     * - `EF` - Ef
-     */
-    family_status: EnrollmentsAPI.CoverageTier;
   }
 
   /**
@@ -163,7 +200,7 @@ export namespace PlanYear {
     monthly_premium_cents: number;
 
     /**
-     * Display name of the insurance plan
+     * Display name of the benefit plan
      */
     name: string;
 
@@ -195,7 +232,57 @@ export namespace PlanYear {
  */
 export type PlanYearStatus = 'draft' | 'open_enrollment' | 'active' | 'expired';
 
-export type PlanYearListResponse = Array<PlanYear>;
+/**
+ * Response containing a single plan year resource.
+ */
+export interface PlanYearCreateResponse {
+  /**
+   * Serializer for Plan Year entity in public API responses.
+   *
+   * A Plan Year represents a benefit period configuration including coverage dates,
+   * open enrollment windows, available plans, and contribution structures.
+   */
+  data: PlanYear;
+}
+
+/**
+ * Paginated list response containing plan year resources.
+ */
+export interface PlanYearListResponse {
+  data: Array<PlanYear>;
+
+  /**
+   * Pagination metadata for list responses.
+   */
+  pagination: PlanYearListResponse.Pagination;
+}
+
+export namespace PlanYearListResponse {
+  /**
+   * Pagination metadata for list responses.
+   */
+  export interface Pagination {
+    /**
+     * Items per page
+     */
+    limit: number;
+
+    /**
+     * Current page number
+     */
+    page: number;
+
+    /**
+     * Total number of items
+     */
+    total: number;
+
+    /**
+     * Total number of pages
+     */
+    total_pages: number;
+  }
+}
 
 export interface PlanYearCreateParams {
   /**
@@ -230,7 +317,19 @@ export interface PlanYearCreateParams {
 }
 
 export namespace PlanYearCreateParams {
+  /**
+   * Contribution class input for plan year creation.
+   */
   export interface ContributionClass {
+    /**
+     * - `Unspecified` - Unspecified
+     * - `EE` - Ee
+     * - `ES` - Es
+     * - `EC` - Ec
+     * - `EF` - Ef
+     */
+    coverage_tier: EnrollmentsAPI.CoverageTier;
+
     /**
      * Employee's monthly contribution in cents
      */
@@ -245,15 +344,6 @@ export namespace PlanYearCreateParams {
      * Employment type (e.g., 'full_time', 'part_time')
      */
     employment: string;
-
-    /**
-     * - `Unspecified` - Unspecified
-     * - `EE` - Ee
-     * - `ES` - Es
-     * - `EC` - Ec
-     * - `EF` - Ef
-     */
-    family_status: EnrollmentsAPI.CoverageTier;
   }
 }
 
@@ -283,6 +373,7 @@ export declare namespace PlanYears {
   export {
     type PlanYear as PlanYear,
     type PlanYearStatus as PlanYearStatus,
+    type PlanYearCreateResponse as PlanYearCreateResponse,
     type PlanYearListResponse as PlanYearListResponse,
     type PlanYearCreateParams as PlanYearCreateParams,
     type PlanYearListParams as PlanYearListParams,

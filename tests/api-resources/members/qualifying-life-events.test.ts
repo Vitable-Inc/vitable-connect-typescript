@@ -26,7 +26,12 @@ describe('resource qualifyingLifeEvents', () => {
     await expect(
       client.members.qualifyingLifeEvents.list(
         'mbr_abc123def456',
-        { event_type: 'Marriage', limit: 20, page: 1, status: 'pending' },
+        {
+          event_type: 'Marriage',
+          limit: 20,
+          page: 1,
+          status: 'pending',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(VitableConnectAPI.NotFoundError);
@@ -35,7 +40,7 @@ describe('resource qualifyingLifeEvents', () => {
   // Prism tests are disabled
   test.skip('record: only required params', async () => {
     const responsePromise = client.members.qualifyingLifeEvents.record('mbr_abc123def456', {
-      event_date: '2019-12-27',
+      event_date: '2024-11-15',
       event_type: 'Marriage',
     });
     const rawResponse = await responsePromise.asResponse();
@@ -50,9 +55,9 @@ describe('resource qualifyingLifeEvents', () => {
   // Prism tests are disabled
   test.skip('record: required and optional params', async () => {
     const response = await client.members.qualifyingLifeEvents.record('mbr_abc123def456', {
-      event_date: '2019-12-27',
+      event_date: '2024-11-15',
       event_type: 'Marriage',
-      notes: 'notes',
+      notes: 'Employee got married, adding spouse to coverage',
     });
   });
 });

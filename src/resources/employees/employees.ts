@@ -23,8 +23,15 @@ export class Employees extends APIResource {
   /**
    * Retrieves detailed information for a specific employee by ID. Returns employee
    * details including personal information and employment status.
+   *
+   * @example
+   * ```ts
+   * const employee = await client.employees.retrieve(
+   *   'empl_abc123def456',
+   * );
+   * ```
    */
-  retrieve(employeeID: string, options?: RequestOptions): APIPromise<Employee> {
+  retrieve(employeeID: string, options?: RequestOptions): APIPromise<EmployeeRetrieveResponse> {
     return this._client.get(path`/v1/employees/${employeeID}`, options);
   }
 
@@ -32,12 +39,31 @@ export class Employees extends APIResource {
    * Updates an existing employee's information. All fields are optional - only
    * provided fields will be updated. Note: SSN, name, date of birth, and sex cannot
    * be changed after creation.
+   *
+   * @example
+   * ```ts
+   * const employee = await client.employees.update(
+   *   'empl_abc123def456',
+   *   {
+   *     address: {
+   *       street_1: '123 New Street',
+   *       city: 'Los Angeles',
+   *       state: 'CA',
+   *       zip_code: '90001',
+   *       country: 'US',
+   *     },
+   *     email: 'john.doe.updated@example.com',
+   *     employee_class: 'Part Time',
+   *     phone: '+1-555-999-8888',
+   *   },
+   * );
+   * ```
    */
   update(
     employeeID: string,
     body: EmployeeUpdateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<Employee> {
+  ): APIPromise<EmployeeUpdateResponse> {
     return this._client.put(path`/v1/employees/${employeeID}`, { body, ...options });
   }
 
@@ -45,6 +71,11 @@ export class Employees extends APIResource {
    * Terminates a specific employee. This sets the employee's active status to false
    * and records a termination date. The employee record is not permanently deleted
    * for compliance reasons.
+   *
+   * @example
+   * ```ts
+   * await client.employees.terminate('empl_abc123def456');
+   * ```
    */
   terminate(employeeID: string, options?: RequestOptions): APIPromise<void> {
     return this._client.delete(path`/v1/employees/${employeeID}`, {
@@ -69,7 +100,7 @@ export interface Employee {
   /**
    * Whether the employee is currently active
    */
-  active: boolean;
+  active_in: boolean;
 
   /**
    * Timestamp when the employee was created
@@ -211,6 +242,32 @@ export namespace Employee {
   }
 }
 
+/**
+ * Response containing a single employee resource.
+ */
+export interface EmployeeRetrieveResponse {
+  /**
+   * Serializer for Employee entity in public API responses.
+   *
+   * Note: Employee is in the company module but exposed via account public API.
+   * Contains nested MemberEntity with personal identity information.
+   */
+  data: Employee;
+}
+
+/**
+ * Response containing a single employee resource.
+ */
+export interface EmployeeUpdateResponse {
+  /**
+   * Serializer for Employee entity in public API responses.
+   *
+   * Note: Employee is in the company module but exposed via account public API.
+   * Contains nested MemberEntity with personal identity information.
+   */
+  data: Employee;
+}
+
 export interface EmployeeUpdateParams {
   /**
    * Employee's residential address
@@ -288,7 +345,12 @@ export namespace EmployeeUpdateParams {
 Employees.Enrollments = Enrollments;
 
 export declare namespace Employees {
-  export { type Employee as Employee, type EmployeeUpdateParams as EmployeeUpdateParams };
+  export {
+    type Employee as Employee,
+    type EmployeeRetrieveResponse as EmployeeRetrieveResponse,
+    type EmployeeUpdateResponse as EmployeeUpdateResponse,
+    type EmployeeUpdateParams as EmployeeUpdateParams,
+  };
 
   export {
     Enrollments as Enrollments,

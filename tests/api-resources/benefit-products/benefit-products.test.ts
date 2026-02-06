@@ -25,7 +25,13 @@ describe('resource benefitProducts', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.benefitProducts.list(
-        { active_in: true, category: 'Medical', limit: 20, page: 1, product_code: 'EBA' },
+        {
+          active_in: true,
+          category: 'Medical',
+          limit: 20,
+          page: 1,
+          product_code: 'EBA',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(VitableConnectAPI.NotFoundError);

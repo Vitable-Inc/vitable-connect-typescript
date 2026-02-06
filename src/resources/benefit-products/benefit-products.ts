@@ -6,6 +6,7 @@ import * as PlanYearsAPI from './plan-years';
 import {
   PlanYear,
   PlanYearCreateParams,
+  PlanYearCreateResponse,
   PlanYearListParams,
   PlanYearListResponse,
   PlanYearStatus,
@@ -21,6 +22,11 @@ export class BenefitProducts extends APIResource {
    * Retrieves a paginated list of all benefit products that the authenticated
    * organization has access to and can offer to their employers. Use query
    * parameters to filter by category, product code, or active status.
+   *
+   * @example
+   * ```ts
+   * const benefitProducts = await client.benefitProducts.list();
+   * ```
    */
   list(
     query: BenefitProductListParams | null | undefined = {},
@@ -72,7 +78,17 @@ export type ProductCode =
   | 'ICHRA_PREMIUM_PLUS'
   | 'ICHRA_REIMBURSEMENT_ONLY';
 
-export type BenefitProductListResponse = Array<BenefitProductListResponse.BenefitProductListResponseItem>;
+/**
+ * Paginated list response containing benefit product resources.
+ */
+export interface BenefitProductListResponse {
+  data: Array<BenefitProductListResponse.Data>;
+
+  /**
+   * Pagination metadata for list responses.
+   */
+  pagination: BenefitProductListResponse.Pagination;
+}
 
 export namespace BenefitProductListResponse {
   /**
@@ -81,7 +97,7 @@ export namespace BenefitProductListResponse {
    * Benefit Products represent types of benefits (dental, vision, medical, etc.)
    * that an Organization can offer to their Employers.
    */
-  export interface BenefitProductListResponseItem {
+  export interface Data {
     /**
      * Unique benefit product identifier with 'bprd\_' prefix
      */
@@ -90,7 +106,7 @@ export namespace BenefitProductListResponse {
     /**
      * Whether this product is currently available for offering
      */
-    active: boolean;
+    active_in: boolean;
 
     /**
      * - `Medical` - Medical
@@ -135,7 +151,7 @@ export namespace BenefitProductListResponse {
     updated_at: string;
 
     /**
-     * Name of the insurance carrier providing this product
+     * Name of the carrier providing this product
      */
     carrier_name?: string | null;
 
@@ -143,6 +159,31 @@ export namespace BenefitProductListResponse {
      * Detailed description of the benefit product
      */
     description?: string | null;
+  }
+
+  /**
+   * Pagination metadata for list responses.
+   */
+  export interface Pagination {
+    /**
+     * Items per page
+     */
+    limit: number;
+
+    /**
+     * Current page number
+     */
+    page: number;
+
+    /**
+     * Total number of items
+     */
+    total: number;
+
+    /**
+     * Total number of pages
+     */
+    total_pages: number;
   }
 }
 
@@ -187,6 +228,7 @@ export declare namespace BenefitProducts {
     PlanYears as PlanYears,
     type PlanYear as PlanYear,
     type PlanYearStatus as PlanYearStatus,
+    type PlanYearCreateResponse as PlanYearCreateResponse,
     type PlanYearListResponse as PlanYearListResponse,
     type PlanYearCreateParams as PlanYearCreateParams,
     type PlanYearListParams as PlanYearListParams,

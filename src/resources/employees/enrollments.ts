@@ -12,6 +12,13 @@ export class Enrollments extends APIResource {
    * have statuses: 'pending' (in enrollment period), 'enrolled' (active coverage),
    * or 'inactive' (terminated, expired, or unanswered). Filter by status, plan year,
    * or coverage year.
+   *
+   * @example
+   * ```ts
+   * const enrollments = await client.employees.enrollments.list(
+   *   'empl_abc123def456',
+   * );
+   * ```
    */
   list(
     employeeID: string,
@@ -26,6 +33,33 @@ export class Enrollments extends APIResource {
    * employee. Processes enrollment decisions: which benefits to enroll/waive, plan
    * selections, and dependent coverage. Pending enrollments transition to enrolled
    * or waived status based on elections.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.employees.enrollments.submitElections(
+   *     'empl_abc123def456',
+   *     {
+   *       elections: [
+   *         {
+   *           enrollment_id: 'enrl_pending123abc',
+   *           decision: 'Enrolled',
+   *           selected_plan_id: 'plan_gold123abc',
+   *           coverage_tier: 'EF',
+   *           dependent_ids: [
+   *             'dpnd_spouse123abc',
+   *             'dpnd_child456def',
+   *           ],
+   *         },
+   *         {
+   *           enrollment_id: 'enrl_pending456def',
+   *           decision: 'Waived',
+   *           coverage_tier: 'Unspecified',
+   *         },
+   *       ],
+   *     },
+   *   );
+   * ```
    */
   submitElections(
     employeeID: string,
@@ -44,9 +78,83 @@ export class Enrollments extends APIResource {
  */
 export type EnrollmentStatus = 'pending' | 'enrolled' | 'waived' | 'inactive';
 
-export type EnrollmentListResponse = Array<EnrollmentsAPI.Enrollment>;
+/**
+ * Paginated list response containing enrollment resources.
+ */
+export interface EnrollmentListResponse {
+  data: Array<EnrollmentsAPI.Enrollment>;
 
-export type EnrollmentSubmitElectionsResponse = Array<EnrollmentsAPI.Enrollment>;
+  /**
+   * Pagination metadata for list responses.
+   */
+  pagination: EnrollmentListResponse.Pagination;
+}
+
+export namespace EnrollmentListResponse {
+  /**
+   * Pagination metadata for list responses.
+   */
+  export interface Pagination {
+    /**
+     * Items per page
+     */
+    limit: number;
+
+    /**
+     * Current page number
+     */
+    page: number;
+
+    /**
+     * Total number of items
+     */
+    total: number;
+
+    /**
+     * Total number of pages
+     */
+    total_pages: number;
+  }
+}
+
+/**
+ * Paginated list response containing enrollment resources.
+ */
+export interface EnrollmentSubmitElectionsResponse {
+  data: Array<EnrollmentsAPI.Enrollment>;
+
+  /**
+   * Pagination metadata for list responses.
+   */
+  pagination: EnrollmentSubmitElectionsResponse.Pagination;
+}
+
+export namespace EnrollmentSubmitElectionsResponse {
+  /**
+   * Pagination metadata for list responses.
+   */
+  export interface Pagination {
+    /**
+     * Items per page
+     */
+    limit: number;
+
+    /**
+     * Current page number
+     */
+    page: number;
+
+    /**
+     * Total number of items
+     */
+    total: number;
+
+    /**
+     * Total number of pages
+     */
+    total_pages: number;
+  }
+}
 
 export interface EnrollmentListParams {
   /**
@@ -83,7 +191,19 @@ export interface EnrollmentSubmitElectionsParams {
 }
 
 export namespace EnrollmentSubmitElectionsParams {
+  /**
+   * Individual enrollment election within the batch request.
+   */
   export interface Election {
+    /**
+     * - `Unspecified` - Unspecified
+     * - `EE` - Ee
+     * - `ES` - Es
+     * - `EC` - Ec
+     * - `EF` - Ef
+     */
+    coverage_tier: EnrollmentsAPI.CoverageTier;
+
     /**
      * - `Enrolled` - Enrolled
      * - `Waived` - Waived
@@ -94,15 +214,6 @@ export namespace EnrollmentSubmitElectionsParams {
      * ID of the enrollment (enrl\_\*)
      */
     enrollment_id: string;
-
-    /**
-     * - `Unspecified` - Unspecified
-     * - `EE` - Ee
-     * - `ES` - Es
-     * - `EC` - Ec
-     * - `EF` - Ef
-     */
-    coverage_tier?: EnrollmentsAPI.CoverageTier | null;
 
     /**
      * List of dependent IDs to include in coverage (dpnd\_\*)

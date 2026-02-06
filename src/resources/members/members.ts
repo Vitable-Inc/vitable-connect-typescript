@@ -4,6 +4,7 @@ import { APIResource } from '../../core/resource';
 import * as DependentsAPI from './dependents';
 import {
   DependentCreateParams,
+  DependentCreateResponse,
   DependentListParams,
   DependentListResponse,
   Dependents,
@@ -16,6 +17,7 @@ import {
   QualifyingLifeEventListParams,
   QualifyingLifeEventListResponse,
   QualifyingLifeEventRecordParams,
+  QualifyingLifeEventRecordResponse,
   QualifyingLifeEventStatus,
   QualifyingLifeEvents,
 } from './qualifying-life-events';
@@ -33,6 +35,7 @@ export declare namespace Members {
   export {
     Dependents as Dependents,
     type Relationship as Relationship,
+    type DependentCreateResponse as DependentCreateResponse,
     type DependentListResponse as DependentListResponse,
     type DependentCreateParams as DependentCreateParams,
     type DependentListParams as DependentListParams,
@@ -44,6 +47,7 @@ export declare namespace Members {
     type QualifyingLifeEvent as QualifyingLifeEvent,
     type QualifyingLifeEventStatus as QualifyingLifeEventStatus,
     type QualifyingLifeEventListResponse as QualifyingLifeEventListResponse,
+    type QualifyingLifeEventRecordResponse as QualifyingLifeEventRecordResponse,
     type QualifyingLifeEventListParams as QualifyingLifeEventListParams,
     type QualifyingLifeEventRecordParams as QualifyingLifeEventRecordParams,
   };

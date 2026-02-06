@@ -41,15 +41,21 @@ describe('resource planYears', () => {
         {
           contribution_classes: [
             {
-              employee_contribution_cents: 0,
-              employer_contribution_cents: 0,
-              employment: 'employment',
-              family_status: 'Unspecified',
+              coverage_tier: 'EE',
+              employee_contribution_cents: 18000,
+              employer_contribution_cents: 47000,
+              employment: 'full_time',
+            },
+            {
+              coverage_tier: 'EF',
+              employee_contribution_cents: 48000,
+              employer_contribution_cents: 62000,
+              employment: 'full_time',
             },
           ],
-          open_enrollment_end: '2019-12-27',
-          open_enrollment_start: '2019-12-27',
-          status: 'status',
+          open_enrollment_end: '2024-11-15',
+          open_enrollment_start: '2024-10-01',
+          status: 'active',
         },
         { path: '/_stainless_unknown_path' },
       ),

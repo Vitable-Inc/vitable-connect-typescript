@@ -26,7 +26,13 @@ describe('resource enrollments', () => {
     await expect(
       client.employees.enrollments.list(
         'empl_abc123def456',
-        { coverage_effective_start_year: 2025, limit: 20, page: 1, plan_year: 2025, status: 'pending' },
+        {
+          coverage_effective_start_year: 2025,
+          limit: 20,
+          page: 1,
+          plan_year: 2025,
+          status: 'pending',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(VitableConnectAPI.NotFoundError);
@@ -35,7 +41,18 @@ describe('resource enrollments', () => {
   // Prism tests are disabled
   test.skip('submitElections: only required params', async () => {
     const responsePromise = client.employees.enrollments.submitElections('empl_abc123def456', {
-      elections: [{ decision: 'Enrolled', enrollment_id: 'enrollment_id' }],
+      elections: [
+        {
+          coverage_tier: 'EF',
+          decision: 'Enrolled',
+          enrollment_id: 'enrl_pending123abc',
+        },
+        {
+          coverage_tier: 'Unspecified',
+          decision: 'Waived',
+          enrollment_id: 'enrl_pending456def',
+        },
+      ],
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -51,9 +68,16 @@ describe('resource enrollments', () => {
     const response = await client.employees.enrollments.submitElections('empl_abc123def456', {
       elections: [
         {
+          coverage_tier: 'EF',
           decision: 'Enrolled',
-          enrollment_id: 'enrollment_id',
+          enrollment_id: 'enrl_pending123abc',
+          dependent_ids: ['dpnd_spouse123abc', 'dpnd_child456def'],
+          selected_plan_id: 'plan_gold123abc',
+        },
+        {
           coverage_tier: 'Unspecified',
+          decision: 'Waived',
+          enrollment_id: 'enrl_pending456def',
           dependent_ids: ['string'],
           selected_plan_id: 'selected_plan_id',
         },
