@@ -10,6 +10,14 @@ export class QualifyingLifeEvents extends APIResource {
    * Retrieves a paginated list of qualifying life events for a member. QLEs are
    * significant life changes (marriage, birth, adoption, loss of coverage) that
    * allow benefit enrollment changes outside open enrollment.
+   *
+   * @example
+   * ```ts
+   * const qualifyingLifeEvents =
+   *   await client.members.qualifyingLifeEvents.list(
+   *     'mbr_abc123def456',
+   *   );
+   * ```
    */
   list(
     memberID: string,
@@ -23,12 +31,26 @@ export class QualifyingLifeEvents extends APIResource {
    * Records a qualifying life event occurrence for a member. Opens a special
    * enrollment period allowing benefit changes outside open enrollment. Employees
    * typically have 30-60 days from the event date to complete enrollment changes.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.members.qualifyingLifeEvents.record(
+   *     'mbr_abc123def456',
+   *     {
+   *       event_date: '2024-11-15',
+   *       event_type: 'Marriage',
+   *       notes:
+   *         'Employee got married, adding spouse to coverage',
+   *     },
+   *   );
+   * ```
    */
   record(
     memberID: string,
     body: QualifyingLifeEventRecordParams,
     options?: RequestOptions,
-  ): APIPromise<QualifyingLifeEvent> {
+  ): APIPromise<QualifyingLifeEventRecordResponse> {
     return this._client.post(path`/v1/members/${memberID}/qualifying-life-events`, { body, ...options });
   }
 }
@@ -142,7 +164,57 @@ export interface QualifyingLifeEvent {
  */
 export type QualifyingLifeEventStatus = 'pending' | 'approved' | 'denied';
 
-export type QualifyingLifeEventListResponse = Array<QualifyingLifeEvent>;
+/**
+ * Paginated list response containing qualifying life event resources.
+ */
+export interface QualifyingLifeEventListResponse {
+  data: Array<QualifyingLifeEvent>;
+
+  /**
+   * Pagination metadata for list responses.
+   */
+  pagination: QualifyingLifeEventListResponse.Pagination;
+}
+
+export namespace QualifyingLifeEventListResponse {
+  /**
+   * Pagination metadata for list responses.
+   */
+  export interface Pagination {
+    /**
+     * Items per page
+     */
+    limit: number;
+
+    /**
+     * Current page number
+     */
+    page: number;
+
+    /**
+     * Total number of items
+     */
+    total: number;
+
+    /**
+     * Total number of pages
+     */
+    total_pages: number;
+  }
+}
+
+/**
+ * Response containing a single qualifying life event resource.
+ */
+export interface QualifyingLifeEventRecordResponse {
+  /**
+   * Serializer for Qualifying Life Event entity in public API responses.
+   *
+   * QLEs are significant life changes (marriage, birth, adoption, loss of coverage)
+   * that allow employees to modify benefit elections outside of open enrollment.
+   */
+  data: QualifyingLifeEvent;
+}
 
 export interface QualifyingLifeEventListParams {
   /**
@@ -199,6 +271,7 @@ export declare namespace QualifyingLifeEvents {
     type QualifyingLifeEvent as QualifyingLifeEvent,
     type QualifyingLifeEventStatus as QualifyingLifeEventStatus,
     type QualifyingLifeEventListResponse as QualifyingLifeEventListResponse,
+    type QualifyingLifeEventRecordResponse as QualifyingLifeEventRecordResponse,
     type QualifyingLifeEventListParams as QualifyingLifeEventListParams,
     type QualifyingLifeEventRecordParams as QualifyingLifeEventRecordParams,
   };

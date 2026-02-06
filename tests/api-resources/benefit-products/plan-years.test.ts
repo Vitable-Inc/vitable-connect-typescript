@@ -13,17 +13,23 @@ describe('resource planYears', () => {
     const responsePromise = client.benefitProducts.planYears.create('bprd_abc123def456', {
       contribution_classes: [
         {
-          employee_contribution_cents: 0,
-          employer_contribution_cents: 0,
-          employment: 'employment',
-          family_status: 'Unspecified',
+          coverage_tier: 'EE',
+          employee_contribution_cents: 20000,
+          employer_contribution_cents: 45000,
+          employment: 'full_time',
+        },
+        {
+          coverage_tier: 'EF',
+          employee_contribution_cents: 50000,
+          employer_contribution_cents: 60000,
+          employment: 'full_time',
         },
       ],
-      coverage_end: '2019-12-27',
-      coverage_start: '2019-12-27',
-      employer_id: 'employer_id',
-      open_enrollment_end: '2019-12-27',
-      open_enrollment_start: '2019-12-27',
+      coverage_end: '2026-12-31',
+      coverage_start: '2026-01-01',
+      employer_id: 'empr_abc123',
+      open_enrollment_end: '2025-11-30',
+      open_enrollment_start: '2025-10-15',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -39,17 +45,23 @@ describe('resource planYears', () => {
     const response = await client.benefitProducts.planYears.create('bprd_abc123def456', {
       contribution_classes: [
         {
-          employee_contribution_cents: 0,
-          employer_contribution_cents: 0,
-          employment: 'employment',
-          family_status: 'Unspecified',
+          coverage_tier: 'EE',
+          employee_contribution_cents: 20000,
+          employer_contribution_cents: 45000,
+          employment: 'full_time',
+        },
+        {
+          coverage_tier: 'EF',
+          employee_contribution_cents: 50000,
+          employer_contribution_cents: 60000,
+          employment: 'full_time',
         },
       ],
-      coverage_end: '2019-12-27',
-      coverage_start: '2019-12-27',
-      employer_id: 'employer_id',
-      open_enrollment_end: '2019-12-27',
-      open_enrollment_start: '2019-12-27',
+      coverage_end: '2026-12-31',
+      coverage_start: '2026-01-01',
+      employer_id: 'empr_abc123',
+      open_enrollment_end: '2025-11-30',
+      open_enrollment_start: '2025-10-15',
     });
   });
 
@@ -71,7 +83,12 @@ describe('resource planYears', () => {
     await expect(
       client.benefitProducts.planYears.list(
         'bprd_abc123def456',
-        { employer_id: 'empr_abc123def456', limit: 20, page: 1, status: 'draft' },
+        {
+          employer_id: 'empr_abc123def456',
+          limit: 20,
+          page: 1,
+          status: 'draft',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(VitableConnectAPI.NotFoundError);

@@ -10,8 +10,15 @@ export class Dependents extends APIResource {
   /**
    * Retrieves detailed information for a specific dependent by ID. Returns dependent
    * profile including name, date of birth, and relationship type.
+   *
+   * @example
+   * ```ts
+   * const dependent = await client.dependents.retrieve(
+   *   'dpnd_abc123def456',
+   * );
+   * ```
    */
-  retrieve(dependentID: string, options?: RequestOptions): APIPromise<Dependent> {
+  retrieve(dependentID: string, options?: RequestOptions): APIPromise<DependentRetrieveResponse> {
     return this._client.get(path`/v1/dependents/${dependentID}`, options);
   }
 
@@ -19,12 +26,20 @@ export class Dependents extends APIResource {
    * Updates an existing dependent's mutable information. Allows modification of
    * relationship type and active status. Name, DOB, and sex cannot be modified after
    * creation.
+   *
+   * @example
+   * ```ts
+   * const dependent = await client.dependents.update(
+   *   'dpnd_abc123def456',
+   *   { active: true, relationship: 'Spouse' },
+   * );
+   * ```
    */
   update(
     dependentID: string,
     body: DependentUpdateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<Dependent> {
+  ): APIPromise<DependentUpdateResponse> {
     return this._client.put(path`/v1/dependents/${dependentID}`, { body, ...options });
   }
 }
@@ -44,7 +59,7 @@ export interface Dependent {
   /**
    * Whether the dependent is currently active
    */
-  active: boolean;
+  active_in: boolean;
 
   /**
    * Timestamp when the dependent was created
@@ -114,6 +129,32 @@ export interface Dependent {
  */
 export type Sex = 'Male' | 'Female' | 'Other' | 'Unknown';
 
+/**
+ * Response containing a single dependent resource.
+ */
+export interface DependentRetrieveResponse {
+  /**
+   * Serializer for Dependent entity in public API responses.
+   *
+   * Dependents are family members (spouse, children) who may be eligible for benefit
+   * coverage through an employee.
+   */
+  data: Dependent;
+}
+
+/**
+ * Response containing a single dependent resource.
+ */
+export interface DependentUpdateResponse {
+  /**
+   * Serializer for Dependent entity in public API responses.
+   *
+   * Dependents are family members (spouse, children) who may be eligible for benefit
+   * coverage through an employee.
+   */
+  data: Dependent;
+}
+
 export interface DependentUpdateParams {
   /**
    * Whether the dependent is active
@@ -136,6 +177,8 @@ export declare namespace Dependents {
   export {
     type Dependent as Dependent,
     type Sex as Sex,
+    type DependentRetrieveResponse as DependentRetrieveResponse,
+    type DependentUpdateResponse as DependentUpdateResponse,
     type DependentUpdateParams as DependentUpdateParams,
   };
 }

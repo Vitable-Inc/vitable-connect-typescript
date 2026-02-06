@@ -12,8 +12,15 @@ export class PlanYears extends APIResource {
    * Retrieves detailed configuration for a specific plan year by ID. Returns
    * coverage dates, open enrollment period, available plans, and contribution
    * structure.
+   *
+   * @example
+   * ```ts
+   * const planYear = await client.planYears.retrieve(
+   *   'plyr_abc123def456',
+   * );
+   * ```
    */
-  retrieve(planYearID: string, options?: RequestOptions): APIPromise<BenefitProductsPlanYearsAPI.PlanYear> {
+  retrieve(planYearID: string, options?: RequestOptions): APIPromise<PlanYearRetrieveResponse> {
     return this._client.get(path`/v1/plan-years/${planYearID}`, options);
   }
 
@@ -21,14 +28,66 @@ export class PlanYears extends APIResource {
    * Updates an existing plan year's configuration. Important: Plan years can only be
    * edited until open enrollment starts. All fields are optional. Monetary values
    * must be in cents.
+   *
+   * @example
+   * ```ts
+   * const planYear = await client.planYears.update(
+   *   'plyr_abc123def456',
+   *   {
+   *     contribution_classes: [
+   *       {
+   *         employment: 'full_time',
+   *         coverage_tier: 'EE',
+   *         employee_contribution_cents: 18000,
+   *         employer_contribution_cents: 47000,
+   *       },
+   *       {
+   *         employment: 'full_time',
+   *         coverage_tier: 'EF',
+   *         employee_contribution_cents: 48000,
+   *         employer_contribution_cents: 62000,
+   *       },
+   *     ],
+   *     open_enrollment_end: '2024-11-15',
+   *     open_enrollment_start: '2024-10-01',
+   *     status: 'active',
+   *   },
+   * );
+   * ```
    */
   update(
     planYearID: string,
     body: PlanYearUpdateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<BenefitProductsPlanYearsAPI.PlanYear> {
+  ): APIPromise<PlanYearUpdateResponse> {
     return this._client.put(path`/v1/plan-years/${planYearID}`, { body, ...options });
   }
+}
+
+/**
+ * Response containing a single plan year resource.
+ */
+export interface PlanYearRetrieveResponse {
+  /**
+   * Serializer for Plan Year entity in public API responses.
+   *
+   * A Plan Year represents a benefit period configuration including coverage dates,
+   * open enrollment windows, available plans, and contribution structures.
+   */
+  data: BenefitProductsPlanYearsAPI.PlanYear;
+}
+
+/**
+ * Response containing a single plan year resource.
+ */
+export interface PlanYearUpdateResponse {
+  /**
+   * Serializer for Plan Year entity in public API responses.
+   *
+   * A Plan Year represents a benefit period configuration including coverage dates,
+   * open enrollment windows, available plans, and contribution structures.
+   */
+  data: BenefitProductsPlanYearsAPI.PlanYear;
 }
 
 export interface PlanYearUpdateParams {
@@ -54,7 +113,19 @@ export interface PlanYearUpdateParams {
 }
 
 export namespace PlanYearUpdateParams {
+  /**
+   * Contribution class input for plan year update.
+   */
   export interface ContributionClass {
+    /**
+     * - `Unspecified` - Unspecified
+     * - `EE` - Ee
+     * - `ES` - Es
+     * - `EC` - Ec
+     * - `EF` - Ef
+     */
+    coverage_tier: EnrollmentsAPI.CoverageTier;
+
     /**
      * Employee's monthly contribution in cents
      */
@@ -69,18 +140,13 @@ export namespace PlanYearUpdateParams {
      * Employment type
      */
     employment: string;
-
-    /**
-     * - `Unspecified` - Unspecified
-     * - `EE` - Ee
-     * - `ES` - Es
-     * - `EC` - Ec
-     * - `EF` - Ef
-     */
-    family_status: EnrollmentsAPI.CoverageTier;
   }
 }
 
 export declare namespace PlanYears {
-  export { type PlanYearUpdateParams as PlanYearUpdateParams };
+  export {
+    type PlanYearRetrieveResponse as PlanYearRetrieveResponse,
+    type PlanYearUpdateResponse as PlanYearUpdateResponse,
+    type PlanYearUpdateParams as PlanYearUpdateParams,
+  };
 }

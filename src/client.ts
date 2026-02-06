@@ -20,16 +20,30 @@ import {
   BenefitEligibilityPolicy,
   BenefitEligibilityPolicyResource,
 } from './resources/benefit-eligibility-policy';
-import { Dependent, DependentUpdateParams, Dependents, Sex } from './resources/dependents';
+import {
+  Dependent,
+  DependentRetrieveResponse,
+  DependentUpdateParams,
+  DependentUpdateResponse,
+  Dependents,
+  Sex,
+} from './resources/dependents';
 import {
   CoverageTier,
   Enrollment,
   EnrollmentListPlansResponse,
   EnrollmentReissueParams,
+  EnrollmentReissueResponse,
+  EnrollmentRetrieveResponse,
   Enrollments,
   PlanTier,
 } from './resources/enrollments';
-import { PlanYearUpdateParams, PlanYears } from './resources/plan-years';
+import {
+  PlanYearRetrieveResponse,
+  PlanYearUpdateParams,
+  PlanYearUpdateResponse,
+  PlanYears,
+} from './resources/plan-years';
 import { QualifyingLifeEvents } from './resources/qualifying-life-events';
 import {
   BenefitProductListParams,
@@ -38,14 +52,22 @@ import {
   Category,
   ProductCode,
 } from './resources/benefit-products/benefit-products';
-import { Employee, EmployeeUpdateParams, Employees } from './resources/employees/employees';
+import {
+  Employee,
+  EmployeeRetrieveResponse,
+  EmployeeUpdateParams,
+  EmployeeUpdateResponse,
+  Employees,
+} from './resources/employees/employees';
 import {
   Employer,
-  EmployerCreateEligibilityPolicyParams,
   EmployerCreateParams,
+  EmployerCreateResponse,
   EmployerListParams,
   EmployerListResponse,
+  EmployerRetrieveResponse,
   EmployerUpdateParams,
+  EmployerUpdateResponse,
   Employers,
 } from './resources/employers/employers';
 import { Members } from './resources/members/members';
@@ -260,10 +282,6 @@ export class VitableConnectAPI {
 
   protected validateHeaders({ values, nulls }: NullableHeaders) {
     return;
-  }
-
-  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
   /**
@@ -545,9 +563,10 @@ export class VitableConnectAPI {
     controller: AbortController,
   ): Promise<Response> {
     const { signal, method, ...options } = init || {};
-    if (signal) signal.addEventListener('abort', () => controller.abort());
+    const abort = this._makeAbort(controller);
+    if (signal) signal.addEventListener('abort', abort, { once: true });
 
-    const timeout = setTimeout(() => controller.abort(), ms);
+    const timeout = setTimeout(abort, ms);
 
     const isReadableBody =
       ((globalThis as any).ReadableStream && options.body instanceof (globalThis as any).ReadableStream) ||
@@ -703,7 +722,6 @@ export class VitableConnectAPI {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
-      await this.authHeaders(options),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -712,6 +730,12 @@ export class VitableConnectAPI {
     this.validateHeaders(headers);
 
     return headers.values;
+  }
+
+  private _makeAbort(controller: AbortController) {
+    // note: we can't just inline this method inside `fetchWithTimeout()` because then the closure
+    //       would capture all request options, and cause a memory leak.
+    return () => controller.abort();
   }
 
   private buildBody({ options: { body, headers: rawHeaders } }: { options: FinalRequestOptions }): {
@@ -813,23 +837,29 @@ export declare namespace VitableConnectAPI {
     Dependents as Dependents,
     type Dependent as Dependent,
     type Sex as Sex,
+    type DependentRetrieveResponse as DependentRetrieveResponse,
+    type DependentUpdateResponse as DependentUpdateResponse,
     type DependentUpdateParams as DependentUpdateParams,
   };
 
   export {
     Employees as Employees,
     type Employee as Employee,
+    type EmployeeRetrieveResponse as EmployeeRetrieveResponse,
+    type EmployeeUpdateResponse as EmployeeUpdateResponse,
     type EmployeeUpdateParams as EmployeeUpdateParams,
   };
 
   export {
     Employers as Employers,
     type Employer as Employer,
+    type EmployerCreateResponse as EmployerCreateResponse,
+    type EmployerRetrieveResponse as EmployerRetrieveResponse,
+    type EmployerUpdateResponse as EmployerUpdateResponse,
     type EmployerListResponse as EmployerListResponse,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerUpdateParams as EmployerUpdateParams,
     type EmployerListParams as EmployerListParams,
-    type EmployerCreateEligibilityPolicyParams as EmployerCreateEligibilityPolicyParams,
   };
 
   export {
@@ -837,13 +867,20 @@ export declare namespace VitableConnectAPI {
     type CoverageTier as CoverageTier,
     type Enrollment as Enrollment,
     type PlanTier as PlanTier,
+    type EnrollmentRetrieveResponse as EnrollmentRetrieveResponse,
     type EnrollmentListPlansResponse as EnrollmentListPlansResponse,
+    type EnrollmentReissueResponse as EnrollmentReissueResponse,
     type EnrollmentReissueParams as EnrollmentReissueParams,
   };
 
   export { Members as Members };
 
-  export { PlanYears as PlanYears, type PlanYearUpdateParams as PlanYearUpdateParams };
+  export {
+    PlanYears as PlanYears,
+    type PlanYearRetrieveResponse as PlanYearRetrieveResponse,
+    type PlanYearUpdateResponse as PlanYearUpdateResponse,
+    type PlanYearUpdateParams as PlanYearUpdateParams,
+  };
 
   export { QualifyingLifeEvents as QualifyingLifeEvents };
 }

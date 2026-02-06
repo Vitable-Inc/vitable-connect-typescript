@@ -11,10 +11,16 @@ describe('resource employers', () => {
   // Prism tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.employers.create({
-      address: { city: 'city', state: 'xx', street_1: 'street_1', zip_code: 'zip_code' },
-      ein: 'xxxxxxxxx',
-      legal_name: 'x',
-      name: 'x',
+      address: {
+        address_line_1: '789 Business Blvd',
+        city: 'Seattle',
+        state: 'WA',
+        zipcode: '98101',
+      },
+      ein: '12-3456789',
+      email: 'hr@newco.com',
+      legal_name: 'NewCo Industries LLC',
+      name: 'NewCo Industries',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -29,16 +35,16 @@ describe('resource employers', () => {
   test.skip('create: required and optional params', async () => {
     const response = await client.employers.create({
       address: {
-        city: 'city',
-        state: 'xx',
-        street_1: 'street_1',
-        zip_code: 'zip_code',
-        country: 'country',
-        street_2: 'street_2',
+        address_line_1: '789 Business Blvd',
+        city: 'Seattle',
+        state: 'WA',
+        zipcode: '98101',
+        address_line_2: 'Floor 5',
       },
-      ein: 'xxxxxxxxx',
-      legal_name: 'x',
-      name: 'x',
+      ein: '12-3456789',
+      email: 'hr@newco.com',
+      legal_name: 'NewCo Industries LLC',
+      name: 'NewCo Industries',
     });
   });
 
@@ -75,15 +81,14 @@ describe('resource employers', () => {
         {
           active: true,
           address: {
-            city: 'city',
-            state: 'xx',
-            street_1: 'street_1',
-            zip_code: 'zip_code',
-            country: 'country',
-            street_2: 'street_2',
+            address_line_1: '456 New Address Ave',
+            city: 'San Francisco',
+            state: 'CA',
+            zipcode: '94103',
+            address_line_2: 'Suite 200',
           },
           legal_name: 'x',
-          name: 'x',
+          name: 'Acme Corp (Updated)',
         },
         { path: '/_stainless_unknown_path' },
       ),
@@ -107,36 +112,14 @@ describe('resource employers', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.employers.list(
-        { active_in: true, limit: 20, name: 'Acme', page: 1 },
+        {
+          active_in: true,
+          limit: 20,
+          name: 'Acme',
+          page: 1,
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(VitableConnectAPI.NotFoundError);
-  });
-
-  // Prism tests are disabled
-  test.skip('createEligibilityPolicy: only required params', async () => {
-    const responsePromise = client.employers.createEligibilityPolicy('empr_abc123def456', {
-      effective_date: '2019-12-27',
-      name: 'x',
-      rules: [{ operator: 'operator', rule_type: 'rule_type', value: 'value' }],
-    });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('createEligibilityPolicy: required and optional params', async () => {
-    const response = await client.employers.createEligibilityPolicy('empr_abc123def456', {
-      effective_date: '2019-12-27',
-      name: 'x',
-      rules: [{ operator: 'operator', rule_type: 'rule_type', value: 'value' }],
-      policy_to_replace_id: 'epol_abc123def456',
-      description: 'description',
-    });
   });
 });

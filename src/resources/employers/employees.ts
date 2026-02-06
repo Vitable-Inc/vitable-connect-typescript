@@ -13,12 +13,37 @@ export class Employees extends APIResource {
    * (name, DOB, SSN) and employment details (start date). Note: SSN can only be
    * specified at creation time and cannot be updated later. Returns the created
    * employee with assigned ID.
+   *
+   * @example
+   * ```ts
+   * const employee = await client.employers.employees.create(
+   *   'empr_abc123def456',
+   *   {
+   *     date_of_birth: '1992-08-25',
+   *     email: 'michael.johnson@example.com',
+   *     first_name: 'Michael',
+   *     last_name: 'Johnson',
+   *     sex: 'Male',
+   *     ssn: '123-45-6789',
+   *     start_date: '2024-12-01',
+   *     address: {
+   *       street_1: '789 Pine Street',
+   *       city: 'Austin',
+   *       state: 'TX',
+   *       zip_code: '78701',
+   *       country: 'US',
+   *     },
+   *     employee_class: 'Full Time',
+   *     phone: '+1-555-222-3333',
+   *   },
+   * );
+   * ```
    */
   create(
     employerID: string,
     body: EmployeeCreateParams,
     options?: RequestOptions,
-  ): APIPromise<EmployeesAPI.Employee> {
+  ): APIPromise<EmployeeCreateResponse> {
     return this._client.post(path`/v1/employers/${employerID}/employees`, { body, ...options });
   }
 
@@ -26,6 +51,13 @@ export class Employees extends APIResource {
    * Retrieves a paginated list of all employees for a specific employer. Use query
    * parameters to filter by active status or employment classification. Results are
    * paginated using page and limit parameters.
+   *
+   * @example
+   * ```ts
+   * const employees = await client.employers.employees.list(
+   *   'empr_abc123def456',
+   * );
+   * ```
    */
   list(
     employerID: string,
@@ -52,7 +84,57 @@ export type EmployeeClass =
   | 'Seasonal'
   | 'Individual Contractor';
 
-export type EmployeeListResponse = Array<EmployeesAPI.Employee>;
+/**
+ * Response containing a single employee resource.
+ */
+export interface EmployeeCreateResponse {
+  /**
+   * Serializer for Employee entity in public API responses.
+   *
+   * Note: Employee is in the company module but exposed via account public API.
+   * Contains nested MemberEntity with personal identity information.
+   */
+  data: EmployeesAPI.Employee;
+}
+
+/**
+ * Paginated list response containing employee resources.
+ */
+export interface EmployeeListResponse {
+  data: Array<EmployeesAPI.Employee>;
+
+  /**
+   * Pagination metadata for list responses.
+   */
+  pagination: EmployeeListResponse.Pagination;
+}
+
+export namespace EmployeeListResponse {
+  /**
+   * Pagination metadata for list responses.
+   */
+  export interface Pagination {
+    /**
+     * Items per page
+     */
+    limit: number;
+
+    /**
+     * Current page number
+     */
+    page: number;
+
+    /**
+     * Total number of items
+     */
+    total: number;
+
+    /**
+     * Total number of pages
+     */
+    total_pages: number;
+  }
+}
 
 export interface EmployeeCreateParams {
   /**
@@ -186,6 +268,7 @@ export interface EmployeeListParams {
 export declare namespace Employees {
   export {
     type EmployeeClass as EmployeeClass,
+    type EmployeeCreateResponse as EmployeeCreateResponse,
     type EmployeeListResponse as EmployeeListResponse,
     type EmployeeCreateParams as EmployeeCreateParams,
     type EmployeeListParams as EmployeeListParams,

@@ -1,21 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import { APIPromise } from '../core/api-promise';
-import { RequestOptions } from '../internal/request-options';
-import { path } from '../internal/utils/path';
 
-export class BenefitEligibilityPolicyResource extends APIResource {
-  /**
-   * Retrieves detailed information for a specific benefit eligibility policy by ID.
-   * Returns the complete policy configuration including all eligibility rules,
-   * effective dates, associated employer information, and any waiting period
-   * requirements.
-   */
-  retrieve(policyID: string, options?: RequestOptions): APIPromise<BenefitEligibilityPolicy> {
-    return this._client.get(path`/v1/benefit-eligibility-policy/${policyID}`, options);
-  }
-}
+export class BenefitEligibilityPolicyResource extends APIResource {}
 
 /**
  * Serializer for Benefit Eligibility Policy entity.
@@ -32,7 +19,7 @@ export interface BenefitEligibilityPolicy {
   /**
    * Whether this policy is currently active
    */
-  active: boolean;
+  active_in: boolean;
 
   /**
    * Timestamp when the policy was created

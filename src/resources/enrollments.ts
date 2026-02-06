@@ -13,16 +13,30 @@ export class Enrollments extends APIResource {
    * Retrieves detailed information for a specific enrollment by ID. Returns selected
    * plan, coverage dates, enrolled dependents, premium amounts, and status. This
    * endpoint is critical for viewing comprehensive enrollment information.
+   *
+   * @example
+   * ```ts
+   * const enrollment = await client.enrollments.retrieve(
+   *   'enrl_abc123def456',
+   * );
+   * ```
    */
-  retrieve(enrollmentID: string, options?: RequestOptions): APIPromise<Enrollment> {
+  retrieve(enrollmentID: string, options?: RequestOptions): APIPromise<EnrollmentRetrieveResponse> {
     return this._client.get(path`/v1/enrollments/${enrollmentID}`, options);
   }
 
   /**
-   * Retrieves all insurance plans eligible for selection for a specific enrollment.
+   * Retrieves all benefit plans eligible for selection for a specific enrollment.
    * Returns available plan options with coverage tiers, premium costs, deductibles,
    * and carrier info. Use during enrollment process to show employees their plan
    * choices.
+   *
+   * @example
+   * ```ts
+   * const response = await client.enrollments.listPlans(
+   *   'enrl_abc123def456',
+   * );
+   * ```
    */
   listPlans(enrollmentID: string, options?: RequestOptions): APIPromise<EnrollmentListPlansResponse> {
     return this._client.get(path`/v1/enrollments/${enrollmentID}/plans`, options);
@@ -33,12 +47,20 @@ export class Enrollments extends APIResource {
    * changes. Enables employees to modify benefit selections outside open enrollment
    * after a significant life event. Common scenarios: adding newborn child, covering
    * new spouse, adjusting coverage after losing other coverage.
+   *
+   * @example
+   * ```ts
+   * const response = await client.enrollments.reissue(
+   *   'enrl_abc123def456',
+   *   { qle_id: 'qle_marriage123abc' },
+   * );
+   * ```
    */
   reissue(
     enrollmentID: string,
     body: EnrollmentReissueParams,
     options?: RequestOptions,
-  ): APIPromise<Enrollment> {
+  ): APIPromise<EnrollmentReissueResponse> {
     return this._client.post(path`/v1/enrollments/${enrollmentID}/reissue`, { body, ...options });
   }
 }
@@ -68,6 +90,15 @@ export interface Enrollment {
    * ID of the benefit product (bprd\_\*)
    */
   benefit_product_id: string;
+
+  /**
+   * - `Unspecified` - Unspecified
+   * - `EE` - Ee
+   * - `ES` - Es
+   * - `EC` - Ec
+   * - `EF` - Ef
+   */
+  coverage_tier: CoverageTier;
 
   /**
    * Timestamp when the enrollment was created
@@ -106,15 +137,6 @@ export interface Enrollment {
    * Date when coverage begins
    */
   coverage_start_date?: string | null;
-
-  /**
-   * - `Unspecified` - Unspecified
-   * - `EE` - Ee
-   * - `ES` - Es
-   * - `EC` - Ec
-   * - `EF` - Ef
-   */
-  coverage_tier?: CoverageTier | null;
 
   /**
    * Employee's election decision: 'enrolled' (accepted) or 'waived' (declined)
@@ -183,7 +205,30 @@ export namespace Enrollment {
  */
 export type PlanTier = 'Bronze' | 'Silver' | 'Gold' | 'Platinum';
 
-export type EnrollmentListPlansResponse = Array<EnrollmentListPlansResponse.EnrollmentListPlansResponseItem>;
+/**
+ * Response containing a single enrollment resource.
+ */
+export interface EnrollmentRetrieveResponse {
+  /**
+   * Serializer for Enrollment entity in public API responses.
+   *
+   * An Enrollment represents an employee's benefit enrollment for a specific plan
+   * year.
+   */
+  data: Enrollment;
+}
+
+/**
+ * Paginated list response containing plan option resources.
+ */
+export interface EnrollmentListPlansResponse {
+  data: Array<EnrollmentListPlansResponse.Data>;
+
+  /**
+   * Pagination metadata for list responses.
+   */
+  pagination: EnrollmentListPlansResponse.Pagination;
+}
 
 export namespace EnrollmentListPlansResponse {
   /**
@@ -191,7 +236,7 @@ export namespace EnrollmentListPlansResponse {
    *
    * Returns plan details with cost breakdowns for each coverage tier.
    */
-  export interface EnrollmentListPlansResponseItem {
+  export interface Data {
     /**
      * Unique plan identifier (plan\_\*)
      */
@@ -200,7 +245,7 @@ export namespace EnrollmentListPlansResponse {
     /**
      * Cost breakdown by coverage tier
      */
-    costs: Array<EnrollmentListPlansResponseItem.Cost>;
+    costs: Array<Data.Cost>;
 
     /**
      * Display name of the plan
@@ -208,7 +253,7 @@ export namespace EnrollmentListPlansResponse {
     name: string;
 
     /**
-     * Name of the insurance carrier
+     * Name of the carrier
      */
     carrier_name?: string | null;
 
@@ -236,7 +281,7 @@ export namespace EnrollmentListPlansResponse {
     tier?: EnrollmentsAPI.PlanTier | null;
   }
 
-  export namespace EnrollmentListPlansResponseItem {
+  export namespace Data {
     /**
      * Cost breakdown for a plan option.
      */
@@ -266,6 +311,44 @@ export namespace EnrollmentListPlansResponse {
       total_monthly_premium_cents: number;
     }
   }
+
+  /**
+   * Pagination metadata for list responses.
+   */
+  export interface Pagination {
+    /**
+     * Items per page
+     */
+    limit: number;
+
+    /**
+     * Current page number
+     */
+    page: number;
+
+    /**
+     * Total number of items
+     */
+    total: number;
+
+    /**
+     * Total number of pages
+     */
+    total_pages: number;
+  }
+}
+
+/**
+ * Response containing a single enrollment resource.
+ */
+export interface EnrollmentReissueResponse {
+  /**
+   * Serializer for Enrollment entity in public API responses.
+   *
+   * An Enrollment represents an employee's benefit enrollment for a specific plan
+   * year.
+   */
+  data: Enrollment;
 }
 
 export interface EnrollmentReissueParams {
@@ -285,7 +368,9 @@ export declare namespace Enrollments {
     type CoverageTier as CoverageTier,
     type Enrollment as Enrollment,
     type PlanTier as PlanTier,
+    type EnrollmentRetrieveResponse as EnrollmentRetrieveResponse,
     type EnrollmentListPlansResponse as EnrollmentListPlansResponse,
+    type EnrollmentReissueResponse as EnrollmentReissueResponse,
     type EnrollmentReissueParams as EnrollmentReissueParams,
   };
 }

@@ -26,13 +26,13 @@ The full API of this library can be found in [api.md](api.md).
 import VitableConnectAPI from 'vitable-connect-api';
 
 const client = new VitableConnectAPI({
-  apiKey: process.env['VITABLE_connect_API_API_KEY'], // This is the default and can be omitted
+  apiKey: 'My API Key',
   environment: 'environment_1', // defaults to 'production'
 });
 
-const benefitEligibilityPolicy = await client.benefitEligibilityPolicy.retrieve('REPLACE_ME');
+const benefitProducts = await client.benefitProducts.list();
 
-console.log(benefitEligibilityPolicy.id);
+console.log(benefitProducts.data);
 ```
 
 ### Request & Response types
@@ -44,12 +44,12 @@ This library includes TypeScript definitions for all request params and response
 import VitableConnectAPI from 'vitable-connect-api';
 
 const client = new VitableConnectAPI({
-  apiKey: process.env['VITABLE_connect_API_API_KEY'], // This is the default and can be omitted
+  apiKey: 'My API Key',
   environment: 'environment_1', // defaults to 'production'
 });
 
-const benefitEligibilityPolicy: VitableConnectAPI.BenefitEligibilityPolicy =
-  await client.benefitEligibilityPolicy.retrieve('REPLACE_ME');
+const benefitProducts: VitableConnectAPI.BenefitProductListResponse =
+  await client.benefitProducts.list();
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -62,17 +62,15 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const benefitEligibilityPolicy = await client.benefitEligibilityPolicy
-  .retrieve('REPLACE_ME')
-  .catch(async (err) => {
-    if (err instanceof VitableConnectAPI.APIError) {
-      console.log(err.status); // 400
-      console.log(err.name); // BadRequestError
-      console.log(err.headers); // {server: 'nginx', ...}
-    } else {
-      throw err;
-    }
-  });
+const benefitProducts = await client.benefitProducts.list().catch(async (err) => {
+  if (err instanceof VitableConnectAPI.APIError) {
+    console.log(err.status); // 400
+    console.log(err.name); // BadRequestError
+    console.log(err.headers); // {server: 'nginx', ...}
+  } else {
+    throw err;
+  }
+});
 ```
 
 Error codes are as follows:
@@ -100,11 +98,12 @@ You can use the `maxRetries` option to configure or disable this:
 ```js
 // Configure the default for all requests:
 const client = new VitableConnectAPI({
+  apiKey: 'My API Key',
   maxRetries: 0, // default is 2
 });
 
 // Or, configure per-request:
-await client.benefitEligibilityPolicy.retrieve('REPLACE_ME', {
+await client.benefitProducts.list({
   maxRetries: 5,
 });
 ```
@@ -117,11 +116,12 @@ Requests time out after 1 minute by default. You can configure this with a `time
 ```ts
 // Configure the default for all requests:
 const client = new VitableConnectAPI({
+  apiKey: 'My API Key',
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
 // Override per-request:
-await client.benefitEligibilityPolicy.retrieve('REPLACE_ME', {
+await client.benefitProducts.list({
   timeout: 5 * 1000,
 });
 ```
@@ -144,15 +144,13 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new VitableConnectAPI();
 
-const response = await client.benefitEligibilityPolicy.retrieve('REPLACE_ME').asResponse();
+const response = await client.benefitProducts.list().asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: benefitEligibilityPolicy, response: raw } = await client.benefitEligibilityPolicy
-  .retrieve('REPLACE_ME')
-  .withResponse();
+const { data: benefitProducts, response: raw } = await client.benefitProducts.list().withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(benefitEligibilityPolicy.id);
+console.log(benefitProducts.data);
 ```
 
 ### Logging
@@ -232,7 +230,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.benefitEligibilityPolicy.retrieve({
+client.benefitProducts.list({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',

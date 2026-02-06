@@ -11,6 +11,7 @@ export {
   PlanYears,
   type PlanYear,
   type PlanYearStatus,
+  type PlanYearCreateResponse,
   type PlanYearListResponse,
   type PlanYearCreateParams,
   type PlanYearListParams,

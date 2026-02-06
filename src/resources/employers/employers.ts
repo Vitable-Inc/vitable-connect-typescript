@@ -1,11 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as BenefitEligibilityPolicyAPI from '../benefit-eligibility-policy';
 import * as EmployeesAPI from './employees';
 import {
   EmployeeClass,
   EmployeeCreateParams,
+  EmployeeCreateResponse,
   EmployeeListParams,
   EmployeeListResponse,
   Employees,
@@ -19,30 +19,71 @@ export class Employers extends APIResource {
 
   /**
    * Creates a new employer for the authenticated organization. Requires employer
-   * name, legal name, EIN, and address information. Returns the created employer
-   * with its assigned ID.
+   * name, legal name, EIN, email, and address information. Returns the created
+   * employer with its assigned ID.
+   *
+   * @example
+   * ```ts
+   * const employer = await client.employers.create({
+   *   address: {
+   *     address_line_1: '789 Business Blvd',
+   *     address_line_2: 'Floor 5',
+   *     city: 'Seattle',
+   *     state: 'WA',
+   *     zipcode: '98101',
+   *   },
+   *   ein: '12-3456789',
+   *   email: 'hr@newco.com',
+   *   legal_name: 'NewCo Industries LLC',
+   *   name: 'NewCo Industries',
+   * });
+   * ```
    */
-  create(body: EmployerCreateParams, options?: RequestOptions): APIPromise<Employer> {
+  create(body: EmployerCreateParams, options?: RequestOptions): APIPromise<EmployerCreateResponse> {
     return this._client.post('/v1/employers', { body, ...options });
   }
 
   /**
    * Retrieves detailed information for a specific employer by ID. The employer must
    * belong to the authenticated organization.
+   *
+   * @example
+   * ```ts
+   * const employer = await client.employers.retrieve(
+   *   'empr_abc123def456',
+   * );
+   * ```
    */
-  retrieve(employerID: string, options?: RequestOptions): APIPromise<Employer> {
+  retrieve(employerID: string, options?: RequestOptions): APIPromise<EmployerRetrieveResponse> {
     return this._client.get(path`/v1/employers/${employerID}`, options);
   }
 
   /**
    * Updates an existing employer's information. All fields are optional - only
    * provided fields will be updated. Note: EIN cannot be changed after creation.
+   *
+   * @example
+   * ```ts
+   * const employer = await client.employers.update(
+   *   'empr_abc123def456',
+   *   {
+   *     address: {
+   *       address_line_1: '456 New Address Ave',
+   *       address_line_2: 'Suite 200',
+   *       city: 'San Francisco',
+   *       state: 'CA',
+   *       zipcode: '94103',
+   *     },
+   *     name: 'Acme Corp (Updated)',
+   *   },
+   * );
+   * ```
    */
   update(
     employerID: string,
     body: EmployerUpdateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<Employer> {
+  ): APIPromise<EmployerUpdateResponse> {
     return this._client.put(path`/v1/employers/${employerID}`, { body, ...options });
   }
 
@@ -50,6 +91,11 @@ export class Employers extends APIResource {
    * Retrieves a paginated list of all employers that the authenticated organization
    * has access to. Use query parameters to filter by name or active status. Results
    * are paginated using page and limit parameters.
+   *
+   * @example
+   * ```ts
+   * const employers = await client.employers.list();
+   * ```
    */
   list(
     query: EmployerListParams | null | undefined = {},
@@ -57,33 +103,10 @@ export class Employers extends APIResource {
   ): APIPromise<EmployerListResponse> {
     return this._client.get('/v1/employers', { query, ...options });
   }
-
-  /**
-   * Creates a new benefit eligibility policy for a specific employer. Eligibility
-   * policies define rules that determine which employees qualify for benefits based
-   * on criteria such as employment status (full-time, part-time), hours worked per
-   * week, waiting periods after hire date, or other custom requirements. Optionally
-   * provide 'policy_to_replace_id' as a query parameter to replace an existing
-   * policy.
-   */
-  createEligibilityPolicy(
-    employerID: string,
-    params: EmployerCreateEligibilityPolicyParams,
-    options?: RequestOptions,
-  ): APIPromise<BenefitEligibilityPolicyAPI.BenefitEligibilityPolicy> {
-    const { policy_to_replace_id, ...body } = params;
-    return this._client.post(path`/v1/employers/${employerID}/benefit-eligibility-policy`, {
-      query: { policy_to_replace_id },
-      body,
-      ...options,
-    });
-  }
 }
 
 /**
  * Serializer for Employer entity in public API responses.
- *
- * Matches EmployerEntity from company module domain.
  */
 export interface Employer {
   /**
@@ -97,9 +120,24 @@ export interface Employer {
   active: boolean;
 
   /**
+   * Nested address within EmployerSerializer.
+   */
+  address: Employer.Address;
+
+  /**
    * Timestamp when the employer was created
    */
   created_at: string;
+
+  /**
+   * Employer Identification Number (masked in responses)
+   */
+  ein: string | null;
+
+  /**
+   * ID of the benefit eligibility policy (epol\_\*), if assigned
+   */
+  eligibility_policy_id: string | null;
 
   /**
    * Legal business name for compliance and tax purposes
@@ -122,19 +160,9 @@ export interface Employer {
   updated_at: string;
 
   /**
-   * Nested address within EmployerSerializer.
+   * Email address for billing and communications
    */
-  address?: Employer.Address | null;
-
-  /**
-   * Employer Identification Number (masked in responses)
-   */
-  ein?: string | null;
-
-  /**
-   * ID of the benefit eligibility policy (epol\_\*), if assigned
-   */
-  eligibility_policy_id?: string | null;
+  email?: string | null;
 }
 
 export namespace Employer {
@@ -142,6 +170,11 @@ export namespace Employer {
    * Nested address within EmployerSerializer.
    */
   export interface Address {
+    /**
+     * Primary street address
+     */
+    address_line_1: string;
+
     /**
      * City name
      */
@@ -153,28 +186,85 @@ export namespace Employer {
     state: string;
 
     /**
-     * Primary street address
-     */
-    street_1: string;
-
-    /**
      * ZIP code (5 or 9 digit)
      */
-    zip_code: string;
-
-    /**
-     * Country code (default: US)
-     */
-    country?: string;
+    zipcode: string;
 
     /**
      * Secondary street address (apt, suite, etc.)
      */
-    street_2?: string | null;
+    address_line_2?: string | null;
   }
 }
 
-export type EmployerListResponse = Array<Employer>;
+/**
+ * Response containing a single employer resource.
+ */
+export interface EmployerCreateResponse {
+  /**
+   * Serializer for Employer entity in public API responses.
+   */
+  data: Employer;
+}
+
+/**
+ * Response containing a single employer resource.
+ */
+export interface EmployerRetrieveResponse {
+  /**
+   * Serializer for Employer entity in public API responses.
+   */
+  data: Employer;
+}
+
+/**
+ * Response containing a single employer resource.
+ */
+export interface EmployerUpdateResponse {
+  /**
+   * Serializer for Employer entity in public API responses.
+   */
+  data: Employer;
+}
+
+/**
+ * Paginated list response containing employer resources.
+ */
+export interface EmployerListResponse {
+  data: Array<Employer>;
+
+  /**
+   * Pagination metadata for list responses.
+   */
+  pagination: EmployerListResponse.Pagination;
+}
+
+export namespace EmployerListResponse {
+  /**
+   * Pagination metadata for list responses.
+   */
+  export interface Pagination {
+    /**
+     * Items per page
+     */
+    limit: number;
+
+    /**
+     * Current page number
+     */
+    page: number;
+
+    /**
+     * Total number of items
+     */
+    total: number;
+
+    /**
+     * Total number of pages
+     */
+    total_pages: number;
+  }
+}
 
 export interface EmployerCreateParams {
   /**
@@ -183,9 +273,14 @@ export interface EmployerCreateParams {
   address: EmployerCreateParams.Address;
 
   /**
-   * Employer Identification Number (format: XX-XXXXXXX or XXXXXXXXX)
+   * Employer Identification Number (format: XX-XXXXXXX)
    */
   ein: string;
+
+  /**
+   * Email address for billing and communications
+   */
+  email: string;
 
   /**
    * Legal business name
@@ -204,6 +299,11 @@ export namespace EmployerCreateParams {
    */
   export interface Address {
     /**
+     * Primary street address
+     */
+    address_line_1: string;
+
+    /**
      * City name
      */
     city: string;
@@ -214,24 +314,14 @@ export namespace EmployerCreateParams {
     state: string;
 
     /**
-     * Primary street address
-     */
-    street_1: string;
-
-    /**
      * ZIP code
      */
-    zip_code: string;
-
-    /**
-     * Country code
-     */
-    country?: string;
+    zipcode: string;
 
     /**
      * Secondary street address
      */
-    street_2?: string | null;
+    address_line_2?: string | null;
   }
 }
 
@@ -263,6 +353,11 @@ export namespace EmployerUpdateParams {
    */
   export interface Address {
     /**
+     * Primary street address
+     */
+    address_line_1: string;
+
+    /**
      * City name
      */
     city: string;
@@ -273,24 +368,14 @@ export namespace EmployerUpdateParams {
     state: string;
 
     /**
-     * Primary street address
-     */
-    street_1: string;
-
-    /**
      * ZIP code
      */
-    zip_code: string;
-
-    /**
-     * Country code
-     */
-    country?: string;
+    zipcode: string;
 
     /**
      * Secondary street address
      */
-    street_2?: string | null;
+    address_line_2?: string | null;
   }
 }
 
@@ -316,67 +401,24 @@ export interface EmployerListParams {
   page?: number;
 }
 
-export interface EmployerCreateEligibilityPolicyParams {
-  /**
-   * Body param: Date when policy becomes effective
-   */
-  effective_date: string;
-
-  /**
-   * Body param: Display name for the policy
-   */
-  name: string;
-
-  /**
-   * Body param: List of eligibility rules (at least one required)
-   */
-  rules: Array<EmployerCreateEligibilityPolicyParams.Rule>;
-
-  /**
-   * Query param: ID of existing policy to replace (epol\_\*)
-   */
-  policy_to_replace_id?: string;
-
-  /**
-   * Body param: Detailed description
-   */
-  description?: string | null;
-}
-
-export namespace EmployerCreateEligibilityPolicyParams {
-  export interface Rule {
-    /**
-     * Comparison operator
-     */
-    operator: string;
-
-    /**
-     * Type of eligibility rule
-     */
-    rule_type: string;
-
-    /**
-     * Value to compare against (can be string, number, boolean, or list)
-     */
-    value: string;
-  }
-}
-
 Employers.Employees = Employees;
 
 export declare namespace Employers {
   export {
     type Employer as Employer,
+    type EmployerCreateResponse as EmployerCreateResponse,
+    type EmployerRetrieveResponse as EmployerRetrieveResponse,
+    type EmployerUpdateResponse as EmployerUpdateResponse,
     type EmployerListResponse as EmployerListResponse,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerUpdateParams as EmployerUpdateParams,
     type EmployerListParams as EmployerListParams,
-    type EmployerCreateEligibilityPolicyParams as EmployerCreateEligibilityPolicyParams,
   };
 
   export {
     Employees as Employees,
     type EmployeeClass as EmployeeClass,
+    type EmployeeCreateResponse as EmployeeCreateResponse,
     type EmployeeListResponse as EmployeeListResponse,
     type EmployeeCreateParams as EmployeeCreateParams,
     type EmployeeListParams as EmployeeListParams,
