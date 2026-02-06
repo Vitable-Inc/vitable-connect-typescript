@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import * as EnrollmentsAPI from './enrollments';
+import * as BenefitProductsAPI from './benefit-products/benefit-products';
 import * as EmployeesEnrollmentsAPI from './employees/enrollments';
 import * as DependentsAPI from './members/dependents';
 import { APIPromise } from '../core/api-promise';
@@ -16,12 +17,11 @@ export class Enrollments extends APIResource {
    *
    * @example
    * ```ts
-   * const enrollment = await client.enrollments.retrieve(
-   *   'enrl_abc123def456',
-   * );
+   * const enrollmentResponse =
+   *   await client.enrollments.retrieve('enrl_abc123def456');
    * ```
    */
-  retrieve(enrollmentID: string, options?: RequestOptions): APIPromise<EnrollmentRetrieveResponse> {
+  retrieve(enrollmentID: string, options?: RequestOptions): APIPromise<EnrollmentResponse> {
     return this._client.get(path`/v1/enrollments/${enrollmentID}`, options);
   }
 
@@ -50,7 +50,7 @@ export class Enrollments extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.enrollments.reissue(
+   * const enrollmentResponse = await client.enrollments.reissue(
    *   'enrl_abc123def456',
    *   { qle_id: 'qle_marriage123abc' },
    * );
@@ -60,7 +60,7 @@ export class Enrollments extends APIResource {
     enrollmentID: string,
     body: EnrollmentReissueParams,
     options?: RequestOptions,
-  ): APIPromise<EnrollmentReissueResponse> {
+  ): APIPromise<EnrollmentResponse> {
     return this._client.post(path`/v1/enrollments/${enrollmentID}/reissue`, { body, ...options });
   }
 }
@@ -198,17 +198,9 @@ export namespace Enrollment {
 }
 
 /**
- * - `Bronze` - Bronze
- * - `Silver` - Silver
- * - `Gold` - Gold
- * - `Platinum` - Platinum
- */
-export type PlanTier = 'Bronze' | 'Silver' | 'Gold' | 'Platinum';
-
-/**
  * Response containing a single enrollment resource.
  */
-export interface EnrollmentRetrieveResponse {
+export interface EnrollmentResponse {
   /**
    * Serializer for Enrollment entity in public API responses.
    *
@@ -219,6 +211,14 @@ export interface EnrollmentRetrieveResponse {
 }
 
 /**
+ * - `Bronze` - Bronze
+ * - `Silver` - Silver
+ * - `Gold` - Gold
+ * - `Platinum` - Platinum
+ */
+export type PlanTier = 'Bronze' | 'Silver' | 'Gold' | 'Platinum';
+
+/**
  * Paginated list response containing plan option resources.
  */
 export interface EnrollmentListPlansResponse {
@@ -227,7 +227,7 @@ export interface EnrollmentListPlansResponse {
   /**
    * Pagination metadata for list responses.
    */
-  pagination: EnrollmentListPlansResponse.Pagination;
+  pagination: BenefitProductsAPI.Pagination;
 }
 
 export namespace EnrollmentListPlansResponse {
@@ -311,44 +311,6 @@ export namespace EnrollmentListPlansResponse {
       total_monthly_premium_cents: number;
     }
   }
-
-  /**
-   * Pagination metadata for list responses.
-   */
-  export interface Pagination {
-    /**
-     * Items per page
-     */
-    limit: number;
-
-    /**
-     * Current page number
-     */
-    page: number;
-
-    /**
-     * Total number of items
-     */
-    total: number;
-
-    /**
-     * Total number of pages
-     */
-    total_pages: number;
-  }
-}
-
-/**
- * Response containing a single enrollment resource.
- */
-export interface EnrollmentReissueResponse {
-  /**
-   * Serializer for Enrollment entity in public API responses.
-   *
-   * An Enrollment represents an employee's benefit enrollment for a specific plan
-   * year.
-   */
-  data: Enrollment;
 }
 
 export interface EnrollmentReissueParams {
@@ -367,10 +329,9 @@ export declare namespace Enrollments {
   export {
     type CoverageTier as CoverageTier,
     type Enrollment as Enrollment,
+    type EnrollmentResponse as EnrollmentResponse,
     type PlanTier as PlanTier,
-    type EnrollmentRetrieveResponse as EnrollmentRetrieveResponse,
     type EnrollmentListPlansResponse as EnrollmentListPlansResponse,
-    type EnrollmentReissueResponse as EnrollmentReissueResponse,
     type EnrollmentReissueParams as EnrollmentReissueParams,
   };
 }

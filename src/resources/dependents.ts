@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
+import * as EmployeesAPI from './employers/employees';
 import * as MembersDependentsAPI from './members/dependents';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
@@ -13,12 +14,12 @@ export class Dependents extends APIResource {
    *
    * @example
    * ```ts
-   * const dependent = await client.dependents.retrieve(
+   * const dependentResponse = await client.dependents.retrieve(
    *   'dpnd_abc123def456',
    * );
    * ```
    */
-  retrieve(dependentID: string, options?: RequestOptions): APIPromise<DependentRetrieveResponse> {
+  retrieve(dependentID: string, options?: RequestOptions): APIPromise<DependentResponse> {
     return this._client.get(path`/v1/dependents/${dependentID}`, options);
   }
 
@@ -29,7 +30,7 @@ export class Dependents extends APIResource {
    *
    * @example
    * ```ts
-   * const dependent = await client.dependents.update(
+   * const dependentResponse = await client.dependents.update(
    *   'dpnd_abc123def456',
    *   { active: true, relationship: 'Spouse' },
    * );
@@ -39,7 +40,7 @@ export class Dependents extends APIResource {
     dependentID: string,
     body: DependentUpdateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<DependentUpdateResponse> {
+  ): APIPromise<DependentResponse> {
     return this._client.put(path`/v1/dependents/${dependentID}`, { body, ...options });
   }
 }
@@ -98,7 +99,7 @@ export interface Dependent {
    * - `Other` - Other
    * - `Unknown` - Unknown
    */
-  sex: Sex;
+  sex: EmployeesAPI.Sex;
 
   /**
    * Timestamp when the dependent was last updated
@@ -122,30 +123,9 @@ export interface Dependent {
 }
 
 /**
- * - `Male` - Male
- * - `Female` - Female
- * - `Other` - Other
- * - `Unknown` - Unknown
- */
-export type Sex = 'Male' | 'Female' | 'Other' | 'Unknown';
-
-/**
  * Response containing a single dependent resource.
  */
-export interface DependentRetrieveResponse {
-  /**
-   * Serializer for Dependent entity in public API responses.
-   *
-   * Dependents are family members (spouse, children) who may be eligible for benefit
-   * coverage through an employee.
-   */
-  data: Dependent;
-}
-
-/**
- * Response containing a single dependent resource.
- */
-export interface DependentUpdateResponse {
+export interface DependentResponse {
   /**
    * Serializer for Dependent entity in public API responses.
    *
@@ -176,9 +156,7 @@ export interface DependentUpdateParams {
 export declare namespace Dependents {
   export {
     type Dependent as Dependent,
-    type Sex as Sex,
-    type DependentRetrieveResponse as DependentRetrieveResponse,
-    type DependentUpdateResponse as DependentUpdateResponse,
+    type DependentResponse as DependentResponse,
     type DependentUpdateParams as DependentUpdateParams,
   };
 }

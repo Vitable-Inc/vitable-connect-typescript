@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { VitableConnectAPIError } from '../../core/error';
+import { VitableConnectError } from '../../core/error';
 import { encodeUTF8 } from './bytes';
 
 export const toBase64 = (data: string | Uint8Array | null | undefined): string => {
@@ -18,9 +18,7 @@ export const toBase64 = (data: string | Uint8Array | null | undefined): string =
     return btoa(String.fromCharCode.apply(null, data as any));
   }
 
-  throw new VitableConnectAPIError(
-    'Cannot generate base64 string; Expected `Buffer` or `btoa` to be defined',
-  );
+  throw new VitableConnectError('Cannot generate base64 string; Expected `Buffer` or `btoa` to be defined');
 };
 
 export const fromBase64 = (str: string): Uint8Array => {
@@ -38,5 +36,5 @@ export const fromBase64 = (str: string): Uint8Array => {
     return buf;
   }
 
-  throw new VitableConnectAPIError('Cannot decode base64 string; Expected `Buffer` or `atob` to be defined');
+  throw new VitableConnectError('Cannot decode base64 string; Expected `Buffer` or `atob` to be defined');
 };

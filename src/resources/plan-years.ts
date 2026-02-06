@@ -15,12 +15,15 @@ export class PlanYears extends APIResource {
    *
    * @example
    * ```ts
-   * const planYear = await client.planYears.retrieve(
+   * const planYearResponse = await client.planYears.retrieve(
    *   'plyr_abc123def456',
    * );
    * ```
    */
-  retrieve(planYearID: string, options?: RequestOptions): APIPromise<PlanYearRetrieveResponse> {
+  retrieve(
+    planYearID: string,
+    options?: RequestOptions,
+  ): APIPromise<BenefitProductsPlanYearsAPI.PlanYearResponse> {
     return this._client.get(path`/v1/plan-years/${planYearID}`, options);
   }
 
@@ -31,7 +34,7 @@ export class PlanYears extends APIResource {
    *
    * @example
    * ```ts
-   * const planYear = await client.planYears.update(
+   * const planYearResponse = await client.planYears.update(
    *   'plyr_abc123def456',
    *   {
    *     contribution_classes: [
@@ -59,35 +62,9 @@ export class PlanYears extends APIResource {
     planYearID: string,
     body: PlanYearUpdateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<PlanYearUpdateResponse> {
+  ): APIPromise<BenefitProductsPlanYearsAPI.PlanYearResponse> {
     return this._client.put(path`/v1/plan-years/${planYearID}`, { body, ...options });
   }
-}
-
-/**
- * Response containing a single plan year resource.
- */
-export interface PlanYearRetrieveResponse {
-  /**
-   * Serializer for Plan Year entity in public API responses.
-   *
-   * A Plan Year represents a benefit period configuration including coverage dates,
-   * open enrollment windows, available plans, and contribution structures.
-   */
-  data: BenefitProductsPlanYearsAPI.PlanYear;
-}
-
-/**
- * Response containing a single plan year resource.
- */
-export interface PlanYearUpdateResponse {
-  /**
-   * Serializer for Plan Year entity in public API responses.
-   *
-   * A Plan Year represents a benefit period configuration including coverage dates,
-   * open enrollment windows, available plans, and contribution structures.
-   */
-  data: BenefitProductsPlanYearsAPI.PlanYear;
 }
 
 export interface PlanYearUpdateParams {
@@ -144,9 +121,5 @@ export namespace PlanYearUpdateParams {
 }
 
 export declare namespace PlanYears {
-  export {
-    type PlanYearRetrieveResponse as PlanYearRetrieveResponse,
-    type PlanYearUpdateResponse as PlanYearUpdateResponse,
-    type PlanYearUpdateParams as PlanYearUpdateParams,
-  };
+  export { type PlanYearUpdateParams as PlanYearUpdateParams };
 }

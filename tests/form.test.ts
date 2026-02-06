@@ -1,5 +1,5 @@
-import { multipartFormRequestOptions, createForm } from 'vitable-connect-api/internal/uploads';
-import { toFile } from 'vitable-connect-api/core/uploads';
+import { multipartFormRequestOptions, createForm } from 'vitable-connect/internal/uploads';
+import { toFile } from 'vitable-connect/core/uploads';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

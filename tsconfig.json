@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "paths": {
-      "vitable-connect-api/*": ["./src/*"],
-      "vitable-connect-api": ["./src/index.ts"]
+      "vitable-connect/*": ["./src/*"],
+      "vitable-connect": ["./src/index.ts"]
     },
     "noEmit": true,
 

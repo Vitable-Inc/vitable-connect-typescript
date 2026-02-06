@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import VitableConnectAPI from 'vitable-connect-api';
+import VitableConnect from 'vitable-connect';
 
-const client = new VitableConnectAPI({
+const client = new VitableConnect({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
@@ -45,6 +45,6 @@ describe('resource dependents', () => {
         },
         { path: '/_stainless_unknown_path' },
       ),
-    ).rejects.toThrow(VitableConnectAPI.NotFoundError);
+    ).rejects.toThrow(VitableConnect.NotFoundError);
   });
 });

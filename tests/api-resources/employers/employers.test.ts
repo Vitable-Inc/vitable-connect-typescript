@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import VitableConnectAPI from 'vitable-connect-api';
+import VitableConnect from 'vitable-connect';
 
-const client = new VitableConnectAPI({
+const client = new VitableConnect({
   apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
@@ -92,7 +92,7 @@ describe('resource employers', () => {
         },
         { path: '/_stainless_unknown_path' },
       ),
-    ).rejects.toThrow(VitableConnectAPI.NotFoundError);
+    ).rejects.toThrow(VitableConnect.NotFoundError);
   });
 
   // Prism tests are disabled
@@ -120,6 +120,55 @@ describe('resource employers', () => {
         },
         { path: '/_stainless_unknown_path' },
       ),
-    ).rejects.toThrow(VitableConnectAPI.NotFoundError);
+    ).rejects.toThrow(VitableConnect.NotFoundError);
+  });
+
+  // Prism tests are disabled
+  test.skip('createEligibilityPolicy: only required params', async () => {
+    const responsePromise = client.employers.createEligibilityPolicy('empr_abc123def456', {
+      effective_date: '2025-01-01',
+      name: 'Standard Full-Time Eligibility',
+      rules: [
+        {
+          operator: 'in',
+          rule_type: 'employment_status',
+          value: 'full_time,part_time_30_plus',
+        },
+        {
+          operator: 'greater_than_or_equal',
+          rule_type: 'waiting_period_days',
+          value: '30',
+        },
+      ],
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Prism tests are disabled
+  test.skip('createEligibilityPolicy: required and optional params', async () => {
+    const response = await client.employers.createEligibilityPolicy('empr_abc123def456', {
+      effective_date: '2025-01-01',
+      name: 'Standard Full-Time Eligibility',
+      rules: [
+        {
+          operator: 'in',
+          rule_type: 'employment_status',
+          value: 'full_time,part_time_30_plus',
+        },
+        {
+          operator: 'greater_than_or_equal',
+          rule_type: 'waiting_period_days',
+          value: '30',
+        },
+      ],
+      policy_to_replace_id: 'epol_abc123def456',
+      description: 'Eligibility policy for full-time employees working 30+ hours per week',
+    });
   });
 });

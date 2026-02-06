@@ -1,14 +1,12 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as DependentsAPI from '../dependents';
 import * as EnrollmentsAPI from './enrollments';
 import {
+  EnrollmentList,
   EnrollmentListParams,
-  EnrollmentListResponse,
   EnrollmentStatus,
   EnrollmentSubmitElectionsParams,
-  EnrollmentSubmitElectionsResponse,
   Enrollments,
 } from './enrollments';
 import * as EmployersEmployeesAPI from '../employers/employees';
@@ -26,12 +24,12 @@ export class Employees extends APIResource {
    *
    * @example
    * ```ts
-   * const employee = await client.employees.retrieve(
+   * const employeeResponse = await client.employees.retrieve(
    *   'empl_abc123def456',
    * );
    * ```
    */
-  retrieve(employeeID: string, options?: RequestOptions): APIPromise<EmployeeRetrieveResponse> {
+  retrieve(employeeID: string, options?: RequestOptions): APIPromise<EmployeeResponse> {
     return this._client.get(path`/v1/employees/${employeeID}`, options);
   }
 
@@ -42,7 +40,7 @@ export class Employees extends APIResource {
    *
    * @example
    * ```ts
-   * const employee = await client.employees.update(
+   * const employeeResponse = await client.employees.update(
    *   'empl_abc123def456',
    *   {
    *     address: {
@@ -63,7 +61,7 @@ export class Employees extends APIResource {
     employeeID: string,
     body: EmployeeUpdateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<EmployeeUpdateResponse> {
+  ): APIPromise<EmployeeResponse> {
     return this._client.put(path`/v1/employees/${employeeID}`, { body, ...options });
   }
 
@@ -183,7 +181,7 @@ export namespace Employee {
      * - `Other` - Other
      * - `Unknown` - Unknown
      */
-    sex: DependentsAPI.Sex;
+    sex: EmployersEmployeesAPI.Sex;
 
     /**
      * Email address for communications
@@ -245,20 +243,7 @@ export namespace Employee {
 /**
  * Response containing a single employee resource.
  */
-export interface EmployeeRetrieveResponse {
-  /**
-   * Serializer for Employee entity in public API responses.
-   *
-   * Note: Employee is in the company module but exposed via account public API.
-   * Contains nested MemberEntity with personal identity information.
-   */
-  data: Employee;
-}
-
-/**
- * Response containing a single employee resource.
- */
-export interface EmployeeUpdateResponse {
+export interface EmployeeResponse {
   /**
    * Serializer for Employee entity in public API responses.
    *
@@ -347,16 +332,14 @@ Employees.Enrollments = Enrollments;
 export declare namespace Employees {
   export {
     type Employee as Employee,
-    type EmployeeRetrieveResponse as EmployeeRetrieveResponse,
-    type EmployeeUpdateResponse as EmployeeUpdateResponse,
+    type EmployeeResponse as EmployeeResponse,
     type EmployeeUpdateParams as EmployeeUpdateParams,
   };
 
   export {
     Enrollments as Enrollments,
+    type EnrollmentList as EnrollmentList,
     type EnrollmentStatus as EnrollmentStatus,
-    type EnrollmentListResponse as EnrollmentListResponse,
-    type EnrollmentSubmitElectionsResponse as EnrollmentSubmitElectionsResponse,
     type EnrollmentListParams as EnrollmentListParams,
     type EnrollmentSubmitElectionsParams as EnrollmentSubmitElectionsParams,
   };

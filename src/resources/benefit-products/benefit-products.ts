@@ -6,9 +6,9 @@ import * as PlanYearsAPI from './plan-years';
 import {
   PlanYear,
   PlanYearCreateParams,
-  PlanYearCreateResponse,
   PlanYearListParams,
   PlanYearListResponse,
+  PlanYearResponse,
   PlanYearStatus,
   PlanYears,
 } from './plan-years';
@@ -43,6 +43,31 @@ export class BenefitProducts extends APIResource {
  * - `Hospital` - Hospital
  */
 export type Category = 'Medical' | 'Dental' | 'Vision' | 'Hospital';
+
+/**
+ * Pagination metadata for list responses.
+ */
+export interface Pagination {
+  /**
+   * Items per page
+   */
+  limit: number;
+
+  /**
+   * Current page number
+   */
+  page: number;
+
+  /**
+   * Total number of items
+   */
+  total: number;
+
+  /**
+   * Total number of pages
+   */
+  total_pages: number;
+}
 
 /**
  * - `EBA` - Eba Mec
@@ -87,7 +112,7 @@ export interface BenefitProductListResponse {
   /**
    * Pagination metadata for list responses.
    */
-  pagination: BenefitProductListResponse.Pagination;
+  pagination: Pagination;
 }
 
 export namespace BenefitProductListResponse {
@@ -160,31 +185,6 @@ export namespace BenefitProductListResponse {
      */
     description?: string | null;
   }
-
-  /**
-   * Pagination metadata for list responses.
-   */
-  export interface Pagination {
-    /**
-     * Items per page
-     */
-    limit: number;
-
-    /**
-     * Current page number
-     */
-    page: number;
-
-    /**
-     * Total number of items
-     */
-    total: number;
-
-    /**
-     * Total number of pages
-     */
-    total_pages: number;
-  }
 }
 
 export interface BenefitProductListParams {
@@ -219,6 +219,7 @@ BenefitProducts.PlanYears = PlanYears;
 export declare namespace BenefitProducts {
   export {
     type Category as Category,
+    type Pagination as Pagination,
     type ProductCode as ProductCode,
     type BenefitProductListResponse as BenefitProductListResponse,
     type BenefitProductListParams as BenefitProductListParams,
@@ -227,8 +228,8 @@ export declare namespace BenefitProducts {
   export {
     PlanYears as PlanYears,
     type PlanYear as PlanYear,
+    type PlanYearResponse as PlanYearResponse,
     type PlanYearStatus as PlanYearStatus,
-    type PlanYearCreateResponse as PlanYearCreateResponse,
     type PlanYearListResponse as PlanYearListResponse,
     type PlanYearCreateParams as PlanYearCreateParams,
     type PlanYearListParams as PlanYearListParams,

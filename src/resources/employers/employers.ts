@@ -1,14 +1,16 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as BenefitEligibilityPoliciesAPI from '../benefit-eligibility-policies';
+import * as BenefitProductsAPI from '../benefit-products/benefit-products';
 import * as EmployeesAPI from './employees';
 import {
   EmployeeClass,
   EmployeeCreateParams,
-  EmployeeCreateResponse,
   EmployeeListParams,
   EmployeeListResponse,
   Employees,
+  Sex,
 } from './employees';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
@@ -24,7 +26,7 @@ export class Employers extends APIResource {
    *
    * @example
    * ```ts
-   * const employer = await client.employers.create({
+   * const employerResponse = await client.employers.create({
    *   address: {
    *     address_line_1: '789 Business Blvd',
    *     address_line_2: 'Floor 5',
@@ -39,7 +41,7 @@ export class Employers extends APIResource {
    * });
    * ```
    */
-  create(body: EmployerCreateParams, options?: RequestOptions): APIPromise<EmployerCreateResponse> {
+  create(body: EmployerCreateParams, options?: RequestOptions): APIPromise<EmployerResponse> {
     return this._client.post('/v1/employers', { body, ...options });
   }
 
@@ -49,12 +51,12 @@ export class Employers extends APIResource {
    *
    * @example
    * ```ts
-   * const employer = await client.employers.retrieve(
+   * const employerResponse = await client.employers.retrieve(
    *   'empr_abc123def456',
    * );
    * ```
    */
-  retrieve(employerID: string, options?: RequestOptions): APIPromise<EmployerRetrieveResponse> {
+  retrieve(employerID: string, options?: RequestOptions): APIPromise<EmployerResponse> {
     return this._client.get(path`/v1/employers/${employerID}`, options);
   }
 
@@ -64,7 +66,7 @@ export class Employers extends APIResource {
    *
    * @example
    * ```ts
-   * const employer = await client.employers.update(
+   * const employerResponse = await client.employers.update(
    *   'empr_abc123def456',
    *   {
    *     address: {
@@ -83,7 +85,7 @@ export class Employers extends APIResource {
     employerID: string,
     body: EmployerUpdateParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<EmployerUpdateResponse> {
+  ): APIPromise<EmployerResponse> {
     return this._client.put(path`/v1/employers/${employerID}`, { body, ...options });
   }
 
@@ -102,6 +104,53 @@ export class Employers extends APIResource {
     options?: RequestOptions,
   ): APIPromise<EmployerListResponse> {
     return this._client.get('/v1/employers', { query, ...options });
+  }
+
+  /**
+   * Creates a new benefit eligibility policy for a specific employer. Eligibility
+   * policies define rules that determine which employees qualify for benefits based
+   * on criteria such as employment status (full-time, part-time), hours worked per
+   * week, waiting periods after hire date, or other custom requirements. Optionally
+   * provide 'policy_to_replace_id' as a query parameter to replace an existing
+   * policy.
+   *
+   * @example
+   * ```ts
+   * const benefitEligibilityPolicy =
+   *   await client.employers.createEligibilityPolicy(
+   *     'empr_abc123def456',
+   *     {
+   *       effective_date: '2025-01-01',
+   *       name: 'Standard Full-Time Eligibility',
+   *       rules: [
+   *         {
+   *           rule_type: 'employment_status',
+   *           operator: 'in',
+   *           value: 'full_time,part_time_30_plus',
+   *         },
+   *         {
+   *           rule_type: 'waiting_period_days',
+   *           operator: 'greater_than_or_equal',
+   *           value: '30',
+   *         },
+   *       ],
+   *       description:
+   *         'Eligibility policy for full-time employees working 30+ hours per week',
+   *     },
+   *   );
+   * ```
+   */
+  createEligibilityPolicy(
+    employerID: string,
+    params: EmployerCreateEligibilityPolicyParams,
+    options?: RequestOptions,
+  ): APIPromise<BenefitEligibilityPoliciesAPI.BenefitEligibilityPolicy> {
+    const { policy_to_replace_id, ...body } = params;
+    return this._client.post(path`/v1/employers/${employerID}/benefit-eligibility-policies`, {
+      query: { policy_to_replace_id },
+      body,
+      ...options,
+    });
   }
 }
 
@@ -200,27 +249,7 @@ export namespace Employer {
 /**
  * Response containing a single employer resource.
  */
-export interface EmployerCreateResponse {
-  /**
-   * Serializer for Employer entity in public API responses.
-   */
-  data: Employer;
-}
-
-/**
- * Response containing a single employer resource.
- */
-export interface EmployerRetrieveResponse {
-  /**
-   * Serializer for Employer entity in public API responses.
-   */
-  data: Employer;
-}
-
-/**
- * Response containing a single employer resource.
- */
-export interface EmployerUpdateResponse {
+export interface EmployerResponse {
   /**
    * Serializer for Employer entity in public API responses.
    */
@@ -236,34 +265,7 @@ export interface EmployerListResponse {
   /**
    * Pagination metadata for list responses.
    */
-  pagination: EmployerListResponse.Pagination;
-}
-
-export namespace EmployerListResponse {
-  /**
-   * Pagination metadata for list responses.
-   */
-  export interface Pagination {
-    /**
-     * Items per page
-     */
-    limit: number;
-
-    /**
-     * Current page number
-     */
-    page: number;
-
-    /**
-     * Total number of items
-     */
-    total: number;
-
-    /**
-     * Total number of pages
-     */
-    total_pages: number;
-  }
+  pagination: BenefitProductsAPI.Pagination;
 }
 
 export interface EmployerCreateParams {
@@ -401,24 +403,69 @@ export interface EmployerListParams {
   page?: number;
 }
 
+export interface EmployerCreateEligibilityPolicyParams {
+  /**
+   * Body param: Date when policy becomes effective
+   */
+  effective_date: string;
+
+  /**
+   * Body param: Display name for the policy
+   */
+  name: string;
+
+  /**
+   * Body param: List of eligibility rules (at least one required)
+   */
+  rules: Array<EmployerCreateEligibilityPolicyParams.Rule>;
+
+  /**
+   * Query param: ID of existing policy to replace (epol\_\*)
+   */
+  policy_to_replace_id?: string;
+
+  /**
+   * Body param: Detailed description
+   */
+  description?: string | null;
+}
+
+export namespace EmployerCreateEligibilityPolicyParams {
+  export interface Rule {
+    /**
+     * Comparison operator
+     */
+    operator: string;
+
+    /**
+     * Type of eligibility rule
+     */
+    rule_type: string;
+
+    /**
+     * Value to compare against (can be string, number, boolean, or list)
+     */
+    value: string;
+  }
+}
+
 Employers.Employees = Employees;
 
 export declare namespace Employers {
   export {
     type Employer as Employer,
-    type EmployerCreateResponse as EmployerCreateResponse,
-    type EmployerRetrieveResponse as EmployerRetrieveResponse,
-    type EmployerUpdateResponse as EmployerUpdateResponse,
+    type EmployerResponse as EmployerResponse,
     type EmployerListResponse as EmployerListResponse,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerUpdateParams as EmployerUpdateParams,
     type EmployerListParams as EmployerListParams,
+    type EmployerCreateEligibilityPolicyParams as EmployerCreateEligibilityPolicyParams,
   };
 
   export {
     Employees as Employees,
     type EmployeeClass as EmployeeClass,
-    type EmployeeCreateResponse as EmployeeCreateResponse,
+    type Sex as Sex,
     type EmployeeListResponse as EmployeeListResponse,
     type EmployeeCreateParams as EmployeeCreateParams,
     type EmployeeListParams as EmployeeListParams,
