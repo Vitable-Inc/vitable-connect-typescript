@@ -55,12 +55,12 @@ $ cd vitable-connect-typescript
 # With yarn
 $ yarn link
 $ cd ../my-package
-$ yarn link vitable-connect-api
+$ yarn link vitable-connect
 
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global vitable-connect-api
+$ pnpm link -—global vitable-connect
 ```
 
 ## Running tests

@@ -3,6 +3,7 @@
 export {
   BenefitProducts,
   type Category,
+  type Pagination,
   type ProductCode,
   type BenefitProductListResponse,
   type BenefitProductListParams,
@@ -10,8 +11,8 @@ export {
 export {
   PlanYears,
   type PlanYear,
+  type PlanYearResponse,
   type PlanYearStatus,
-  type PlanYearCreateResponse,
   type PlanYearListResponse,
   type PlanYearCreateParams,
   type PlanYearListParams,

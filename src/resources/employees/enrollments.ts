@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import * as EnrollmentsAPI from '../enrollments';
+import * as BenefitProductsAPI from '../benefit-products/benefit-products';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
@@ -15,16 +16,17 @@ export class Enrollments extends APIResource {
    *
    * @example
    * ```ts
-   * const enrollments = await client.employees.enrollments.list(
-   *   'empl_abc123def456',
-   * );
+   * const enrollmentList =
+   *   await client.employees.enrollments.list(
+   *     'empl_abc123def456',
+   *   );
    * ```
    */
   list(
     employeeID: string,
     query: EnrollmentListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<EnrollmentListResponse> {
+  ): APIPromise<EnrollmentList> {
     return this._client.get(path`/v1/employees/${employeeID}/enrollments`, { query, ...options });
   }
 
@@ -36,7 +38,7 @@ export class Enrollments extends APIResource {
    *
    * @example
    * ```ts
-   * const response =
+   * const enrollmentList =
    *   await client.employees.enrollments.submitElections(
    *     'empl_abc123def456',
    *     {
@@ -65,9 +67,21 @@ export class Enrollments extends APIResource {
     employeeID: string,
     body: EnrollmentSubmitElectionsParams,
     options?: RequestOptions,
-  ): APIPromise<EnrollmentSubmitElectionsResponse> {
+  ): APIPromise<EnrollmentList> {
     return this._client.post(path`/v1/employees/${employeeID}/enrollments/elect`, { body, ...options });
   }
+}
+
+/**
+ * Paginated list response containing enrollment resources.
+ */
+export interface EnrollmentList {
+  data: Array<EnrollmentsAPI.Enrollment>;
+
+  /**
+   * Pagination metadata for list responses.
+   */
+  pagination: BenefitProductsAPI.Pagination;
 }
 
 /**
@@ -77,84 +91,6 @@ export class Enrollments extends APIResource {
  * - `inactive` - Inactive
  */
 export type EnrollmentStatus = 'pending' | 'enrolled' | 'waived' | 'inactive';
-
-/**
- * Paginated list response containing enrollment resources.
- */
-export interface EnrollmentListResponse {
-  data: Array<EnrollmentsAPI.Enrollment>;
-
-  /**
-   * Pagination metadata for list responses.
-   */
-  pagination: EnrollmentListResponse.Pagination;
-}
-
-export namespace EnrollmentListResponse {
-  /**
-   * Pagination metadata for list responses.
-   */
-  export interface Pagination {
-    /**
-     * Items per page
-     */
-    limit: number;
-
-    /**
-     * Current page number
-     */
-    page: number;
-
-    /**
-     * Total number of items
-     */
-    total: number;
-
-    /**
-     * Total number of pages
-     */
-    total_pages: number;
-  }
-}
-
-/**
- * Paginated list response containing enrollment resources.
- */
-export interface EnrollmentSubmitElectionsResponse {
-  data: Array<EnrollmentsAPI.Enrollment>;
-
-  /**
-   * Pagination metadata for list responses.
-   */
-  pagination: EnrollmentSubmitElectionsResponse.Pagination;
-}
-
-export namespace EnrollmentSubmitElectionsResponse {
-  /**
-   * Pagination metadata for list responses.
-   */
-  export interface Pagination {
-    /**
-     * Items per page
-     */
-    limit: number;
-
-    /**
-     * Current page number
-     */
-    page: number;
-
-    /**
-     * Total number of items
-     */
-    total: number;
-
-    /**
-     * Total number of pages
-     */
-    total_pages: number;
-  }
-}
 
 export interface EnrollmentListParams {
   /**
@@ -229,9 +165,8 @@ export namespace EnrollmentSubmitElectionsParams {
 
 export declare namespace Enrollments {
   export {
+    type EnrollmentList as EnrollmentList,
     type EnrollmentStatus as EnrollmentStatus,
-    type EnrollmentListResponse as EnrollmentListResponse,
-    type EnrollmentSubmitElectionsResponse as EnrollmentSubmitElectionsResponse,
     type EnrollmentListParams as EnrollmentListParams,
     type EnrollmentSubmitElectionsParams as EnrollmentSubmitElectionsParams,
   };

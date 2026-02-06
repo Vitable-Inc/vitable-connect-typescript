@@ -2,6 +2,8 @@
 
 import { APIResource } from '../../core/resource';
 import * as DependentsAPI from '../dependents';
+import * as BenefitProductsAPI from '../benefit-products/benefit-products';
+import * as EmployeesAPI from '../employers/employees';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
@@ -14,24 +16,25 @@ export class Dependents extends APIResource {
    *
    * @example
    * ```ts
-   * const dependent = await client.members.dependents.create(
-   *   'mbr_abc123def456',
-   *   {
-   *     date_of_birth: '2020-05-15',
-   *     first_name: 'Emily',
-   *     last_name: 'Doe',
-   *     relationship: 'Child',
-   *     sex: 'Female',
-   *     ssn: '123-45-6789',
-   *   },
-   * );
+   * const dependentResponse =
+   *   await client.members.dependents.create(
+   *     'mbr_abc123def456',
+   *     {
+   *       date_of_birth: '2020-05-15',
+   *       first_name: 'Emily',
+   *       last_name: 'Doe',
+   *       relationship: 'Child',
+   *       sex: 'Female',
+   *       ssn: '123-45-6789',
+   *     },
+   *   );
    * ```
    */
   create(
     memberID: string,
     body: DependentCreateParams,
     options?: RequestOptions,
-  ): APIPromise<DependentCreateResponse> {
+  ): APIPromise<DependentsAPI.DependentResponse> {
     return this._client.post(path`/v1/members/${memberID}/dependents`, { body, ...options });
   }
 
@@ -63,19 +66,6 @@ export class Dependents extends APIResource {
 export type Relationship = 'Spouse' | 'Child';
 
 /**
- * Response containing a single dependent resource.
- */
-export interface DependentCreateResponse {
-  /**
-   * Serializer for Dependent entity in public API responses.
-   *
-   * Dependents are family members (spouse, children) who may be eligible for benefit
-   * coverage through an employee.
-   */
-  data: DependentsAPI.Dependent;
-}
-
-/**
  * Paginated list response containing dependent resources.
  */
 export interface DependentListResponse {
@@ -84,34 +74,7 @@ export interface DependentListResponse {
   /**
    * Pagination metadata for list responses.
    */
-  pagination: DependentListResponse.Pagination;
-}
-
-export namespace DependentListResponse {
-  /**
-   * Pagination metadata for list responses.
-   */
-  export interface Pagination {
-    /**
-     * Items per page
-     */
-    limit: number;
-
-    /**
-     * Current page number
-     */
-    page: number;
-
-    /**
-     * Total number of items
-     */
-    total: number;
-
-    /**
-     * Total number of pages
-     */
-    total_pages: number;
-  }
+  pagination: BenefitProductsAPI.Pagination;
 }
 
 export interface DependentCreateParams {
@@ -142,7 +105,7 @@ export interface DependentCreateParams {
    * - `Other` - Other
    * - `Unknown` - Unknown
    */
-  sex: DependentsAPI.Sex;
+  sex: EmployeesAPI.Sex;
 
   /**
    * Gender identity
@@ -185,7 +148,6 @@ export interface DependentListParams {
 export declare namespace Dependents {
   export {
     type Relationship as Relationship,
-    type DependentCreateResponse as DependentCreateResponse,
     type DependentListResponse as DependentListResponse,
     type DependentCreateParams as DependentCreateParams,
     type DependentListParams as DependentListParams,

@@ -3,7 +3,6 @@
 export {
   Dependents,
   type Relationship,
-  type DependentCreateResponse,
   type DependentListResponse,
   type DependentCreateParams,
   type DependentListParams,
@@ -13,9 +12,10 @@ export {
   QualifyingLifeEvents,
   type EventType,
   type QualifyingLifeEvent,
+  type QualifyingLifeEventResponse,
   type QualifyingLifeEventStatus,
   type QualifyingLifeEventListResponse,
-  type QualifyingLifeEventRecordResponse,
+  type QualifyingLifeEventRetrieveParams,
   type QualifyingLifeEventListParams,
   type QualifyingLifeEventRecordParams,
 } from './qualifying-life-events';

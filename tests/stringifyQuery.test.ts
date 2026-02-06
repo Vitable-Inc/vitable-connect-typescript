@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { VitableConnectAPI } from 'vitable-connect-api';
+import { VitableConnect } from 'vitable-connect';
 
-const { stringifyQuery } = VitableConnectAPI.prototype as any;
+const { stringifyQuery } = VitableConnect.prototype as any;
 
 describe(stringifyQuery, () => {
   for (const [input, expected] of [

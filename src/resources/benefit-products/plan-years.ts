@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import * as EnrollmentsAPI from '../enrollments';
+import * as BenefitProductsAPI from './benefit-products';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
@@ -14,7 +15,7 @@ export class PlanYears extends APIResource {
    *
    * @example
    * ```ts
-   * const planYear =
+   * const planYearResponse =
    *   await client.benefitProducts.planYears.create(
    *     'bprd_abc123def456',
    *     {
@@ -45,7 +46,7 @@ export class PlanYears extends APIResource {
     benefitProductID: string,
     body: PlanYearCreateParams,
     options?: RequestOptions,
-  ): APIPromise<PlanYearCreateResponse> {
+  ): APIPromise<PlanYearResponse> {
     return this._client.post(path`/v1/benefit-products/${benefitProductID}/plan-years`, { body, ...options });
   }
 
@@ -225,17 +226,9 @@ export namespace PlanYear {
 }
 
 /**
- * - `draft` - Draft
- * - `open_enrollment` - Open Enrollment
- * - `active` - Active
- * - `expired` - Expired
- */
-export type PlanYearStatus = 'draft' | 'open_enrollment' | 'active' | 'expired';
-
-/**
  * Response containing a single plan year resource.
  */
-export interface PlanYearCreateResponse {
+export interface PlanYearResponse {
   /**
    * Serializer for Plan Year entity in public API responses.
    *
@@ -246,6 +239,14 @@ export interface PlanYearCreateResponse {
 }
 
 /**
+ * - `draft` - Draft
+ * - `open_enrollment` - Open Enrollment
+ * - `active` - Active
+ * - `expired` - Expired
+ */
+export type PlanYearStatus = 'draft' | 'open_enrollment' | 'active' | 'expired';
+
+/**
  * Paginated list response containing plan year resources.
  */
 export interface PlanYearListResponse {
@@ -254,34 +255,7 @@ export interface PlanYearListResponse {
   /**
    * Pagination metadata for list responses.
    */
-  pagination: PlanYearListResponse.Pagination;
-}
-
-export namespace PlanYearListResponse {
-  /**
-   * Pagination metadata for list responses.
-   */
-  export interface Pagination {
-    /**
-     * Items per page
-     */
-    limit: number;
-
-    /**
-     * Current page number
-     */
-    page: number;
-
-    /**
-     * Total number of items
-     */
-    total: number;
-
-    /**
-     * Total number of pages
-     */
-    total_pages: number;
-  }
+  pagination: BenefitProductsAPI.Pagination;
 }
 
 export interface PlanYearCreateParams {
@@ -372,8 +346,8 @@ export interface PlanYearListParams {
 export declare namespace PlanYears {
   export {
     type PlanYear as PlanYear,
+    type PlanYearResponse as PlanYearResponse,
     type PlanYearStatus as PlanYearStatus,
-    type PlanYearCreateResponse as PlanYearCreateResponse,
     type PlanYearListResponse as PlanYearListResponse,
     type PlanYearCreateParams as PlanYearCreateParams,
     type PlanYearListParams as PlanYearListParams,

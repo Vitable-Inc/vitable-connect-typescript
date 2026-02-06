@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
-import * as DependentsAPI from '../dependents';
+import * as BenefitProductsAPI from '../benefit-products/benefit-products';
 import * as EmployeesAPI from '../employees/employees';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
@@ -16,34 +16,35 @@ export class Employees extends APIResource {
    *
    * @example
    * ```ts
-   * const employee = await client.employers.employees.create(
-   *   'empr_abc123def456',
-   *   {
-   *     date_of_birth: '1992-08-25',
-   *     email: 'michael.johnson@example.com',
-   *     first_name: 'Michael',
-   *     last_name: 'Johnson',
-   *     sex: 'Male',
-   *     ssn: '123-45-6789',
-   *     start_date: '2024-12-01',
-   *     address: {
-   *       street_1: '789 Pine Street',
-   *       city: 'Austin',
-   *       state: 'TX',
-   *       zip_code: '78701',
-   *       country: 'US',
+   * const employeeResponse =
+   *   await client.employers.employees.create(
+   *     'empr_abc123def456',
+   *     {
+   *       date_of_birth: '1992-08-25',
+   *       email: 'michael.johnson@example.com',
+   *       first_name: 'Michael',
+   *       last_name: 'Johnson',
+   *       sex: 'Male',
+   *       ssn: '123-45-6789',
+   *       start_date: '2024-12-01',
+   *       address: {
+   *         street_1: '789 Pine Street',
+   *         city: 'Austin',
+   *         state: 'TX',
+   *         zip_code: '78701',
+   *         country: 'US',
+   *       },
+   *       employee_class: 'Full Time',
+   *       phone: '+1-555-222-3333',
    *     },
-   *     employee_class: 'Full Time',
-   *     phone: '+1-555-222-3333',
-   *   },
-   * );
+   *   );
    * ```
    */
   create(
     employerID: string,
     body: EmployeeCreateParams,
     options?: RequestOptions,
-  ): APIPromise<EmployeeCreateResponse> {
+  ): APIPromise<EmployeesAPI.EmployeeResponse> {
     return this._client.post(path`/v1/employers/${employerID}/employees`, { body, ...options });
   }
 
@@ -85,17 +86,12 @@ export type EmployeeClass =
   | 'Individual Contractor';
 
 /**
- * Response containing a single employee resource.
+ * - `Male` - Male
+ * - `Female` - Female
+ * - `Other` - Other
+ * - `Unknown` - Unknown
  */
-export interface EmployeeCreateResponse {
-  /**
-   * Serializer for Employee entity in public API responses.
-   *
-   * Note: Employee is in the company module but exposed via account public API.
-   * Contains nested MemberEntity with personal identity information.
-   */
-  data: EmployeesAPI.Employee;
-}
+export type Sex = 'Male' | 'Female' | 'Other' | 'Unknown';
 
 /**
  * Paginated list response containing employee resources.
@@ -106,34 +102,7 @@ export interface EmployeeListResponse {
   /**
    * Pagination metadata for list responses.
    */
-  pagination: EmployeeListResponse.Pagination;
-}
-
-export namespace EmployeeListResponse {
-  /**
-   * Pagination metadata for list responses.
-   */
-  export interface Pagination {
-    /**
-     * Items per page
-     */
-    limit: number;
-
-    /**
-     * Current page number
-     */
-    page: number;
-
-    /**
-     * Total number of items
-     */
-    total: number;
-
-    /**
-     * Total number of pages
-     */
-    total_pages: number;
-  }
+  pagination: BenefitProductsAPI.Pagination;
 }
 
 export interface EmployeeCreateParams {
@@ -163,7 +132,7 @@ export interface EmployeeCreateParams {
    * - `Other` - Other
    * - `Unknown` - Unknown
    */
-  sex: DependentsAPI.Sex;
+  sex: Sex;
 
   /**
    * Social Security Number (XXX-XX-XXXX or XXXXXXXXX). Only accepted on create.
@@ -268,7 +237,7 @@ export interface EmployeeListParams {
 export declare namespace Employees {
   export {
     type EmployeeClass as EmployeeClass,
-    type EmployeeCreateResponse as EmployeeCreateResponse,
+    type Sex as Sex,
     type EmployeeListResponse as EmployeeListResponse,
     type EmployeeCreateParams as EmployeeCreateParams,
     type EmployeeListParams as EmployeeListParams,

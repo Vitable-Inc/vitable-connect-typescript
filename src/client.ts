@@ -16,58 +16,39 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
+import { Auth, AuthIssueAccessTokenParams, AuthIssueAccessTokenResponse, Type } from './resources/auth';
 import {
+  BenefitEligibilityPolicies,
   BenefitEligibilityPolicy,
-  BenefitEligibilityPolicyResource,
-} from './resources/benefit-eligibility-policy';
-import {
-  Dependent,
-  DependentRetrieveResponse,
-  DependentUpdateParams,
-  DependentUpdateResponse,
-  Dependents,
-  Sex,
-} from './resources/dependents';
+} from './resources/benefit-eligibility-policies';
+import { Dependent, DependentResponse, DependentUpdateParams, Dependents } from './resources/dependents';
 import {
   CoverageTier,
   Enrollment,
   EnrollmentListPlansResponse,
   EnrollmentReissueParams,
-  EnrollmentReissueResponse,
-  EnrollmentRetrieveResponse,
+  EnrollmentResponse,
   Enrollments,
   PlanTier,
 } from './resources/enrollments';
-import {
-  PlanYearRetrieveResponse,
-  PlanYearUpdateParams,
-  PlanYearUpdateResponse,
-  PlanYears,
-} from './resources/plan-years';
-import { QualifyingLifeEvents } from './resources/qualifying-life-events';
+import { PlanYearUpdateParams, PlanYears } from './resources/plan-years';
 import {
   BenefitProductListParams,
   BenefitProductListResponse,
   BenefitProducts,
   Category,
+  Pagination,
   ProductCode,
 } from './resources/benefit-products/benefit-products';
-import {
-  Employee,
-  EmployeeRetrieveResponse,
-  EmployeeUpdateParams,
-  EmployeeUpdateResponse,
-  Employees,
-} from './resources/employees/employees';
+import { Employee, EmployeeResponse, EmployeeUpdateParams, Employees } from './resources/employees/employees';
 import {
   Employer,
+  EmployerCreateEligibilityPolicyParams,
   EmployerCreateParams,
-  EmployerCreateResponse,
   EmployerListParams,
   EmployerListResponse,
-  EmployerRetrieveResponse,
+  EmployerResponse,
   EmployerUpdateParams,
-  EmployerUpdateResponse,
   Employers,
 } from './resources/employers/employers';
 import { Members } from './resources/members/members';
@@ -92,7 +73,7 @@ type Environment = keyof typeof environments;
 
 export interface ClientOptions {
   /**
-   * API Key authentication using Bearer token in Authorization header
+   * API Key or Access Token authentication using Bearer token in Authorization header. API keys use the vit_apk_ prefix, access tokens use the vit_at_ prefix.
    */
   apiKey?: string | undefined;
 
@@ -108,7 +89,7 @@ export interface ClientOptions {
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env['VITABLE_CONNECT_API_BASE_URL'].
+   * Defaults to process.env['VITABLE_CONNECT_BASE_URL'].
    */
   baseURL?: string | null | undefined;
 
@@ -162,7 +143,7 @@ export interface ClientOptions {
   /**
    * Set the log level.
    *
-   * Defaults to process.env['VITABLE_CONNECT_API_LOG'] or 'warn' if it isn't set.
+   * Defaults to process.env['VITABLE_CONNECT_LOG'] or 'warn' if it isn't set.
    */
   logLevel?: LogLevel | undefined;
 
@@ -175,9 +156,9 @@ export interface ClientOptions {
 }
 
 /**
- * API Client for interfacing with the Vitable Connect API API.
+ * API Client for interfacing with the Vitable Connect API.
  */
-export class VitableConnectAPI {
+export class VitableConnect {
   apiKey: string;
 
   baseURL: string;
@@ -193,11 +174,11 @@ export class VitableConnectAPI {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the Vitable Connect API API.
+   * API Client for interfacing with the Vitable Connect API.
    *
-   * @param {string | undefined} [opts.apiKey=process.env['VITABLE_connect_API_API_KEY'] ?? undefined]
+   * @param {string | undefined} [opts.apiKey=process.env['VITABLE_CONNECT_API_KEY'] ?? undefined]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
-   * @param {string} [opts.baseURL=process.env['VITABLE_CONNECT_API_BASE_URL'] ?? https://api.vitablehealth.com] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env['VITABLE_CONNECT_BASE_URL'] ?? https://api.vitablehealth.com] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -206,13 +187,13 @@ export class VitableConnectAPI {
    * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
-    baseURL = readEnv('VITABLE_CONNECT_API_BASE_URL'),
-    apiKey = readEnv('VITABLE_connect_API_API_KEY'),
+    baseURL = readEnv('VITABLE_CONNECT_BASE_URL'),
+    apiKey = readEnv('VITABLE_CONNECT_API_KEY'),
     ...opts
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
-      throw new Errors.VitableConnectAPIError(
-        "The VITABLE_connect_API_API_KEY environment variable is missing or empty; either provide it, or instantiate the VitableConnectAPI client with an apiKey option, like new VitableConnectAPI({ apiKey: 'My API Key' }).",
+      throw new Errors.VitableConnectError(
+        "The VITABLE_CONNECT_API_KEY environment variable is missing or empty; either provide it, or instantiate the VitableConnect client with an apiKey option, like new VitableConnect({ apiKey: 'My API Key' }).",
       );
     }
 
@@ -224,20 +205,20 @@ export class VitableConnectAPI {
     };
 
     if (baseURL && opts.environment) {
-      throw new Errors.VitableConnectAPIError(
-        'Ambiguous URL; The `baseURL` option (or VITABLE_CONNECT_API_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null',
+      throw new Errors.VitableConnectError(
+        'Ambiguous URL; The `baseURL` option (or VITABLE_CONNECT_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null',
       );
     }
 
     this.baseURL = options.baseURL || environments[options.environment || 'production'];
-    this.timeout = options.timeout ?? VitableConnectAPI.DEFAULT_TIMEOUT /* 1 minute */;
+    this.timeout = options.timeout ?? VitableConnect.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
     this.logLevel = defaultLogLevel;
     this.logLevel =
       parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
-      parseLogLevel(readEnv('VITABLE_CONNECT_API_LOG'), "process.env['VITABLE_CONNECT_API_LOG']", this) ??
+      parseLogLevel(readEnv('VITABLE_CONNECT_LOG'), "process.env['VITABLE_CONNECT_LOG']", this) ??
       defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
@@ -284,6 +265,10 @@ export class VitableConnectAPI {
     return;
   }
 
+  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
+  }
+
   /**
    * Basic re-implementation of `qs.stringify` for primitive types.
    */
@@ -297,7 +282,7 @@ export class VitableConnectAPI {
         if (value === null) {
           return `${encodeURIComponent(key)}=`;
         }
-        throw new Errors.VitableConnectAPIError(
+        throw new Errors.VitableConnectError(
           `Cannot stringify type ${typeof value}; Expected string, number, boolean, or null. If you need to pass nested query parameters, you can manually encode them, e.g. { query: { 'foo[key1]': value1, 'foo[key2]': value2 } }, and please open a GitHub issue requesting better support for your use case.`,
         );
       })
@@ -722,6 +707,7 @@ export class VitableConnectAPI {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
+      await this.authHeaders(options),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -775,10 +761,10 @@ export class VitableConnectAPI {
     }
   }
 
-  static VitableConnectAPI = this;
+  static VitableConnect = this;
   static DEFAULT_TIMEOUT = 60000; // 1 minute
 
-  static VitableConnectAPIError = Errors.VitableConnectAPIError;
+  static VitableConnectError = Errors.VitableConnectError;
   static APIError = Errors.APIError;
   static APIConnectionError = Errors.APIConnectionError;
   static APIConnectionTimeoutError = Errors.APIConnectionTimeoutError;
@@ -794,9 +780,8 @@ export class VitableConnectAPI {
 
   static toFile = Uploads.toFile;
 
-  benefitEligibilityPolicy: API.BenefitEligibilityPolicyResource = new API.BenefitEligibilityPolicyResource(
-    this,
-  );
+  auth: API.Auth = new API.Auth(this);
+  benefitEligibilityPolicies: API.BenefitEligibilityPolicies = new API.BenefitEligibilityPolicies(this);
   benefitProducts: API.BenefitProducts = new API.BenefitProducts(this);
   dependents: API.Dependents = new API.Dependents(this);
   employees: API.Employees = new API.Employees(this);
@@ -804,30 +789,37 @@ export class VitableConnectAPI {
   enrollments: API.Enrollments = new API.Enrollments(this);
   members: API.Members = new API.Members(this);
   planYears: API.PlanYears = new API.PlanYears(this);
-  qualifyingLifeEvents: API.QualifyingLifeEvents = new API.QualifyingLifeEvents(this);
 }
 
-VitableConnectAPI.BenefitEligibilityPolicyResource = BenefitEligibilityPolicyResource;
-VitableConnectAPI.BenefitProducts = BenefitProducts;
-VitableConnectAPI.Dependents = Dependents;
-VitableConnectAPI.Employees = Employees;
-VitableConnectAPI.Employers = Employers;
-VitableConnectAPI.Enrollments = Enrollments;
-VitableConnectAPI.Members = Members;
-VitableConnectAPI.PlanYears = PlanYears;
-VitableConnectAPI.QualifyingLifeEvents = QualifyingLifeEvents;
+VitableConnect.Auth = Auth;
+VitableConnect.BenefitEligibilityPolicies = BenefitEligibilityPolicies;
+VitableConnect.BenefitProducts = BenefitProducts;
+VitableConnect.Dependents = Dependents;
+VitableConnect.Employees = Employees;
+VitableConnect.Employers = Employers;
+VitableConnect.Enrollments = Enrollments;
+VitableConnect.Members = Members;
+VitableConnect.PlanYears = PlanYears;
 
-export declare namespace VitableConnectAPI {
+export declare namespace VitableConnect {
   export type RequestOptions = Opts.RequestOptions;
 
   export {
-    BenefitEligibilityPolicyResource as BenefitEligibilityPolicyResource,
+    Auth as Auth,
+    type Type as Type,
+    type AuthIssueAccessTokenResponse as AuthIssueAccessTokenResponse,
+    type AuthIssueAccessTokenParams as AuthIssueAccessTokenParams,
+  };
+
+  export {
+    BenefitEligibilityPolicies as BenefitEligibilityPolicies,
     type BenefitEligibilityPolicy as BenefitEligibilityPolicy,
   };
 
   export {
     BenefitProducts as BenefitProducts,
     type Category as Category,
+    type Pagination as Pagination,
     type ProductCode as ProductCode,
     type BenefitProductListResponse as BenefitProductListResponse,
     type BenefitProductListParams as BenefitProductListParams,
@@ -836,51 +828,39 @@ export declare namespace VitableConnectAPI {
   export {
     Dependents as Dependents,
     type Dependent as Dependent,
-    type Sex as Sex,
-    type DependentRetrieveResponse as DependentRetrieveResponse,
-    type DependentUpdateResponse as DependentUpdateResponse,
+    type DependentResponse as DependentResponse,
     type DependentUpdateParams as DependentUpdateParams,
   };
 
   export {
     Employees as Employees,
     type Employee as Employee,
-    type EmployeeRetrieveResponse as EmployeeRetrieveResponse,
-    type EmployeeUpdateResponse as EmployeeUpdateResponse,
+    type EmployeeResponse as EmployeeResponse,
     type EmployeeUpdateParams as EmployeeUpdateParams,
   };
 
   export {
     Employers as Employers,
     type Employer as Employer,
-    type EmployerCreateResponse as EmployerCreateResponse,
-    type EmployerRetrieveResponse as EmployerRetrieveResponse,
-    type EmployerUpdateResponse as EmployerUpdateResponse,
+    type EmployerResponse as EmployerResponse,
     type EmployerListResponse as EmployerListResponse,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerUpdateParams as EmployerUpdateParams,
     type EmployerListParams as EmployerListParams,
+    type EmployerCreateEligibilityPolicyParams as EmployerCreateEligibilityPolicyParams,
   };
 
   export {
     Enrollments as Enrollments,
     type CoverageTier as CoverageTier,
     type Enrollment as Enrollment,
+    type EnrollmentResponse as EnrollmentResponse,
     type PlanTier as PlanTier,
-    type EnrollmentRetrieveResponse as EnrollmentRetrieveResponse,
     type EnrollmentListPlansResponse as EnrollmentListPlansResponse,
-    type EnrollmentReissueResponse as EnrollmentReissueResponse,
     type EnrollmentReissueParams as EnrollmentReissueParams,
   };
 
   export { Members as Members };
 
-  export {
-    PlanYears as PlanYears,
-    type PlanYearRetrieveResponse as PlanYearRetrieveResponse,
-    type PlanYearUpdateResponse as PlanYearUpdateResponse,
-    type PlanYearUpdateParams as PlanYearUpdateParams,
-  };
-
-  export { QualifyingLifeEvents as QualifyingLifeEvents };
+  export { PlanYears as PlanYears, type PlanYearUpdateParams as PlanYearUpdateParams };
 }

@@ -1,11 +1,34 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as BenefitProductsAPI from '../benefit-products/benefit-products';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
 export class QualifyingLifeEvents extends APIResource {
+  /**
+   * Retrieves detailed information for a specific QLE by ID. Returns event type,
+   * date, status, and enrollment window information.
+   *
+   * @example
+   * ```ts
+   * const qualifyingLifeEventResponse =
+   *   await client.members.qualifyingLifeEvents.retrieve(
+   *     'qle_abc123def456',
+   *     { member_id: 'mbr_abc123def456' },
+   *   );
+   * ```
+   */
+  retrieve(
+    qleID: string,
+    params: QualifyingLifeEventRetrieveParams,
+    options?: RequestOptions,
+  ): APIPromise<QualifyingLifeEventResponse> {
+    const { member_id } = params;
+    return this._client.get(path`/v1/members/${member_id}/qualifying-life-events/${qleID}`, options);
+  }
+
   /**
    * Retrieves a paginated list of qualifying life events for a member. QLEs are
    * significant life changes (marriage, birth, adoption, loss of coverage) that
@@ -34,7 +57,7 @@ export class QualifyingLifeEvents extends APIResource {
    *
    * @example
    * ```ts
-   * const response =
+   * const qualifyingLifeEventResponse =
    *   await client.members.qualifyingLifeEvents.record(
    *     'mbr_abc123def456',
    *     {
@@ -50,7 +73,7 @@ export class QualifyingLifeEvents extends APIResource {
     memberID: string,
     body: QualifyingLifeEventRecordParams,
     options?: RequestOptions,
-  ): APIPromise<QualifyingLifeEventRecordResponse> {
+  ): APIPromise<QualifyingLifeEventResponse> {
     return this._client.post(path`/v1/members/${memberID}/qualifying-life-events`, { body, ...options });
   }
 }
@@ -158,6 +181,19 @@ export interface QualifyingLifeEvent {
 }
 
 /**
+ * Response containing a single qualifying life event resource.
+ */
+export interface QualifyingLifeEventResponse {
+  /**
+   * Serializer for Qualifying Life Event entity in public API responses.
+   *
+   * QLEs are significant life changes (marriage, birth, adoption, loss of coverage)
+   * that allow employees to modify benefit elections outside of open enrollment.
+   */
+  data: QualifyingLifeEvent;
+}
+
+/**
  * - `pending` - Pending
  * - `approved` - Approved
  * - `denied` - Denied
@@ -173,47 +209,14 @@ export interface QualifyingLifeEventListResponse {
   /**
    * Pagination metadata for list responses.
    */
-  pagination: QualifyingLifeEventListResponse.Pagination;
+  pagination: BenefitProductsAPI.Pagination;
 }
 
-export namespace QualifyingLifeEventListResponse {
+export interface QualifyingLifeEventRetrieveParams {
   /**
-   * Pagination metadata for list responses.
+   * Unique member identifier (mbr\_\*)
    */
-  export interface Pagination {
-    /**
-     * Items per page
-     */
-    limit: number;
-
-    /**
-     * Current page number
-     */
-    page: number;
-
-    /**
-     * Total number of items
-     */
-    total: number;
-
-    /**
-     * Total number of pages
-     */
-    total_pages: number;
-  }
-}
-
-/**
- * Response containing a single qualifying life event resource.
- */
-export interface QualifyingLifeEventRecordResponse {
-  /**
-   * Serializer for Qualifying Life Event entity in public API responses.
-   *
-   * QLEs are significant life changes (marriage, birth, adoption, loss of coverage)
-   * that allow employees to modify benefit elections outside of open enrollment.
-   */
-  data: QualifyingLifeEvent;
+  member_id: string;
 }
 
 export interface QualifyingLifeEventListParams {
@@ -269,9 +272,10 @@ export declare namespace QualifyingLifeEvents {
   export {
     type EventType as EventType,
     type QualifyingLifeEvent as QualifyingLifeEvent,
+    type QualifyingLifeEventResponse as QualifyingLifeEventResponse,
     type QualifyingLifeEventStatus as QualifyingLifeEventStatus,
     type QualifyingLifeEventListResponse as QualifyingLifeEventListResponse,
-    type QualifyingLifeEventRecordResponse as QualifyingLifeEventRecordResponse,
+    type QualifyingLifeEventRetrieveParams as QualifyingLifeEventRetrieveParams,
     type QualifyingLifeEventListParams as QualifyingLifeEventListParams,
     type QualifyingLifeEventRecordParams as QualifyingLifeEventRecordParams,
   };
