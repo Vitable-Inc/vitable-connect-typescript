@@ -8,7 +8,7 @@ const client = new VitableConnect({
 });
 
 describe('resource auth', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('issueAccessToken: only required params', async () => {
     const responsePromise = client.auth.issueAccessToken({ grant_type: 'client_credentials' });
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource auth', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('issueAccessToken: required and optional params', async () => {
     const response = await client.auth.issueAccessToken({
       grant_type: 'client_credentials',

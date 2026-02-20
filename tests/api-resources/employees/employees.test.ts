@@ -8,7 +8,7 @@ const client = new VitableConnect({
 });
 
 describe('resource employees', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve', async () => {
     const responsePromise = client.employees.retrieve('empl_abc123def456');
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource employees', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update', async () => {
     const responsePromise = client.employees.update('empl_abc123def456');
     const rawResponse = await responsePromise.asResponse();
@@ -32,7 +32,7 @@ describe('resource employees', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -58,7 +58,7 @@ describe('resource employees', () => {
     ).rejects.toThrow(VitableConnect.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('terminate', async () => {
     const responsePromise = client.employees.terminate('empl_abc123def456');
     const rawResponse = await responsePromise.asResponse();

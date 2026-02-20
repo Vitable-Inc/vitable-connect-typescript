@@ -8,7 +8,7 @@ const client = new VitableConnect({
 });
 
 describe('resource enrollments', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve', async () => {
     const responsePromise = client.enrollments.retrieve('enrl_abc123def456');
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource enrollments', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('listPlans', async () => {
     const responsePromise = client.enrollments.listPlans('enrl_abc123def456');
     const rawResponse = await responsePromise.asResponse();
@@ -32,7 +32,7 @@ describe('resource enrollments', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('reissue: only required params', async () => {
     const responsePromise = client.enrollments.reissue('enrl_abc123def456', { qle_id: 'qle_marriage123abc' });
     const rawResponse = await responsePromise.asResponse();
@@ -44,7 +44,7 @@ describe('resource enrollments', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('reissue: required and optional params', async () => {
     const response = await client.enrollments.reissue('enrl_abc123def456', {
       qle_id: 'qle_marriage123abc',
