@@ -8,7 +8,7 @@ const client = new VitableConnect({
 });
 
 describe('resource enrollments', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.employees.enrollments.list('empl_abc123def456');
     const rawResponse = await responsePromise.asResponse();
@@ -20,7 +20,7 @@ describe('resource enrollments', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -38,7 +38,7 @@ describe('resource enrollments', () => {
     ).rejects.toThrow(VitableConnect.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('submitElections: only required params', async () => {
     const responsePromise = client.employees.enrollments.submitElections('empl_abc123def456', {
       elections: [
@@ -63,7 +63,7 @@ describe('resource enrollments', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('submitElections: required and optional params', async () => {
     const response = await client.employees.enrollments.submitElections('empl_abc123def456', {
       elections: [

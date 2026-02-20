@@ -8,7 +8,7 @@ const client = new VitableConnect({
 });
 
 describe('resource employers', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: only required params', async () => {
     const responsePromise = client.employers.create({
       address: {
@@ -31,7 +31,7 @@ describe('resource employers', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
     const response = await client.employers.create({
       address: {
@@ -48,7 +48,7 @@ describe('resource employers', () => {
     });
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve', async () => {
     const responsePromise = client.employers.retrieve('empr_abc123def456');
     const rawResponse = await responsePromise.asResponse();
@@ -60,7 +60,7 @@ describe('resource employers', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update', async () => {
     const responsePromise = client.employers.update('empr_abc123def456');
     const rawResponse = await responsePromise.asResponse();
@@ -72,7 +72,7 @@ describe('resource employers', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('update: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -95,7 +95,7 @@ describe('resource employers', () => {
     ).rejects.toThrow(VitableConnect.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.employers.list();
     const rawResponse = await responsePromise.asResponse();
@@ -107,7 +107,7 @@ describe('resource employers', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
@@ -123,7 +123,7 @@ describe('resource employers', () => {
     ).rejects.toThrow(VitableConnect.NotFoundError);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('createEligibilityPolicy: only required params', async () => {
     const responsePromise = client.employers.createEligibilityPolicy('empr_abc123def456', {
       effective_date: '2025-01-01',
@@ -150,7 +150,7 @@ describe('resource employers', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('createEligibilityPolicy: required and optional params', async () => {
     const response = await client.employers.createEligibilityPolicy('empr_abc123def456', {
       effective_date: '2025-01-01',

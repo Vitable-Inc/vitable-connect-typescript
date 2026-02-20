@@ -8,7 +8,7 @@ const client = new VitableConnect({
 });
 
 describe('resource benefitEligibilityPolicies', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('retrieve', async () => {
     const responsePromise = client.benefitEligibilityPolicies.retrieve('epol_abc123def456');
     const rawResponse = await responsePromise.asResponse();
