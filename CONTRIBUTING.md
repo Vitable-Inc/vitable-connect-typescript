@@ -60,7 +60,7 @@ $ yarn link vitable-connect
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global vitable-connect
+$ pnpm link --global vitable-connect
 ```
 
 ## Running tests
