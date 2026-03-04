@@ -7,6 +7,9 @@ import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * Configure annual benefit periods with coverage dates and contribution settings
+ */
 export class PlanYears extends APIResource {
   /**
    * Creates a new plan year configuration for a benefit product and employer.

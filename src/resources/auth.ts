@@ -5,6 +5,9 @@ import * as AuthAPI from './auth';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
+/**
+ * Issue short-lived access tokens for scoped API access
+ */
 export class Auth extends APIResource {
   /**
    * Issues a short-lived access token from the authenticated API key. Access tokens

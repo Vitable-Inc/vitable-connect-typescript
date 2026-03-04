@@ -9,6 +9,9 @@ import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Manage benefit enrollments and elections for employees
+ */
 export class Enrollments extends APIResource {
   /**
    * Retrieves detailed information for a specific enrollment by ID. Returns selected

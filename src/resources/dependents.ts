@@ -7,6 +7,9 @@ import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Manage dependent records (spouses, children) for employees
+ */
 export class Dependents extends APIResource {
   /**
    * Retrieves detailed information for a specific dependent by ID. Returns dependent

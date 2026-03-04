@@ -15,6 +15,9 @@ import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * Manage employee records for employers
+ */
 export class Employees extends APIResource {
   enrollments: EnrollmentsAPI.Enrollments = new EnrollmentsAPI.Enrollments(this._client);
 
