@@ -6,6 +6,9 @@ import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * Record life events that trigger special enrollment periods
+ */
 export class QualifyingLifeEvents extends APIResource {
   /**
    * Retrieves detailed information for a specific QLE by ID. Returns event type,

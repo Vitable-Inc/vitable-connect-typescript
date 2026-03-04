@@ -7,6 +7,9 @@ import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
 
+/**
+ * Manage employee records for employers
+ */
 export class Employees extends APIResource {
   /**
    * Creates a new employee for a specific employer. Requires personal information

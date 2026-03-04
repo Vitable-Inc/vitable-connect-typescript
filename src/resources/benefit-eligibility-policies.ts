@@ -5,6 +5,9 @@ import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
+/**
+ * Define rules that determine which employees qualify for benefits
+ */
 export class BenefitEligibilityPolicies extends APIResource {
   /**
    * Retrieves detailed information for a specific benefit eligibility policy by ID.

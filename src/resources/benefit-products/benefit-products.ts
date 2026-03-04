@@ -15,6 +15,9 @@ import {
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 
+/**
+ * Browse available benefit products that can be offered to employers
+ */
 export class BenefitProducts extends APIResource {
   planYears: PlanYearsAPI.PlanYears = new PlanYearsAPI.PlanYears(this._client);
 

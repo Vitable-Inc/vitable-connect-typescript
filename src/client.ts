@@ -776,14 +776,35 @@ export class VitableConnect {
 
   static toFile = Uploads.toFile;
 
+  /**
+   * Issue short-lived access tokens for scoped API access
+   */
   auth: API.Auth = new API.Auth(this);
+  /**
+   * Define rules that determine which employees qualify for benefits
+   */
   benefitEligibilityPolicies: API.BenefitEligibilityPolicies = new API.BenefitEligibilityPolicies(this);
+  /**
+   * Browse available benefit products that can be offered to employers
+   */
   benefitProducts: API.BenefitProducts = new API.BenefitProducts(this);
+  /**
+   * Manage dependent records (spouses, children) for employees
+   */
   dependents: API.Dependents = new API.Dependents(this);
+  /**
+   * Manage employee records for employers
+   */
   employees: API.Employees = new API.Employees(this);
   employers: API.Employers = new API.Employers(this);
+  /**
+   * Manage benefit enrollments and elections for employees
+   */
   enrollments: API.Enrollments = new API.Enrollments(this);
   members: API.Members = new API.Members(this);
+  /**
+   * Configure annual benefit periods with coverage dates and contribution settings
+   */
   planYears: API.PlanYears = new API.PlanYears(this);
 }
 
