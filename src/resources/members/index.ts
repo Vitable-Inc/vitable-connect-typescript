@@ -2,7 +2,6 @@
 
 export {
   Dependents,
-  type Relationship,
   type DependentListResponse,
   type DependentCreateParams,
   type DependentListParams,

@@ -2,8 +2,6 @@
 
 export {
   Employees,
-  type EmployeeClass,
-  type Sex,
   type EmployeeListResponse,
   type EmployeeCreateParams,
   type EmployeeListParams,

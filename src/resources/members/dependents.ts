@@ -3,7 +3,7 @@
 import { APIResource } from '../../core/resource';
 import * as DependentsAPI from '../dependents';
 import * as BenefitProductsAPI from '../benefit-products/benefit-products';
-import * as EmployeesAPI from '../employers/employees';
+import * as EmployeesAPI from '../employees/employees';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
@@ -63,12 +63,6 @@ export class Dependents extends APIResource {
 }
 
 /**
- * - `Spouse` - Spouse
- * - `Child` - Child
- */
-export type Relationship = 'Spouse' | 'Child';
-
-/**
  * Paginated list response containing dependent resources.
  */
 export interface DependentListResponse {
@@ -100,7 +94,7 @@ export interface DependentCreateParams {
    * - `Spouse` - Spouse
    * - `Child` - Child
    */
-  relationship: Relationship;
+  relationship: DependentsAPI.Relationship;
 
   /**
    * - `Male` - Male
@@ -145,12 +139,11 @@ export interface DependentListParams {
   /**
    * Filter by relationship type
    */
-  relationship?: Relationship;
+  relationship?: DependentsAPI.Relationship;
 }
 
 export declare namespace Dependents {
   export {
-    type Relationship as Relationship,
     type DependentListResponse as DependentListResponse,
     type DependentCreateParams as DependentCreateParams,
     type DependentListParams as DependentListParams,

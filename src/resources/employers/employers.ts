@@ -4,14 +4,7 @@ import { APIResource } from '../../core/resource';
 import * as BenefitEligibilityPoliciesAPI from '../benefit-eligibility-policies';
 import * as BenefitProductsAPI from '../benefit-products/benefit-products';
 import * as EmployeesAPI from './employees';
-import {
-  EmployeeClass,
-  EmployeeCreateParams,
-  EmployeeListParams,
-  EmployeeListResponse,
-  Employees,
-  Sex,
-} from './employees';
+import { EmployeeCreateParams, EmployeeListParams, EmployeeListResponse, Employees } from './employees';
 import { APIPromise } from '../../core/api-promise';
 import { RequestOptions } from '../../internal/request-options';
 import { path } from '../../internal/utils/path';
@@ -464,8 +457,6 @@ export declare namespace Employers {
 
   export {
     Employees as Employees,
-    type EmployeeClass as EmployeeClass,
-    type Sex as Sex,
     type EmployeeListResponse as EmployeeListResponse,
     type EmployeeCreateParams as EmployeeCreateParams,
     type EmployeeListParams as EmployeeListParams,

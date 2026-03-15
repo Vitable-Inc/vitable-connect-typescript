@@ -10,11 +10,19 @@ export {
   type BenefitProductListResponse,
   type BenefitProductListParams,
 } from './benefit-products/benefit-products';
-export { Dependents, type Dependent, type DependentResponse, type DependentUpdateParams } from './dependents';
+export {
+  Dependents,
+  type Dependent,
+  type DependentResponse,
+  type Relationship,
+  type DependentUpdateParams,
+} from './dependents';
 export {
   Employees,
   type Employee,
+  type EmployeeClass,
   type EmployeeResponse,
+  type Sex,
   type EmployeeUpdateParams,
 } from './employees/employees';
 export {
@@ -32,6 +40,7 @@ export {
   type CoverageTier,
   type Enrollment,
   type EnrollmentResponse,
+  type EnrollmentStatus,
   type PlanTier,
   type EnrollmentListPlansResponse,
   type EnrollmentReissueParams,
