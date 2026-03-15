@@ -22,13 +22,20 @@ import {
   BenefitEligibilityPolicies,
   BenefitEligibilityPolicy,
 } from './resources/benefit-eligibility-policies';
-import { Dependent, DependentResponse, DependentUpdateParams, Dependents } from './resources/dependents';
+import {
+  Dependent,
+  DependentResponse,
+  DependentUpdateParams,
+  Dependents,
+  Relationship,
+} from './resources/dependents';
 import {
   CoverageTier,
   Enrollment,
   EnrollmentListPlansResponse,
   EnrollmentReissueParams,
   EnrollmentResponse,
+  EnrollmentStatus,
   Enrollments,
   PlanTier,
 } from './resources/enrollments';
@@ -41,7 +48,14 @@ import {
   Pagination,
   ProductCode,
 } from './resources/benefit-products/benefit-products';
-import { Employee, EmployeeResponse, EmployeeUpdateParams, Employees } from './resources/employees/employees';
+import {
+  Employee,
+  EmployeeClass,
+  EmployeeResponse,
+  EmployeeUpdateParams,
+  Employees,
+  Sex,
+} from './resources/employees/employees';
 import {
   Employer,
   EmployerCreateEligibilityPolicyParams,
@@ -847,13 +861,16 @@ export declare namespace VitableConnect {
     Dependents as Dependents,
     type Dependent as Dependent,
     type DependentResponse as DependentResponse,
+    type Relationship as Relationship,
     type DependentUpdateParams as DependentUpdateParams,
   };
 
   export {
     Employees as Employees,
     type Employee as Employee,
+    type EmployeeClass as EmployeeClass,
     type EmployeeResponse as EmployeeResponse,
+    type Sex as Sex,
     type EmployeeUpdateParams as EmployeeUpdateParams,
   };
 
@@ -873,6 +890,7 @@ export declare namespace VitableConnect {
     type CoverageTier as CoverageTier,
     type Enrollment as Enrollment,
     type EnrollmentResponse as EnrollmentResponse,
+    type EnrollmentStatus as EnrollmentStatus,
     type PlanTier as PlanTier,
     type EnrollmentListPlansResponse as EnrollmentListPlansResponse,
     type EnrollmentReissueParams as EnrollmentReissueParams,

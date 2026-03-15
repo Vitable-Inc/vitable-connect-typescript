@@ -1,15 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../core/resource';
+import * as EmployeesAPI from './employees';
 import * as EnrollmentsAPI from './enrollments';
 import {
   EnrollmentList,
   EnrollmentListParams,
-  EnrollmentStatus,
   EnrollmentSubmitElectionsParams,
   Enrollments,
 } from './enrollments';
-import * as EmployersEmployeesAPI from '../employers/employees';
 import { APIPromise } from '../../core/api-promise';
 import { buildHeaders } from '../../internal/headers';
 import { RequestOptions } from '../../internal/request-options';
@@ -143,7 +142,7 @@ export interface Employee {
    * - `Seasonal` - Seasonal
    * - `Individual Contractor` - Individual Contractor
    */
-  employee_class?: EmployersEmployeesAPI.EmployeeClass | null;
+  employee_class?: EmployeeClass | null;
 
   /**
    * Employee's termination date, if terminated
@@ -184,7 +183,7 @@ export namespace Employee {
      * - `Other` - Other
      * - `Unknown` - Unknown
      */
-    sex: EmployersEmployeesAPI.Sex;
+    sex: EmployeesAPI.Sex;
 
     /**
      * Email address for communications
@@ -244,6 +243,22 @@ export namespace Employee {
 }
 
 /**
+ * - `Full Time` - Full Time
+ * - `Part Time` - Part Time
+ * - `Temporary` - Temporary
+ * - `Intern` - Intern
+ * - `Seasonal` - Seasonal
+ * - `Individual Contractor` - Individual Contractor
+ */
+export type EmployeeClass =
+  | 'Full Time'
+  | 'Part Time'
+  | 'Temporary'
+  | 'Intern'
+  | 'Seasonal'
+  | 'Individual Contractor';
+
+/**
  * Response containing a single employee resource.
  */
 export interface EmployeeResponse {
@@ -255,6 +270,14 @@ export interface EmployeeResponse {
    */
   data: Employee;
 }
+
+/**
+ * - `Male` - Male
+ * - `Female` - Female
+ * - `Other` - Other
+ * - `Unknown` - Unknown
+ */
+export type Sex = 'Male' | 'Female' | 'Other' | 'Unknown';
 
 export interface EmployeeUpdateParams {
   /**
@@ -275,7 +298,7 @@ export interface EmployeeUpdateParams {
    * - `Seasonal` - Seasonal
    * - `Individual Contractor` - Individual Contractor
    */
-  employee_class?: EmployersEmployeesAPI.EmployeeClass | null;
+  employee_class?: EmployeeClass | null;
 
   /**
    * Gender identity
@@ -335,14 +358,15 @@ Employees.Enrollments = Enrollments;
 export declare namespace Employees {
   export {
     type Employee as Employee,
+    type EmployeeClass as EmployeeClass,
     type EmployeeResponse as EmployeeResponse,
+    type Sex as Sex,
     type EmployeeUpdateParams as EmployeeUpdateParams,
   };
 
   export {
     Enrollments as Enrollments,
     type EnrollmentList as EnrollmentList,
-    type EnrollmentStatus as EnrollmentStatus,
     type EnrollmentListParams as EnrollmentListParams,
     type EnrollmentSubmitElectionsParams as EnrollmentSubmitElectionsParams,
   };

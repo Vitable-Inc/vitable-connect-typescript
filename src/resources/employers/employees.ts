@@ -73,30 +73,6 @@ export class Employees extends APIResource {
 }
 
 /**
- * - `Full Time` - Full Time
- * - `Part Time` - Part Time
- * - `Temporary` - Temporary
- * - `Intern` - Intern
- * - `Seasonal` - Seasonal
- * - `Individual Contractor` - Individual Contractor
- */
-export type EmployeeClass =
-  | 'Full Time'
-  | 'Part Time'
-  | 'Temporary'
-  | 'Intern'
-  | 'Seasonal'
-  | 'Individual Contractor';
-
-/**
- * - `Male` - Male
- * - `Female` - Female
- * - `Other` - Other
- * - `Unknown` - Unknown
- */
-export type Sex = 'Male' | 'Female' | 'Other' | 'Unknown';
-
-/**
  * Paginated list response containing employee resources.
  */
 export interface EmployeeListResponse {
@@ -135,7 +111,7 @@ export interface EmployeeCreateParams {
    * - `Other` - Other
    * - `Unknown` - Unknown
    */
-  sex: Sex;
+  sex: EmployeesAPI.Sex;
 
   /**
    * Social Security Number (XXX-XX-XXXX or XXXXXXXXX). Only accepted on create.
@@ -160,7 +136,7 @@ export interface EmployeeCreateParams {
    * - `Seasonal` - Seasonal
    * - `Individual Contractor` - Individual Contractor
    */
-  employee_class?: EmployeeClass | null;
+  employee_class?: EmployeesAPI.EmployeeClass | null;
 
   /**
    * Gender identity
@@ -224,7 +200,7 @@ export interface EmployeeListParams {
   /**
    * Filter by employment classification
    */
-  employee_class?: EmployeeClass;
+  employee_class?: EmployeesAPI.EmployeeClass;
 
   /**
    * Items per page (default: 20, max: 100)
@@ -239,8 +215,6 @@ export interface EmployeeListParams {
 
 export declare namespace Employees {
   export {
-    type EmployeeClass as EmployeeClass,
-    type Sex as Sex,
     type EmployeeListResponse as EmployeeListResponse,
     type EmployeeCreateParams as EmployeeCreateParams,
     type EmployeeListParams as EmployeeListParams,

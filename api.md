@@ -52,6 +52,7 @@ Types:
 
 - <code><a href="./src/resources/dependents.ts">Dependent</a></code>
 - <code><a href="./src/resources/dependents.ts">DependentResponse</a></code>
+- <code><a href="./src/resources/dependents.ts">Relationship</a></code>
 
 Methods:
 
@@ -63,7 +64,9 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/employees/employees.ts">Employee</a></code>
+- <code><a href="./src/resources/employees/employees.ts">EmployeeClass</a></code>
 - <code><a href="./src/resources/employees/employees.ts">EmployeeResponse</a></code>
+- <code><a href="./src/resources/employees/employees.ts">Sex</a></code>
 
 Methods:
 
@@ -76,7 +79,6 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/employees/enrollments.ts">EnrollmentList</a></code>
-- <code><a href="./src/resources/employees/enrollments.ts">EnrollmentStatus</a></code>
 
 Methods:
 
@@ -103,8 +105,6 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/employers/employees.ts">EmployeeClass</a></code>
-- <code><a href="./src/resources/employers/employees.ts">Sex</a></code>
 - <code><a href="./src/resources/employers/employees.ts">EmployeeListResponse</a></code>
 
 Methods:
@@ -119,6 +119,7 @@ Types:
 - <code><a href="./src/resources/enrollments.ts">CoverageTier</a></code>
 - <code><a href="./src/resources/enrollments.ts">Enrollment</a></code>
 - <code><a href="./src/resources/enrollments.ts">EnrollmentResponse</a></code>
+- <code><a href="./src/resources/enrollments.ts">EnrollmentStatus</a></code>
 - <code><a href="./src/resources/enrollments.ts">PlanTier</a></code>
 - <code><a href="./src/resources/enrollments.ts">EnrollmentListPlansResponse</a></code>
 
@@ -134,7 +135,6 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/members/dependents.ts">Relationship</a></code>
 - <code><a href="./src/resources/members/dependents.ts">DependentListResponse</a></code>
 
 Methods:

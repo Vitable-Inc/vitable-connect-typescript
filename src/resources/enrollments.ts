@@ -2,9 +2,8 @@
 
 import { APIResource } from '../core/resource';
 import * as EnrollmentsAPI from './enrollments';
+import * as DependentsAPI from './dependents';
 import * as BenefitProductsAPI from './benefit-products/benefit-products';
-import * as EmployeesEnrollmentsAPI from './employees/enrollments';
-import * as DependentsAPI from './members/dependents';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -124,7 +123,7 @@ export interface Enrollment {
    * - `waived` - Waived
    * - `inactive` - Inactive
    */
-  status: EmployeesEnrollmentsAPI.EnrollmentStatus;
+  status: EnrollmentStatus;
 
   /**
    * Timestamp when the enrollment was last updated
@@ -212,6 +211,14 @@ export interface EnrollmentResponse {
    */
   data: Enrollment;
 }
+
+/**
+ * - `pending` - Pending
+ * - `enrolled` - Enrolled
+ * - `waived` - Waived
+ * - `inactive` - Inactive
+ */
+export type EnrollmentStatus = 'pending' | 'enrolled' | 'waived' | 'inactive';
 
 /**
  * - `Bronze` - Bronze
@@ -333,6 +340,7 @@ export declare namespace Enrollments {
     type CoverageTier as CoverageTier,
     type Enrollment as Enrollment,
     type EnrollmentResponse as EnrollmentResponse,
+    type EnrollmentStatus as EnrollmentStatus,
     type PlanTier as PlanTier,
     type EnrollmentListPlansResponse as EnrollmentListPlansResponse,
     type EnrollmentReissueParams as EnrollmentReissueParams,

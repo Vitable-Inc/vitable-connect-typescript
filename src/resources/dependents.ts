@@ -1,8 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as EmployeesAPI from './employers/employees';
-import * as MembersDependentsAPI from './members/dependents';
+import * as EmployeesAPI from './employees/employees';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -94,7 +93,7 @@ export interface Dependent {
    * - `Spouse` - Spouse
    * - `Child` - Child
    */
-  relationship: MembersDependentsAPI.Relationship;
+  relationship: Relationship;
 
   /**
    * - `Male` - Male
@@ -138,6 +137,12 @@ export interface DependentResponse {
   data: Dependent;
 }
 
+/**
+ * - `Spouse` - Spouse
+ * - `Child` - Child
+ */
+export type Relationship = 'Spouse' | 'Child';
+
 export interface DependentUpdateParams {
   /**
    * Whether the dependent is active
@@ -153,13 +158,14 @@ export interface DependentUpdateParams {
    * - `Spouse` - Spouse
    * - `Child` - Child
    */
-  relationship?: MembersDependentsAPI.Relationship | null;
+  relationship?: Relationship | null;
 }
 
 export declare namespace Dependents {
   export {
     type Dependent as Dependent,
     type DependentResponse as DependentResponse,
+    type Relationship as Relationship,
     type DependentUpdateParams as DependentUpdateParams,
   };
 }

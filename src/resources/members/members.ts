@@ -2,13 +2,7 @@
 
 import { APIResource } from '../../core/resource';
 import * as DependentsAPI from './dependents';
-import {
-  DependentCreateParams,
-  DependentListParams,
-  DependentListResponse,
-  Dependents,
-  Relationship,
-} from './dependents';
+import { DependentCreateParams, DependentListParams, DependentListResponse, Dependents } from './dependents';
 import * as QualifyingLifeEventsAPI from './qualifying-life-events';
 import {
   EventType,
@@ -34,7 +28,6 @@ Members.QualifyingLifeEvents = QualifyingLifeEvents;
 export declare namespace Members {
   export {
     Dependents as Dependents,
-    type Relationship as Relationship,
     type DependentListResponse as DependentListResponse,
     type DependentCreateParams as DependentCreateParams,
     type DependentListParams as DependentListParams,

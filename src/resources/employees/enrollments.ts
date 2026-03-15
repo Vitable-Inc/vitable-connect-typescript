@@ -87,14 +87,6 @@ export interface EnrollmentList {
   pagination: BenefitProductsAPI.Pagination;
 }
 
-/**
- * - `pending` - Pending
- * - `enrolled` - Enrolled
- * - `waived` - Waived
- * - `inactive` - Inactive
- */
-export type EnrollmentStatus = 'pending' | 'enrolled' | 'waived' | 'inactive';
-
 export interface EnrollmentListParams {
   /**
    * Filter by coverage year
@@ -119,7 +111,7 @@ export interface EnrollmentListParams {
   /**
    * Filter by enrollment status
    */
-  status?: EnrollmentStatus;
+  status?: EnrollmentsAPI.EnrollmentStatus;
 }
 
 export interface EnrollmentSubmitElectionsParams {
@@ -169,7 +161,6 @@ export namespace EnrollmentSubmitElectionsParams {
 export declare namespace Enrollments {
   export {
     type EnrollmentList as EnrollmentList,
-    type EnrollmentStatus as EnrollmentStatus,
     type EnrollmentListParams as EnrollmentListParams,
     type EnrollmentSubmitElectionsParams as EnrollmentSubmitElectionsParams,
   };
