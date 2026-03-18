@@ -9,51 +9,6 @@ const client = new VitableConnect({
 
 describe('resource employees', () => {
   // Mock server tests are disabled
-  test.skip('create: only required params', async () => {
-    const responsePromise = client.employers.employees.create('empr_abc123def456', {
-      date_of_birth: '1992-08-25',
-      email: 'michael.johnson@example.com',
-      first_name: 'Michael',
-      last_name: 'Johnson',
-      sex: 'Male',
-      ssn: '123-45-6789',
-      start_date: '2024-12-01',
-    });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('create: required and optional params', async () => {
-    const response = await client.employers.employees.create('empr_abc123def456', {
-      date_of_birth: '1992-08-25',
-      email: 'michael.johnson@example.com',
-      first_name: 'Michael',
-      last_name: 'Johnson',
-      sex: 'Male',
-      ssn: '123-45-6789',
-      start_date: '2024-12-01',
-      address: {
-        city: 'Austin',
-        state: 'TX',
-        street_1: '789 Pine Street',
-        zip_code: '78701',
-        country: 'US',
-        street_2: 'street_2',
-      },
-      employee_class: 'Full Time',
-      gender: 'gender',
-      phone: '+1-555-222-3333',
-      suffix: 'suffix',
-    });
-  });
-
-  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.employers.employees.list('empr_abc123def456');
     const rawResponse = await responsePromise.asResponse();
@@ -71,12 +26,7 @@ describe('resource employees', () => {
     await expect(
       client.employers.employees.list(
         'empr_abc123def456',
-        {
-          active_in: true,
-          employee_class: 'Full Time',
-          limit: 20,
-          page: 1,
-        },
+        { limit: 20, page: 1 },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(VitableConnect.NotFoundError);

@@ -61,41 +61,6 @@ describe('resource employers', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('update', async () => {
-    const responsePromise = client.employers.update('empr_abc123def456');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('update: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.employers.update(
-        'empr_abc123def456',
-        {
-          active: true,
-          address: {
-            address_line_1: '456 New Address Ave',
-            city: 'San Francisco',
-            state: 'CA',
-            zipcode: '94103',
-            address_line_2: 'Suite 200',
-          },
-          legal_name: 'x',
-          name: 'Acme Corp (Updated)',
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(VitableConnect.NotFoundError);
-  });
-
-  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.employers.list();
     const rawResponse = await responsePromise.asResponse();
@@ -111,35 +76,15 @@ describe('resource employers', () => {
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.employers.list(
-        {
-          active_in: true,
-          limit: 20,
-          name: 'Acme',
-          page: 1,
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
+      client.employers.list({ limit: 20, page: 1 }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(VitableConnect.NotFoundError);
   });
 
   // Mock server tests are disabled
   test.skip('createEligibilityPolicy: only required params', async () => {
     const responsePromise = client.employers.createEligibilityPolicy('empr_abc123def456', {
-      effective_date: '2025-01-01',
-      name: 'Standard Full-Time Eligibility',
-      rules: [
-        {
-          operator: 'in',
-          rule_type: 'employment_status',
-          value: 'full_time,part_time_30_plus',
-        },
-        {
-          operator: 'greater_than_or_equal',
-          rule_type: 'waiting_period_days',
-          value: '30',
-        },
-      ],
+      classification: 'classification',
+      waiting_period: 'waiting_period',
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -153,22 +98,8 @@ describe('resource employers', () => {
   // Mock server tests are disabled
   test.skip('createEligibilityPolicy: required and optional params', async () => {
     const response = await client.employers.createEligibilityPolicy('empr_abc123def456', {
-      effective_date: '2025-01-01',
-      name: 'Standard Full-Time Eligibility',
-      rules: [
-        {
-          operator: 'in',
-          rule_type: 'employment_status',
-          value: 'full_time,part_time_30_plus',
-        },
-        {
-          operator: 'greater_than_or_equal',
-          rule_type: 'waiting_period_days',
-          value: '30',
-        },
-      ],
-      policy_to_replace_id: 'epol_abc123def456',
-      description: 'Eligibility policy for full-time employees working 30+ hours per week',
+      classification: 'classification',
+      waiting_period: 'waiting_period',
     });
   });
 });

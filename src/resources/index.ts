@@ -7,43 +7,18 @@ export {
   type Category,
   type Pagination,
   type ProductCode,
-  type BenefitProductListResponse,
-  type BenefitProductListParams,
 } from './benefit-products/benefit-products';
-export {
-  Dependents,
-  type Dependent,
-  type DependentResponse,
-  type Relationship,
-  type DependentUpdateParams,
-} from './dependents';
-export {
-  Employees,
-  type Employee,
-  type EmployeeClass,
-  type EmployeeResponse,
-  type Sex,
-  type EmployeeUpdateParams,
-} from './employees/employees';
+export { Dependents } from './dependents';
+export { Employees, type Employee, type EmployeeClass, type EmployeeResponse } from './employees/employees';
 export {
   Employers,
   type Employer,
   type EmployerResponse,
   type EmployerListResponse,
   type EmployerCreateParams,
-  type EmployerUpdateParams,
   type EmployerListParams,
   type EmployerCreateEligibilityPolicyParams,
 } from './employers/employers';
-export {
-  Enrollments,
-  type CoverageTier,
-  type Enrollment,
-  type EnrollmentResponse,
-  type EnrollmentStatus,
-  type PlanTier,
-  type EnrollmentListPlansResponse,
-  type EnrollmentReissueParams,
-} from './enrollments';
+export { Enrollments, type Enrollment, type EnrollmentResponse, type EnrollmentStatus } from './enrollments';
 export { Members } from './members/members';
-export { PlanYears, type PlanYearUpdateParams } from './plan-years';
+export { PlanYears } from './plan-years';

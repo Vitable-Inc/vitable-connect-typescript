@@ -2,19 +2,9 @@
 
 import { APIResource } from '../../core/resource';
 import * as DependentsAPI from './dependents';
-import { DependentCreateParams, DependentListParams, DependentListResponse, Dependents } from './dependents';
+import { Dependents } from './dependents';
 import * as QualifyingLifeEventsAPI from './qualifying-life-events';
-import {
-  EventType,
-  QualifyingLifeEvent,
-  QualifyingLifeEventListParams,
-  QualifyingLifeEventListResponse,
-  QualifyingLifeEventRecordParams,
-  QualifyingLifeEventResponse,
-  QualifyingLifeEventRetrieveParams,
-  QualifyingLifeEventStatus,
-  QualifyingLifeEvents,
-} from './qualifying-life-events';
+import { QualifyingLifeEvents } from './qualifying-life-events';
 
 export class Members extends APIResource {
   dependents: DependentsAPI.Dependents = new DependentsAPI.Dependents(this._client);
@@ -26,22 +16,7 @@ Members.Dependents = Dependents;
 Members.QualifyingLifeEvents = QualifyingLifeEvents;
 
 export declare namespace Members {
-  export {
-    Dependents as Dependents,
-    type DependentListResponse as DependentListResponse,
-    type DependentCreateParams as DependentCreateParams,
-    type DependentListParams as DependentListParams,
-  };
+  export { Dependents as Dependents };
 
-  export {
-    QualifyingLifeEvents as QualifyingLifeEvents,
-    type EventType as EventType,
-    type QualifyingLifeEvent as QualifyingLifeEvent,
-    type QualifyingLifeEventResponse as QualifyingLifeEventResponse,
-    type QualifyingLifeEventStatus as QualifyingLifeEventStatus,
-    type QualifyingLifeEventListResponse as QualifyingLifeEventListResponse,
-    type QualifyingLifeEventRetrieveParams as QualifyingLifeEventRetrieveParams,
-    type QualifyingLifeEventListParams as QualifyingLifeEventListParams,
-    type QualifyingLifeEventRecordParams as QualifyingLifeEventRecordParams,
-  };
+  export { QualifyingLifeEvents as QualifyingLifeEvents };
 }
