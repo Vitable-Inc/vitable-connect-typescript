@@ -19,36 +19,4 @@ describe('resource enrollments', () => {
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
   });
-
-  // Mock server tests are disabled
-  test.skip('listPlans', async () => {
-    const responsePromise = client.enrollments.listPlans('enrl_abc123def456');
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('reissue: only required params', async () => {
-    const responsePromise = client.enrollments.reissue('enrl_abc123def456', { qle_id: 'qle_marriage123abc' });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('reissue: required and optional params', async () => {
-    const response = await client.enrollments.reissue('enrl_abc123def456', {
-      qle_id: 'qle_marriage123abc',
-      reason: 'reason',
-    });
-  });
 });

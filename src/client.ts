@@ -22,40 +22,16 @@ import {
   BenefitEligibilityPolicies,
   BenefitEligibilityPolicy,
 } from './resources/benefit-eligibility-policies';
+import { Dependents } from './resources/dependents';
+import { Enrollment, EnrollmentResponse, EnrollmentStatus, Enrollments } from './resources/enrollments';
+import { PlanYears } from './resources/plan-years';
 import {
-  Dependent,
-  DependentResponse,
-  DependentUpdateParams,
-  Dependents,
-  Relationship,
-} from './resources/dependents';
-import {
-  CoverageTier,
-  Enrollment,
-  EnrollmentListPlansResponse,
-  EnrollmentReissueParams,
-  EnrollmentResponse,
-  EnrollmentStatus,
-  Enrollments,
-  PlanTier,
-} from './resources/enrollments';
-import { PlanYearUpdateParams, PlanYears } from './resources/plan-years';
-import {
-  BenefitProductListParams,
-  BenefitProductListResponse,
   BenefitProducts,
   Category,
   Pagination,
   ProductCode,
 } from './resources/benefit-products/benefit-products';
-import {
-  Employee,
-  EmployeeClass,
-  EmployeeResponse,
-  EmployeeUpdateParams,
-  Employees,
-  Sex,
-} from './resources/employees/employees';
+import { Employee, EmployeeClass, EmployeeResponse, Employees } from './resources/employees/employees';
 import {
   Employer,
   EmployerCreateEligibilityPolicyParams,
@@ -63,7 +39,6 @@ import {
   EmployerListParams,
   EmployerListResponse,
   EmployerResponse,
-  EmployerUpdateParams,
   Employers,
 } from './resources/employers/employers';
 import { Members } from './resources/members/members';
@@ -799,13 +774,7 @@ export class VitableConnect {
    * Define rules that determine which employees qualify for benefits
    */
   benefitEligibilityPolicies: API.BenefitEligibilityPolicies = new API.BenefitEligibilityPolicies(this);
-  /**
-   * Browse available benefit products that can be offered to employers
-   */
   benefitProducts: API.BenefitProducts = new API.BenefitProducts(this);
-  /**
-   * Manage dependent records (spouses, children) for employees
-   */
   dependents: API.Dependents = new API.Dependents(this);
   /**
    * Manage employee records for employers
@@ -817,9 +786,6 @@ export class VitableConnect {
    */
   enrollments: API.Enrollments = new API.Enrollments(this);
   members: API.Members = new API.Members(this);
-  /**
-   * Configure annual benefit periods with coverage dates and contribution settings
-   */
   planYears: API.PlanYears = new API.PlanYears(this);
 }
 
@@ -853,25 +819,15 @@ export declare namespace VitableConnect {
     type Category as Category,
     type Pagination as Pagination,
     type ProductCode as ProductCode,
-    type BenefitProductListResponse as BenefitProductListResponse,
-    type BenefitProductListParams as BenefitProductListParams,
   };
 
-  export {
-    Dependents as Dependents,
-    type Dependent as Dependent,
-    type DependentResponse as DependentResponse,
-    type Relationship as Relationship,
-    type DependentUpdateParams as DependentUpdateParams,
-  };
+  export { Dependents as Dependents };
 
   export {
     Employees as Employees,
     type Employee as Employee,
     type EmployeeClass as EmployeeClass,
     type EmployeeResponse as EmployeeResponse,
-    type Sex as Sex,
-    type EmployeeUpdateParams as EmployeeUpdateParams,
   };
 
   export {
@@ -880,23 +836,18 @@ export declare namespace VitableConnect {
     type EmployerResponse as EmployerResponse,
     type EmployerListResponse as EmployerListResponse,
     type EmployerCreateParams as EmployerCreateParams,
-    type EmployerUpdateParams as EmployerUpdateParams,
     type EmployerListParams as EmployerListParams,
     type EmployerCreateEligibilityPolicyParams as EmployerCreateEligibilityPolicyParams,
   };
 
   export {
     Enrollments as Enrollments,
-    type CoverageTier as CoverageTier,
     type Enrollment as Enrollment,
     type EnrollmentResponse as EnrollmentResponse,
     type EnrollmentStatus as EnrollmentStatus,
-    type PlanTier as PlanTier,
-    type EnrollmentListPlansResponse as EnrollmentListPlansResponse,
-    type EnrollmentReissueParams as EnrollmentReissueParams,
   };
 
   export { Members as Members };
 
-  export { PlanYears as PlanYears, type PlanYearUpdateParams as PlanYearUpdateParams };
+  export { PlanYears as PlanYears };
 }
