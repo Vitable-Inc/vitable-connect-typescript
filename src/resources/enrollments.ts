@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as BenefitProductsAPI from './benefit-products/benefit-products';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
@@ -13,7 +12,7 @@ export class Enrollments extends APIResource {
   /**
    * Retrieves detailed information for a specific enrollment by ID.
    */
-  retrieve(enrollmentID: string, options?: RequestOptions): APIPromise<EnrollmentResponse> {
+  retrieve(enrollmentID: string, options?: RequestOptions): APIPromise<EnrollmentRetrieveResponse> {
     return this._client.get(path`/v1/enrollments/${enrollmentID}`, options);
   }
 }
@@ -104,7 +103,7 @@ export namespace Enrollment {
      * - `Vision` - Vision
      * - `Hospital` - Hospital
      */
-    category: BenefitProductsAPI.Category;
+    category: 'Medical' | 'Dental' | 'Vision' | 'Hospital';
 
     /**
      * Display name of the benefit product
@@ -128,15 +127,23 @@ export namespace Enrollment {
      * - `ICHRA_PREMIUM_PLUS` - Ichra Premium Plus
      * - `ICHRA_REIMBURSEMENT_ONLY` - Ichra Reimbursement Only
      */
-    product_code: BenefitProductsAPI.ProductCode;
+    product_code:
+      | 'EBA'
+      | 'VPC'
+      | 'VPC_CORE'
+      | 'MEC'
+      | 'MEC2'
+      | 'MEC_PLUS'
+      | 'MVP'
+      | 'MVP2'
+      | 'MVPSL'
+      | 'MVPSL2'
+      | 'VD'
+      | 'VV'
+      | 'ICHRA'
+      | 'ICHRA_PREMIUM_PLUS'
+      | 'ICHRA_REIMBURSEMENT_ONLY';
   }
-}
-
-/**
- * Response containing a single enrollment resource.
- */
-export interface EnrollmentResponse {
-  data: Enrollment;
 }
 
 /**
@@ -147,10 +154,17 @@ export interface EnrollmentResponse {
  */
 export type EnrollmentStatus = 'pending' | 'enrolled' | 'waived' | 'inactive';
 
+/**
+ * Response containing a single enrollment resource.
+ */
+export interface EnrollmentRetrieveResponse {
+  data: Enrollment;
+}
+
 export declare namespace Enrollments {
   export {
     type Enrollment as Enrollment,
-    type EnrollmentResponse as EnrollmentResponse,
     type EnrollmentStatus as EnrollmentStatus,
+    type EnrollmentRetrieveResponse as EnrollmentRetrieveResponse,
   };
 }

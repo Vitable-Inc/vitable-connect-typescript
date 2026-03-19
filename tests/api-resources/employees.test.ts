@@ -9,8 +9,8 @@ const client = new VitableConnect({
 
 describe('resource employees', () => {
   // Mock server tests are disabled
-  test.skip('list', async () => {
-    const responsePromise = client.employers.employees.list('empr_abc123def456');
+  test.skip('retrieve', async () => {
+    const responsePromise = client.employees.retrieve('empl_abc123def456');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,11 +21,23 @@ describe('resource employees', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('list: request options and params are passed correctly', async () => {
+  test.skip('listEnrollments', async () => {
+    const responsePromise = client.employees.listEnrollments('empl_abc123def456');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('listEnrollments: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.employers.employees.list(
-        'empr_abc123def456',
+      client.employees.listEnrollments(
+        'empl_abc123def456',
         { limit: 20, page: 1 },
         { path: '/_stainless_unknown_path' },
       ),

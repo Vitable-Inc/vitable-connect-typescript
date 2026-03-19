@@ -22,26 +22,34 @@ import {
   BenefitEligibilityPolicies,
   BenefitEligibilityPolicy,
 } from './resources/benefit-eligibility-policies';
-import { Dependents } from './resources/dependents';
-import { Enrollment, EnrollmentResponse, EnrollmentStatus, Enrollments } from './resources/enrollments';
-import { PlanYears } from './resources/plan-years';
 import {
-  BenefitProducts,
-  Category,
+  Employee,
+  EmployeeClass,
+  EmployeeListEnrollmentsParams,
+  EmployeeListEnrollmentsResponse,
+  EmployeeRetrieveResponse,
+  Employees,
   Pagination,
-  ProductCode,
-} from './resources/benefit-products/benefit-products';
-import { Employee, EmployeeClass, EmployeeResponse, Employees } from './resources/employees/employees';
+} from './resources/employees';
 import {
   Employer,
-  EmployerCreateEligibilityPolicyParams,
+  EmployerCreateBenefitEligibilityPolicyParams,
   EmployerCreateParams,
+  EmployerListEmployeesParams,
+  EmployerListEmployeesResponse,
   EmployerListParams,
   EmployerListResponse,
   EmployerResponse,
+  EmployerSubmitCensusSyncParams,
+  EmployerSubmitCensusSyncResponse,
   Employers,
-} from './resources/employers/employers';
-import { Members } from './resources/members/members';
+} from './resources/employers';
+import {
+  Enrollment,
+  EnrollmentRetrieveResponse,
+  EnrollmentStatus,
+  Enrollments,
+} from './resources/enrollments';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -774,30 +782,19 @@ export class VitableConnect {
    * Define rules that determine which employees qualify for benefits
    */
   benefitEligibilityPolicies: API.BenefitEligibilityPolicies = new API.BenefitEligibilityPolicies(this);
-  benefitProducts: API.BenefitProducts = new API.BenefitProducts(this);
-  dependents: API.Dependents = new API.Dependents(this);
-  /**
-   * Manage employee records for employers
-   */
   employees: API.Employees = new API.Employees(this);
   employers: API.Employers = new API.Employers(this);
   /**
    * Manage benefit enrollments and elections for employees
    */
   enrollments: API.Enrollments = new API.Enrollments(this);
-  members: API.Members = new API.Members(this);
-  planYears: API.PlanYears = new API.PlanYears(this);
 }
 
 VitableConnect.Auth = Auth;
 VitableConnect.BenefitEligibilityPolicies = BenefitEligibilityPolicies;
-VitableConnect.BenefitProducts = BenefitProducts;
-VitableConnect.Dependents = Dependents;
 VitableConnect.Employees = Employees;
 VitableConnect.Employers = Employers;
 VitableConnect.Enrollments = Enrollments;
-VitableConnect.Members = Members;
-VitableConnect.PlanYears = PlanYears;
 
 export declare namespace VitableConnect {
   export type RequestOptions = Opts.RequestOptions;
@@ -815,19 +812,13 @@ export declare namespace VitableConnect {
   };
 
   export {
-    BenefitProducts as BenefitProducts,
-    type Category as Category,
-    type Pagination as Pagination,
-    type ProductCode as ProductCode,
-  };
-
-  export { Dependents as Dependents };
-
-  export {
     Employees as Employees,
     type Employee as Employee,
     type EmployeeClass as EmployeeClass,
-    type EmployeeResponse as EmployeeResponse,
+    type Pagination as Pagination,
+    type EmployeeRetrieveResponse as EmployeeRetrieveResponse,
+    type EmployeeListEnrollmentsResponse as EmployeeListEnrollmentsResponse,
+    type EmployeeListEnrollmentsParams as EmployeeListEnrollmentsParams,
   };
 
   export {
@@ -835,19 +826,19 @@ export declare namespace VitableConnect {
     type Employer as Employer,
     type EmployerResponse as EmployerResponse,
     type EmployerListResponse as EmployerListResponse,
+    type EmployerListEmployeesResponse as EmployerListEmployeesResponse,
+    type EmployerSubmitCensusSyncResponse as EmployerSubmitCensusSyncResponse,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerListParams as EmployerListParams,
-    type EmployerCreateEligibilityPolicyParams as EmployerCreateEligibilityPolicyParams,
+    type EmployerCreateBenefitEligibilityPolicyParams as EmployerCreateBenefitEligibilityPolicyParams,
+    type EmployerListEmployeesParams as EmployerListEmployeesParams,
+    type EmployerSubmitCensusSyncParams as EmployerSubmitCensusSyncParams,
   };
 
   export {
     Enrollments as Enrollments,
     type Enrollment as Enrollment,
-    type EnrollmentResponse as EnrollmentResponse,
     type EnrollmentStatus as EnrollmentStatus,
+    type EnrollmentRetrieveResponse as EnrollmentRetrieveResponse,
   };
-
-  export { Members as Members };
-
-  export { PlanYears as PlanYears };
 }
