@@ -3,22 +3,30 @@
 export { Auth, type Type, type AuthIssueAccessTokenResponse, type AuthIssueAccessTokenParams } from './auth';
 export { BenefitEligibilityPolicies, type BenefitEligibilityPolicy } from './benefit-eligibility-policies';
 export {
-  BenefitProducts,
-  type Category,
+  Employees,
+  type Employee,
+  type EmployeeClass,
   type Pagination,
-  type ProductCode,
-} from './benefit-products/benefit-products';
-export { Dependents } from './dependents';
-export { Employees, type Employee, type EmployeeClass, type EmployeeResponse } from './employees/employees';
+  type EmployeeRetrieveResponse,
+  type EmployeeListEnrollmentsResponse,
+  type EmployeeListEnrollmentsParams,
+} from './employees';
 export {
   Employers,
   type Employer,
   type EmployerResponse,
   type EmployerListResponse,
+  type EmployerListEmployeesResponse,
+  type EmployerSubmitCensusSyncResponse,
   type EmployerCreateParams,
   type EmployerListParams,
-  type EmployerCreateEligibilityPolicyParams,
-} from './employers/employers';
-export { Enrollments, type Enrollment, type EnrollmentResponse, type EnrollmentStatus } from './enrollments';
-export { Members } from './members/members';
-export { PlanYears } from './plan-years';
+  type EmployerCreateBenefitEligibilityPolicyParams,
+  type EmployerListEmployeesParams,
+  type EmployerSubmitCensusSyncParams,
+} from './employers';
+export {
+  Enrollments,
+  type Enrollment,
+  type EnrollmentStatus,
+  type EnrollmentRetrieveResponse,
+} from './enrollments';
