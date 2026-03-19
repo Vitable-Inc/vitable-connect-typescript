@@ -3,7 +3,9 @@
 import { APIResource } from '../core/resource';
 import * as BenefitEligibilityPoliciesAPI from './benefit-eligibility-policies';
 import * as EmployeesAPI from './employees';
+import { EmployeesPageNumberPage } from './employees';
 import { APIPromise } from '../core/api-promise';
+import { PageNumberPage, type PageNumberPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -56,14 +58,17 @@ export class Employers extends APIResource {
    *
    * @example
    * ```ts
-   * const employers = await client.employers.list();
+   * // Automatically fetches more pages as needed.
+   * for await (const employer of client.employers.list()) {
+   *   // ...
+   * }
    * ```
    */
   list(
     query: EmployerListParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<EmployerListResponse> {
-    return this._client.get('/v1/employers', { query, ...options });
+  ): PagePromise<EmployersPageNumberPage, Employer> {
+    return this._client.getAPIList('/v1/employers', PageNumberPage<Employer>, { query, ...options });
   }
 
   /**
@@ -71,7 +76,7 @@ export class Employers extends APIResource {
    *
    * @example
    * ```ts
-   * const benefitEligibilityPolicy =
+   * const benefitEligibilityPolicyResponse =
    *   await client.employers.createBenefitEligibilityPolicy(
    *     'empr_abc123def456',
    *     {
@@ -85,7 +90,7 @@ export class Employers extends APIResource {
     employerID: string,
     body: EmployerCreateBenefitEligibilityPolicyParams,
     options?: RequestOptions,
-  ): APIPromise<BenefitEligibilityPoliciesAPI.BenefitEligibilityPolicy> {
+  ): APIPromise<BenefitEligibilityPoliciesAPI.BenefitEligibilityPolicyResponse> {
     return this._client.post(path`/v1/employers/${employerID}/benefit-eligibility-policies`, {
       body,
       ...options,
@@ -98,17 +103,24 @@ export class Employers extends APIResource {
    *
    * @example
    * ```ts
-   * const response = await client.employers.listEmployees(
+   * // Automatically fetches more pages as needed.
+   * for await (const employee of client.employers.listEmployees(
    *   'empr_abc123def456',
-   * );
+   * )) {
+   *   // ...
+   * }
    * ```
    */
   listEmployees(
     employerID: string,
     query: EmployerListEmployeesParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<EmployerListEmployeesResponse> {
-    return this._client.get(path`/v1/employers/${employerID}/employees`, { query, ...options });
+  ): PagePromise<EmployeesPageNumberPage, EmployeesAPI.Employee> {
+    return this._client.getAPIList(
+      path`/v1/employers/${employerID}/employees`,
+      PageNumberPage<EmployeesAPI.Employee>,
+      { query, ...options },
+    );
   }
 
   /**
@@ -154,6 +166,8 @@ export class Employers extends APIResource {
     return this._client.post(path`/v1/employers/${employerID}/census-sync`, { body, ...options });
   }
 }
+
+export type EmployersPageNumberPage = PageNumberPage<Employer>;
 
 /**
  * Serializer for Employer entity in public API responses.
@@ -268,30 +282,6 @@ export interface EmployerResponse {
 }
 
 /**
- * Paginated list response containing employer resources.
- */
-export interface EmployerListResponse {
-  data: Array<Employer>;
-
-  /**
-   * Pagination metadata for list responses.
-   */
-  pagination: EmployeesAPI.Pagination;
-}
-
-/**
- * Paginated list response containing employee resources.
- */
-export interface EmployerListEmployeesResponse {
-  data: Array<EmployeesAPI.Employee>;
-
-  /**
-   * Pagination metadata for list responses.
-   */
-  pagination: EmployeesAPI.Pagination;
-}
-
-/**
  * Response containing a single census sync detail resource.
  */
 export interface EmployerSubmitCensusSyncResponse {
@@ -365,17 +355,7 @@ export namespace EmployerCreateParams {
   }
 }
 
-export interface EmployerListParams {
-  /**
-   * Items per page (default: 20, max: 100)
-   */
-  limit?: number;
-
-  /**
-   * Page number (default: 1)
-   */
-  page?: number;
-}
+export interface EmployerListParams extends PageNumberPageParams {}
 
 export interface EmployerCreateBenefitEligibilityPolicyParams {
   /**
@@ -390,17 +370,7 @@ export interface EmployerCreateBenefitEligibilityPolicyParams {
   waiting_period: string;
 }
 
-export interface EmployerListEmployeesParams {
-  /**
-   * Items per page (default: 20, max: 100)
-   */
-  limit?: number;
-
-  /**
-   * Page number (default: 1)
-   */
-  page?: number;
-}
+export interface EmployerListEmployeesParams extends PageNumberPageParams {}
 
 export interface EmployerSubmitCensusSyncParams {
   employees: Array<EmployerSubmitCensusSyncParams.Employee>;
@@ -586,9 +556,8 @@ export declare namespace Employers {
   export {
     type Employer as Employer,
     type EmployerResponse as EmployerResponse,
-    type EmployerListResponse as EmployerListResponse,
-    type EmployerListEmployeesResponse as EmployerListEmployeesResponse,
     type EmployerSubmitCensusSyncResponse as EmployerSubmitCensusSyncResponse,
+    type EmployersPageNumberPage as EmployersPageNumberPage,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerListParams as EmployerListParams,
     type EmployerCreateBenefitEligibilityPolicyParams as EmployerCreateBenefitEligibilityPolicyParams,
@@ -596,3 +565,5 @@ export declare namespace Employers {
     type EmployerSubmitCensusSyncParams as EmployerSubmitCensusSyncParams,
   };
 }
+
+export { type EmployeesPageNumberPage };

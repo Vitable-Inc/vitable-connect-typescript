@@ -14,6 +14,8 @@ import * as Opts from './internal/request-options';
 import { stringifyQuery } from './internal/utils/query';
 import { VERSION } from './version';
 import * as Errors from './core/error';
+import * as Pagination from './core/pagination';
+import { AbstractPage, type PageNumberPageParams, PageNumberPageResponse } from './core/pagination';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
@@ -21,28 +23,27 @@ import { Auth, AuthIssueAccessTokenParams, AuthIssueAccessTokenResponse, Type } 
 import {
   BenefitEligibilityPolicies,
   BenefitEligibilityPolicy,
+  BenefitEligibilityPolicyResponse,
 } from './resources/benefit-eligibility-policies';
 import {
   Employee,
   EmployeeClass,
   EmployeeListEnrollmentsParams,
-  EmployeeListEnrollmentsResponse,
   EmployeeRetrieveResponse,
   Employees,
-  Pagination,
+  Pagination as EmployeesAPIPagination,
 } from './resources/employees';
 import {
   Employer,
   EmployerCreateBenefitEligibilityPolicyParams,
   EmployerCreateParams,
   EmployerListEmployeesParams,
-  EmployerListEmployeesResponse,
   EmployerListParams,
-  EmployerListResponse,
   EmployerResponse,
   EmployerSubmitCensusSyncParams,
   EmployerSubmitCensusSyncResponse,
   Employers,
+  EmployersPageNumberPage,
 } from './resources/employers';
 import {
   Enrollment,
@@ -527,6 +528,30 @@ export class VitableConnect {
     return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
   }
 
+  getAPIList<Item, PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>>(
+    path: string,
+    Page: new (...args: any[]) => PageClass,
+    opts?: PromiseOrValue<RequestOptions>,
+  ): Pagination.PagePromise<PageClass, Item> {
+    return this.requestAPIList(
+      Page,
+      opts && 'then' in opts ?
+        opts.then((opts) => ({ method: 'get', path, ...opts }))
+      : { method: 'get', path, ...opts },
+    );
+  }
+
+  requestAPIList<
+    Item = unknown,
+    PageClass extends Pagination.AbstractPage<Item> = Pagination.AbstractPage<Item>,
+  >(
+    Page: new (...args: ConstructorParameters<typeof Pagination.AbstractPage>) => PageClass,
+    options: PromiseOrValue<FinalRequestOptions>,
+  ): Pagination.PagePromise<PageClass, Item> {
+    const request = this.makeRequest(options, null, undefined);
+    return new Pagination.PagePromise<PageClass, Item>(this as any as VitableConnect, request, Page);
+  }
+
   async fetchWithTimeout(
     url: RequestInfo,
     init: RequestInit | undefined,
@@ -799,6 +824,12 @@ VitableConnect.Enrollments = Enrollments;
 export declare namespace VitableConnect {
   export type RequestOptions = Opts.RequestOptions;
 
+  export import PageNumberPage = Pagination.PageNumberPage;
+  export {
+    type PageNumberPageParams as PageNumberPageParams,
+    type PageNumberPageResponse as PageNumberPageResponse,
+  };
+
   export {
     Auth as Auth,
     type Type as Type,
@@ -809,15 +840,15 @@ export declare namespace VitableConnect {
   export {
     BenefitEligibilityPolicies as BenefitEligibilityPolicies,
     type BenefitEligibilityPolicy as BenefitEligibilityPolicy,
+    type BenefitEligibilityPolicyResponse as BenefitEligibilityPolicyResponse,
   };
 
   export {
     Employees as Employees,
     type Employee as Employee,
     type EmployeeClass as EmployeeClass,
-    type Pagination as Pagination,
+    type EmployeesAPIPagination as Pagination,
     type EmployeeRetrieveResponse as EmployeeRetrieveResponse,
-    type EmployeeListEnrollmentsResponse as EmployeeListEnrollmentsResponse,
     type EmployeeListEnrollmentsParams as EmployeeListEnrollmentsParams,
   };
 
@@ -825,9 +856,8 @@ export declare namespace VitableConnect {
     Employers as Employers,
     type Employer as Employer,
     type EmployerResponse as EmployerResponse,
-    type EmployerListResponse as EmployerListResponse,
-    type EmployerListEmployeesResponse as EmployerListEmployeesResponse,
     type EmployerSubmitCensusSyncResponse as EmployerSubmitCensusSyncResponse,
+    type EmployersPageNumberPage as EmployersPageNumberPage,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerListParams as EmployerListParams,
     type EmployerCreateBenefitEligibilityPolicyParams as EmployerCreateBenefitEligibilityPolicyParams,

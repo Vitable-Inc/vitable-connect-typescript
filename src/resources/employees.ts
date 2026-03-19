@@ -2,7 +2,9 @@
 
 import { APIResource } from '../core/resource';
 import * as EnrollmentsAPI from './enrollments';
+import { EnrollmentsPageNumberPage } from './enrollments';
 import { APIPromise } from '../core/api-promise';
+import { PageNumberPage, type PageNumberPageParams, PagePromise } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -22,10 +24,16 @@ export class Employees extends APIResource {
     employeeID: string,
     query: EmployeeListEnrollmentsParams | null | undefined = {},
     options?: RequestOptions,
-  ): APIPromise<EmployeeListEnrollmentsResponse> {
-    return this._client.get(path`/v1/employees/${employeeID}/enrollments`, { query, ...options });
+  ): PagePromise<EnrollmentsPageNumberPage, EnrollmentsAPI.Enrollment> {
+    return this._client.getAPIList(
+      path`/v1/employees/${employeeID}/enrollments`,
+      PageNumberPage<EnrollmentsAPI.Enrollment>,
+      { query, ...options },
+    );
   }
 }
+
+export type EmployeesPageNumberPage = PageNumberPage<Employee>;
 
 export interface Employee {
   /**
@@ -224,29 +232,7 @@ export interface EmployeeRetrieveResponse {
   data: Employee;
 }
 
-/**
- * Paginated list response containing enrollment resources.
- */
-export interface EmployeeListEnrollmentsResponse {
-  data: Array<EnrollmentsAPI.Enrollment>;
-
-  /**
-   * Pagination metadata for list responses.
-   */
-  pagination: Pagination;
-}
-
-export interface EmployeeListEnrollmentsParams {
-  /**
-   * Items per page (default: 20, max: 100)
-   */
-  limit?: number;
-
-  /**
-   * Page number (default: 1)
-   */
-  page?: number;
-}
+export interface EmployeeListEnrollmentsParams extends PageNumberPageParams {}
 
 export declare namespace Employees {
   export {
@@ -254,7 +240,8 @@ export declare namespace Employees {
     type EmployeeClass as EmployeeClass,
     type Pagination as Pagination,
     type EmployeeRetrieveResponse as EmployeeRetrieveResponse,
-    type EmployeeListEnrollmentsResponse as EmployeeListEnrollmentsResponse,
     type EmployeeListEnrollmentsParams as EmployeeListEnrollmentsParams,
   };
 }
+
+export { type EnrollmentsPageNumberPage };
