@@ -12,36 +12,37 @@ export class BenefitEligibilityPolicies extends APIResource {
   /**
    * Retrieves a benefit eligibility policy by ID.
    */
-  retrieve(policyID: string, options?: RequestOptions): APIPromise<BenefitEligibilityPolicy> {
+  retrieve(policyID: string, options?: RequestOptions): APIPromise<BenefitEligibilityPolicyResponse> {
     return this._client.get(path`/v1/benefit-eligibility-policies/${policyID}`, options);
   }
+}
+
+export interface BenefitEligibilityPolicy {
+  id: string;
+
+  active: boolean;
+
+  classification: string;
+
+  created_at: string;
+
+  employer_id: string;
+
+  updated_at: string;
+
+  waiting_period: string;
 }
 
 /**
  * Response containing a single benefit eligibility policy resource.
  */
-export interface BenefitEligibilityPolicy {
-  data: BenefitEligibilityPolicy.Data;
-}
-
-export namespace BenefitEligibilityPolicy {
-  export interface Data {
-    id: string;
-
-    active: boolean;
-
-    classification: string;
-
-    created_at: string;
-
-    employer_id: string;
-
-    updated_at: string;
-
-    waiting_period: string;
-  }
+export interface BenefitEligibilityPolicyResponse {
+  data: BenefitEligibilityPolicy;
 }
 
 export declare namespace BenefitEligibilityPolicies {
-  export { type BenefitEligibilityPolicy as BenefitEligibilityPolicy };
+  export {
+    type BenefitEligibilityPolicy as BenefitEligibilityPolicy,
+    type BenefitEligibilityPolicyResponse as BenefitEligibilityPolicyResponse,
+  };
 }

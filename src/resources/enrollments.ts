@@ -2,6 +2,7 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
+import { PageNumberPage } from '../core/pagination';
 import { RequestOptions } from '../internal/request-options';
 import { path } from '../internal/utils/path';
 
@@ -16,6 +17,8 @@ export class Enrollments extends APIResource {
     return this._client.get(path`/v1/enrollments/${enrollmentID}`, options);
   }
 }
+
+export type EnrollmentsPageNumberPage = PageNumberPage<Enrollment>;
 
 export interface Enrollment {
   /**

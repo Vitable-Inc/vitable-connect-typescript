@@ -132,6 +132,37 @@ On timeout, an `APIConnectionTimeoutError` is thrown.
 
 Note that requests which time out will be [retried twice by default](#retries).
 
+## Auto-pagination
+
+List methods in the VitableConnect API are paginated.
+You can use the `for await … of` syntax to iterate through items across all pages:
+
+```ts
+async function fetchAllEnrollments(params) {
+  const allEnrollments = [];
+  // Automatically fetches more pages as needed.
+  for await (const enrollment of client.employees.listEnrollments('empl_abc123def456')) {
+    allEnrollments.push(enrollment);
+  }
+  return allEnrollments;
+}
+```
+
+Alternatively, you can request a single page at a time:
+
+```ts
+let page = await client.employees.listEnrollments('empl_abc123def456');
+for (const enrollment of page.data) {
+  console.log(enrollment);
+}
+
+// Convenience methods are provided for manually paginating:
+while (page.hasNextPage()) {
+  page = await page.getNextPage();
+  // ...
+}
+```
+
 ## Advanced Usage
 
 ### Accessing raw Response data (e.g., headers)
