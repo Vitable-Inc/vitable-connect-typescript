@@ -51,6 +51,14 @@ import {
   EnrollmentStatus,
   Enrollments,
 } from './resources/enrollments';
+import {
+  WebhookEvent,
+  WebhookEventListDeliveriesResponse,
+  WebhookEventListParams,
+  WebhookEventRetrieveResponse,
+  WebhookEvents,
+  WebhookEventsPageNumberPage,
+} from './resources/webhook-events';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -813,6 +821,7 @@ export class VitableConnect {
    * Manage benefit enrollments and elections for employees
    */
   enrollments: API.Enrollments = new API.Enrollments(this);
+  webhookEvents: API.WebhookEvents = new API.WebhookEvents(this);
 }
 
 VitableConnect.Auth = Auth;
@@ -820,6 +829,7 @@ VitableConnect.BenefitEligibilityPolicies = BenefitEligibilityPolicies;
 VitableConnect.Employees = Employees;
 VitableConnect.Employers = Employers;
 VitableConnect.Enrollments = Enrollments;
+VitableConnect.WebhookEvents = WebhookEvents;
 
 export declare namespace VitableConnect {
   export type RequestOptions = Opts.RequestOptions;
@@ -870,5 +880,14 @@ export declare namespace VitableConnect {
     type Enrollment as Enrollment,
     type EnrollmentStatus as EnrollmentStatus,
     type EnrollmentRetrieveResponse as EnrollmentRetrieveResponse,
+  };
+
+  export {
+    WebhookEvents as WebhookEvents,
+    type WebhookEvent as WebhookEvent,
+    type WebhookEventRetrieveResponse as WebhookEventRetrieveResponse,
+    type WebhookEventListDeliveriesResponse as WebhookEventListDeliveriesResponse,
+    type WebhookEventsPageNumberPage as WebhookEventsPageNumberPage,
+    type WebhookEventListParams as WebhookEventListParams,
   };
 }
