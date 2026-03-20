@@ -34,3 +34,11 @@ export {
   type EnrollmentRetrieveResponse,
   type EnrollmentsPageNumberPage,
 } from './enrollments';
+export {
+  WebhookEvents,
+  type WebhookEvent,
+  type WebhookEventRetrieveResponse,
+  type WebhookEventListDeliveriesResponse,
+  type WebhookEventListParams,
+  type WebhookEventsPageNumberPage,
+} from './webhook-events';

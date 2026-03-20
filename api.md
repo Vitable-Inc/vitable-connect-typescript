@@ -62,3 +62,17 @@ Types:
 Methods:
 
 - <code title="get /v1/enrollments/{enrollment_id}">client.enrollments.<a href="./src/resources/enrollments.ts">retrieve</a>(enrollmentID) -> EnrollmentRetrieveResponse</code>
+
+# WebhookEvents
+
+Types:
+
+- <code><a href="./src/resources/webhook-events.ts">WebhookEvent</a></code>
+- <code><a href="./src/resources/webhook-events.ts">WebhookEventRetrieveResponse</a></code>
+- <code><a href="./src/resources/webhook-events.ts">WebhookEventListDeliveriesResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/webhook-events/{event_id}">client.webhookEvents.<a href="./src/resources/webhook-events.ts">retrieve</a>(eventID) -> WebhookEventRetrieveResponse</code>
+- <code title="get /v1/webhook-events">client.webhookEvents.<a href="./src/resources/webhook-events.ts">list</a>({ ...params }) -> WebhookEventsPageNumberPage</code>
+- <code title="get /v1/webhook-events/{event_id}/deliveries">client.webhookEvents.<a href="./src/resources/webhook-events.ts">listDeliveries</a>(eventID) -> WebhookEventListDeliveriesResponse</code>
