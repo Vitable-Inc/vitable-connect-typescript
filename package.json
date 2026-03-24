@@ -1,5 +1,5 @@
 {
-  "name": "vitable-connect",
+  "name": "@vitable-inc/vitable-connect",
   "version": "0.1.2",
   "description": "The official TypeScript library for the Vitable Connect API",
   "author": "Vitable Connect <dev@vitablehealth.com>",

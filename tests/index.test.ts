@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIPromise } from 'vitable-connect/core/api-promise';
+import { APIPromise } from '@vitable-inc/vitable-connect/core/api-promise';
 
 import util from 'node:util';
-import VitableConnect from 'vitable-connect';
-import { APIUserAbortError } from 'vitable-connect';
+import VitableConnect from '@vitable-inc/vitable-connect';
+import { APIUserAbortError } from '@vitable-inc/vitable-connect';
 const defaultFetch = fetch;
 
 describe('instantiate client', () => {
