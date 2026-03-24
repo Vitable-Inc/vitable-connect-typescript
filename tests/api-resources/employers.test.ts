@@ -45,6 +45,8 @@ describe('resource employers', () => {
       email: 'hr@newco.com',
       legal_name: 'NewCo Industries LLC',
       name: 'NewCo Industries',
+      phone_number: '2065550100',
+      reference_id: 'partner-emp-001',
     });
   });
 
