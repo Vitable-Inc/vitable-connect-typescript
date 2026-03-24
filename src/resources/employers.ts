@@ -29,6 +29,8 @@ export class Employers extends APIResource {
    *   email: 'hr@newco.com',
    *   legal_name: 'NewCo Industries LLC',
    *   name: 'NewCo Industries',
+   *   phone_number: '2065550100',
+   *   reference_id: 'partner-emp-001',
    * });
    * ```
    */
@@ -321,6 +323,16 @@ export interface EmployerCreateParams {
    * Employer display name
    */
   name: string;
+
+  /**
+   * Employer phone number (10-digit US format, e.g. 5551234567)
+   */
+  phone_number?: string | null;
+
+  /**
+   * External reference ID for this employer
+   */
+  reference_id?: string | null;
 }
 
 export namespace EmployerCreateParams {
