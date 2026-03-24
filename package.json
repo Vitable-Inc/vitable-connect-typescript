@@ -1,6 +1,6 @@
 {
   "name": "@vitable-inc/vitable-connect",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "The official TypeScript library for the Vitable Connect API",
   "author": "Vitable Connect <dev@vitablehealth.com>",
   "types": "dist/index.d.ts",
