@@ -7,8 +7,8 @@ const config: JestConfigWithTsJest = {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { sourceMaps: 'inline' }],
   },
   moduleNameMapper: {
-    '^vitable-connect$': '<rootDir>/src/index.ts',
-    '^vitable-connect/(.*)$': '<rootDir>/src/$1',
+    '^@vitable-inc/vitable-connect$': '<rootDir>/src/index.ts',
+    '^@vitable-inc/vitable-connect/(.*)$': '<rootDir>/src/$1',
   },
   modulePathIgnorePatterns: [
     '<rootDir>/ecosystem-tests/',

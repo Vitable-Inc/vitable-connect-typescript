@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "vitable-connect/*": ["./dist/src/*"],
-      "vitable-connect": ["./dist/src/index.ts"]
+      "@vitable-inc/vitable-connect/*": ["./dist/src/*"],
+      "@vitable-inc/vitable-connect": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,
