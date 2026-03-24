@@ -25,7 +25,7 @@ export default tseslint.config(
         {
           patterns: [
             {
-              regex: '^vitable-connect(/.*)?',
+              regex: '^@vitable-inc/vitable-connect(/.*)?',
               message: 'Use a relative import, not a package import.',
             },
           ],

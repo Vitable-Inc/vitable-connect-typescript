@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.3 (2026-03-24)
+
+Full Changelog: [v0.1.2...v0.1.3](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.1.2...v0.1.3)
+
+### Chores
+
+* update SDK settings ([5676ba7](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/5676ba752af20dd12c57aba43cbaf4549337f1e3))
+* update SDK settings ([ea66249](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/ea66249c6366e1e91959a8268f2b72baaf069df6))
+
 ## 0.1.2 (2026-03-24)
 
 Full Changelog: [v0.1.1...v0.1.2](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.1.1...v0.1.2)

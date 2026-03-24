@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import VitableConnect from 'vitable-connect';
+import VitableConnect from '@vitable-inc/vitable-connect';
 
 const client = new VitableConnect({
   apiKey: 'My API Key',
