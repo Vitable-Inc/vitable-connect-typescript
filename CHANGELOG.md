@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2 (2026-03-24)
+
+Full Changelog: [v0.1.1...v0.1.2](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.1.1...v0.1.2)
+
+### Bug Fixes
+
+* Add env ([d6160a5](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/d6160a5f0eaafe65f738106224817040727849d5))
+
 ## 0.1.1 (2026-03-24)
 
 Full Changelog: [v0.1.0...v0.1.1](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.1.0...v0.1.1)
