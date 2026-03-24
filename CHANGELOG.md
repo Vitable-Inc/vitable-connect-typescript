@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.1 (2026-03-24)
+
+Full Changelog: [v0.1.0...v0.1.1](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.1.0...v0.1.1)
+
+### Bug Fixes
+
+* Add package information and fix pagination bug ([9f5e26c](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/9f5e26ca13505af462bb25d17b3f79d6015b8f34))
+* change pnpm version ([57ff13c](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/57ff13ce93be942f595912a58d02f7595419d968))
+
 ## 0.1.0 (2026-03-24)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.0.1...v0.1.0)
