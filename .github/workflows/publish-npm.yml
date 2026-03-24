@@ -11,6 +11,7 @@ on:
 jobs:
   publish:
     name: publish
+    environment: prod
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +20,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
