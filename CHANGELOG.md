@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.0 (2026-03-25)
+
+Full Changelog: [v0.1.3...v0.2.0](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.1.3...v0.2.0)
+
+### Features
+
+* **api:** api update ([7c668f3](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/7c668f33f1b983ae56ec4e90ce169eb86e2dde01))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([db982d5](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/db982d59f87e976328b211acdee9137636197175))
+
 ## 0.1.3 (2026-03-24)
 
 Full Changelog: [v0.1.2...v0.1.3](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.1.2...v0.1.3)
