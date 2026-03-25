@@ -11,7 +11,9 @@ import { path } from '../internal/utils/path';
 export class Employees extends APIResource {
   /**
    * Retrieves detailed information for a specific employee by ID. Returns employee
-   * details including personal information and employment status.
+   * details including personal information, employment status, and payroll
+   * deductions from the most recent statement period. Deductions reflect a snapshot
+   * of the current period and are replaced when a new statement is generated.
    */
   retrieve(employeeID: string, options?: RequestOptions): APIPromise<EmployeeRetrieveResponse> {
     return this._client.get(path`/v1/employees/${employeeID}`, options);
@@ -50,6 +52,12 @@ export interface Employee {
    * Date of birth (YYYY-MM-DD)
    */
   date_of_birth: string;
+
+  /**
+   * Payroll deductions from the most recent statement period. Replaced when a new
+   * statement is generated.
+   */
+  deductions: Array<Employee.Deduction>;
 
   /**
    * Email address
@@ -133,6 +141,45 @@ export interface Employee {
 }
 
 export namespace Employee {
+  export interface Deduction {
+    /**
+     * Name of the benefit plan
+     */
+    benefit_name: string;
+
+    /**
+     * Employee deduction amount in cents
+     */
+    deduction_amount_in_cents: number;
+
+    /**
+     * Deduction category (reserved for future use)
+     */
+    deduction_category: string | null;
+
+    /**
+     * - `monthly` - Monthly
+     */
+    frequency: 'monthly';
+
+    /**
+     * Period end date (YYYY-MM-DD)
+     */
+    period_end_date: string;
+
+    /**
+     * Period start date (YYYY-MM-DD)
+     */
+    period_start_date: string;
+
+    /**
+     * - `Unknown` - Unknown
+     * - `Pre-tax` - Pre Tax
+     * - `Post-tax` - Post Tax
+     */
+    tax_classification: 'Unknown' | 'Pre-tax' | 'Post-tax';
+  }
+
   export interface Enrollment {
     /**
      * Unique enrollment identifier with 'enrl\_' prefix
