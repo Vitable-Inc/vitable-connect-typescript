@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1 (2026-04-03)
+
+Full Changelog: [v0.2.0...v0.2.1](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.2.0...v0.2.1)
+
+### Bug Fixes
+
+* **internal:** gitignore generated `oidc` dir ([d37fa00](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/d37fa007bcec9607f076e6f1388bb9456a1d3d41))
+
 ## 0.2.0 (2026-03-25)
 
 Full Changelog: [v0.1.3...v0.2.0](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.1.3...v0.2.0)
