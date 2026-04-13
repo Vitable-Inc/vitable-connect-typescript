@@ -158,9 +158,12 @@ export namespace Employee {
     deduction_category: string | null;
 
     /**
+     * - `weekly` - Weekly
+     * - `bi_weekly` - Bi Weekly
+     * - `semi_monthly` - Semi Monthly
      * - `monthly` - Monthly
      */
-    frequency: 'monthly';
+    frequency: 'weekly' | 'bi_weekly' | 'semi_monthly' | 'monthly';
 
     /**
      * Period end date (YYYY-MM-DD)
