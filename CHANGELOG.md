@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.0 (2026-05-01)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.3.0...v0.4.0)
+
+### Features
+
+* support setting headers via env ([39392f4](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/39392f4ac2d13941a1e90193c461fdb43b4edea0))
+
+
+### Chores
+
+* **format:** run eslint and prettier separately ([351d052](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/351d0521dbc80be71a7798fece248b6fb693b3d7))
+* **internal:** codegen related update ([e7087c0](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/e7087c0f2bbb34e0e4933f9db00626e73c03a44f))
+* **internal:** more robust bootstrap script ([03b5a3f](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/03b5a3fa1b77f5a73a4cfd8735cb2d97f8f2e72c))
+
 ## 0.3.0 (2026-04-17)
 
 Full Changelog: [v0.2.1...v0.3.0](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.2.1...v0.3.0)
