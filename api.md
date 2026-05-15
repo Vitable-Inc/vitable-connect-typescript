@@ -41,6 +41,7 @@ Types:
 - <code><a href="./src/resources/employers.ts">Employer</a></code>
 - <code><a href="./src/resources/employers.ts">EmployerResponse</a></code>
 - <code><a href="./src/resources/employers.ts">EmployerSubmitCensusSyncResponse</a></code>
+- <code><a href="./src/resources/employers.ts">EmployerUpdateSettingsResponse</a></code>
 
 Methods:
 
@@ -50,6 +51,7 @@ Methods:
 - <code title="post /v1/employers/{employer_id}/benefit-eligibility-policies">client.employers.<a href="./src/resources/employers.ts">createBenefitEligibilityPolicy</a>(employerID, { ...params }) -> BenefitEligibilityPolicyResponse</code>
 - <code title="get /v1/employers/{employer_id}/employees">client.employers.<a href="./src/resources/employers.ts">listEmployees</a>(employerID, { ...params }) -> EmployeesPageNumberPage</code>
 - <code title="post /v1/employers/{employer_id}/census-sync">client.employers.<a href="./src/resources/employers.ts">submitCensusSync</a>(employerID, { ...params }) -> EmployerSubmitCensusSyncResponse</code>
+- <code title="put /v1/employers/{employer_id}/settings">client.employers.<a href="./src/resources/employers.ts">updateSettings</a>(employerID, { ...params }) -> EmployerUpdateSettingsResponse</code>
 
 # Enrollments
 
@@ -76,3 +78,41 @@ Methods:
 - <code title="get /v1/webhook-events/{event_id}">client.webhookEvents.<a href="./src/resources/webhook-events.ts">retrieve</a>(eventID) -> WebhookEventRetrieveResponse</code>
 - <code title="get /v1/webhook-events">client.webhookEvents.<a href="./src/resources/webhook-events.ts">list</a>({ ...params }) -> WebhookEventsPageNumberPage</code>
 - <code title="get /v1/webhook-events/{event_id}/deliveries">client.webhookEvents.<a href="./src/resources/webhook-events.ts">listDeliveries</a>(eventID) -> WebhookEventListDeliveriesResponse</code>
+
+# Groups
+
+Types:
+
+- <code><a href="./src/resources/groups/groups.ts">Group</a></code>
+- <code><a href="./src/resources/groups/groups.ts">GroupResponse</a></code>
+
+Methods:
+
+- <code title="post /v1/groups">client.groups.<a href="./src/resources/groups/groups.ts">create</a>({ ...params }) -> GroupResponse</code>
+- <code title="get /v1/groups/{group_id}">client.groups.<a href="./src/resources/groups/groups.ts">retrieve</a>(groupID) -> GroupResponse</code>
+- <code title="patch /v1/groups/{group_id}">client.groups.<a href="./src/resources/groups/groups.ts">update</a>(groupID, { ...params }) -> GroupResponse</code>
+- <code title="get /v1/groups">client.groups.<a href="./src/resources/groups/groups.ts">list</a>({ ...params }) -> GroupsPageNumberPage</code>
+
+## Members
+
+### Sync
+
+Types:
+
+- <code><a href="./src/resources/groups/members/sync.ts">SyncRetrieveResponse</a></code>
+- <code><a href="./src/resources/groups/members/sync.ts">SyncSubmitResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/groups/{group_id}/members/sync/{request_id}">client.groups.members.sync.<a href="./src/resources/groups/members/sync.ts">retrieve</a>(requestID, { ...params }) -> SyncRetrieveResponse</code>
+- <code title="post /v1/groups/{group_id}/members/sync">client.groups.members.sync.<a href="./src/resources/groups/members/sync.ts">submit</a>(groupID, { ...params }) -> SyncSubmitResponse</code>
+
+# Plans
+
+Types:
+
+- <code><a href="./src/resources/plans.ts">PlanListResponse</a></code>
+
+Methods:
+
+- <code title="get /v1/plans">client.plans.<a href="./src/resources/plans.ts">list</a>({ ...params }) -> PlanListResponsesPageNumberPage</code>

@@ -20,11 +20,13 @@ export {
   type Employer,
   type EmployerResponse,
   type EmployerSubmitCensusSyncResponse,
+  type EmployerUpdateSettingsResponse,
   type EmployerCreateParams,
   type EmployerListParams,
   type EmployerCreateBenefitEligibilityPolicyParams,
   type EmployerListEmployeesParams,
   type EmployerSubmitCensusSyncParams,
+  type EmployerUpdateSettingsParams,
   type EmployersPageNumberPage,
 } from './employers';
 export {
@@ -34,6 +36,21 @@ export {
   type EnrollmentRetrieveResponse,
   type EnrollmentsPageNumberPage,
 } from './enrollments';
+export {
+  Groups,
+  type Group,
+  type GroupResponse,
+  type GroupCreateParams,
+  type GroupUpdateParams,
+  type GroupListParams,
+  type GroupsPageNumberPage,
+} from './groups/groups';
+export {
+  Plans,
+  type PlanListResponse,
+  type PlanListParams,
+  type PlanListResponsesPageNumberPage,
+} from './plans';
 export {
   WebhookEvents,
   type WebhookEvent,

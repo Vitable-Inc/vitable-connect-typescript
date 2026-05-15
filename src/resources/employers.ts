@@ -169,6 +169,26 @@ export class Employers extends APIResource {
   ): APIPromise<EmployerSubmitCensusSyncResponse> {
     return this._client.post(path`/v1/employers/${employerID}/census-sync`, { body, ...options });
   }
+
+  /**
+   * Updates configuration settings for a specific employer. The employer must belong
+   * to the authenticated organization.
+   *
+   * @example
+   * ```ts
+   * const response = await client.employers.updateSettings(
+   *   'empr_abc123def456',
+   *   { pay_frequency: 'bi_weekly' },
+   * );
+   * ```
+   */
+  updateSettings(
+    employerID: string,
+    body: EmployerUpdateSettingsParams,
+    options?: RequestOptions,
+  ): APIPromise<EmployerUpdateSettingsResponse> {
+    return this._client.put(path`/v1/employers/${employerID}/settings`, { body, ...options });
+  }
 }
 
 export type EmployersPageNumberPage = PageNumberPage<Employer>;
@@ -297,6 +317,25 @@ export namespace EmployerSubmitCensusSyncResponse {
     accepted_at: string;
 
     employer_id: string;
+  }
+}
+
+/**
+ * Response containing a single employer settings resource.
+ */
+export interface EmployerUpdateSettingsResponse {
+  data: EmployerUpdateSettingsResponse.Data;
+}
+
+export namespace EmployerUpdateSettingsResponse {
+  export interface Data {
+    /**
+     * - `weekly` - Weekly
+     * - `bi_weekly` - Bi-Weekly
+     * - `semi_monthly` - Semi-Monthly
+     * - `monthly` - Monthly
+     */
+    pay_frequency: 'weekly' | 'bi_weekly' | 'semi_monthly' | 'monthly' | null;
   }
 }
 
@@ -566,17 +605,29 @@ export namespace EmployerSubmitCensusSyncParams {
   }
 }
 
+export interface EmployerUpdateSettingsParams {
+  /**
+   * - `weekly` - weekly
+   * - `bi_weekly` - bi_weekly
+   * - `semi_monthly` - semi_monthly
+   * - `monthly` - monthly
+   */
+  pay_frequency: 'weekly' | 'bi_weekly' | 'semi_monthly' | 'monthly';
+}
+
 export declare namespace Employers {
   export {
     type Employer as Employer,
     type EmployerResponse as EmployerResponse,
     type EmployerSubmitCensusSyncResponse as EmployerSubmitCensusSyncResponse,
+    type EmployerUpdateSettingsResponse as EmployerUpdateSettingsResponse,
     type EmployersPageNumberPage as EmployersPageNumberPage,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerListParams as EmployerListParams,
     type EmployerCreateBenefitEligibilityPolicyParams as EmployerCreateBenefitEligibilityPolicyParams,
     type EmployerListEmployeesParams as EmployerListEmployeesParams,
     type EmployerSubmitCensusSyncParams as EmployerSubmitCensusSyncParams,
+    type EmployerUpdateSettingsParams as EmployerUpdateSettingsParams,
   };
 }
 

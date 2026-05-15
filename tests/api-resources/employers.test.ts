@@ -201,4 +201,25 @@ describe('resource employers', () => {
       ],
     });
   });
+
+  // Mock server tests are disabled
+  test.skip('updateSettings: only required params', async () => {
+    const responsePromise = client.employers.updateSettings('empr_abc123def456', {
+      pay_frequency: 'bi_weekly',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('updateSettings: required and optional params', async () => {
+    const response = await client.employers.updateSettings('empr_abc123def456', {
+      pay_frequency: 'bi_weekly',
+    });
+  });
 });
