@@ -13,6 +13,14 @@ export class Groups extends APIResource {
 
   /**
    * Creates a new group scoped to the authenticated organization.
+   *
+   * @example
+   * ```ts
+   * const groupResponse = await client.groups.create({
+   *   external_reference_id: 'x',
+   *   name: 'x',
+   * });
+   * ```
    */
   create(body: GroupCreateParams, options?: RequestOptions): APIPromise<GroupResponse> {
     return this._client.post('/v1/groups', { body, ...options });
@@ -21,6 +29,13 @@ export class Groups extends APIResource {
   /**
    * Retrieves a single group by its prefixed ID. Returns 404 if the group does not
    * belong to the authenticated organization.
+   *
+   * @example
+   * ```ts
+   * const groupResponse = await client.groups.retrieve(
+   *   'grp_abc123def456',
+   * );
+   * ```
    */
   retrieve(groupID: string, options?: RequestOptions): APIPromise<GroupResponse> {
     return this._client.get(path`/v1/groups/${groupID}`, options);
@@ -29,6 +44,13 @@ export class Groups extends APIResource {
   /**
    * Partially updates a group's name or external reference ID. Returns 404 if the
    * group does not belong to the authenticated organization.
+   *
+   * @example
+   * ```ts
+   * const groupResponse = await client.groups.update(
+   *   'grp_abc123def456',
+   * );
+   * ```
    */
   update(
     groupID: string,
@@ -40,6 +62,14 @@ export class Groups extends APIResource {
 
   /**
    * Returns a paginated list of groups belonging to the authenticated organization.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const group of client.groups.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     query: GroupListParams | null | undefined = {},

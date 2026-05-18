@@ -11,6 +11,14 @@ export class Sync extends APIResource {
    * Returns the acceptance timestamp, completion timestamp (if processing has
    * finished), and the per-member `results` once available. While processing is in
    * flight, `completed_at` and `results` are `null`.
+   *
+   * @example
+   * ```ts
+   * const sync = await client.groups.members.sync.retrieve(
+   *   'request_id',
+   *   { group_id: 'grp_abc123def456' },
+   * );
+   * ```
    */
   retrieve(
     requestID: string,
@@ -25,6 +33,33 @@ export class Sync extends APIResource {
    * Submits a member sync payload for the specified group. Members in the payload
    * will be queued for processing asynchronously. Returns HTTP 202 with the batch ID
    * and acceptance timestamp.
+   *
+   * @example
+   * ```ts
+   * const response = await client.groups.members.sync.submit(
+   *   'grp_abc123def456',
+   *   {
+   *     members: [
+   *       {
+   *         reference_id: 'EMP-001',
+   *         first_name: 'Jane',
+   *         last_name: 'Doe',
+   *         date_of_birth: '1990-05-15',
+   *         email: 'jane.doe@acme.com',
+   *         phone: '4155550100',
+   *         plan_id: 'pln_abc123def456',
+   *         address: {
+   *           address_line_1: '123 Main Street',
+   *           address_line_2: 'Apt 4B',
+   *           city: 'San Francisco',
+   *           state: 'CA',
+   *           zipcode: '94102',
+   *         },
+   *       },
+   *     ],
+   *   },
+   * );
+   * ```
    */
   submit(groupID: string, body: SyncSubmitParams, options?: RequestOptions): APIPromise<SyncSubmitResponse> {
     return this._client.post(path`/v1/groups/${groupID}/members/sync`, { body, ...options });
@@ -48,7 +83,31 @@ export namespace SyncRetrieveResponse {
 
     request_id: string;
 
-    results: unknown;
+    results: Data.Results | null;
+  }
+
+  export namespace Data {
+    export interface Results {
+      added_group_member_ids: Array<string>;
+
+      failures: Array<Results.Failure>;
+
+      removed_group_member_ids: Array<string>;
+    }
+
+    export namespace Results {
+      export interface Failure {
+        /**
+         * - `add` - add
+         * - `remove` - remove
+         */
+        operation: 'add' | 'remove';
+
+        reason: string;
+
+        reference_id: string;
+      }
+    }
   }
 }
 
