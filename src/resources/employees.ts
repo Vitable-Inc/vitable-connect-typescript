@@ -65,11 +65,6 @@ export interface Employee {
   email: string;
 
   /**
-   * Benefit enrollments for this employee
-   */
-  enrollments: Array<Employee.Enrollment>;
-
-  /**
    * Employee's legal first name
    */
   first_name: string;
@@ -181,26 +176,6 @@ export namespace Employee {
      * - `Post-tax` - Post Tax
      */
     tax_classification: 'Unknown' | 'Pre-tax' | 'Post-tax';
-  }
-
-  export interface Enrollment {
-    /**
-     * Unique enrollment identifier with 'enrl\_' prefix
-     */
-    id: string;
-
-    /**
-     * - `pending` - Pending
-     * - `enrolled` - Enrolled
-     * - `waived` - Waived
-     * - `inactive` - Inactive
-     */
-    status: EnrollmentsAPI.EnrollmentStatus;
-
-    /**
-     * Timestamp when the enrollment decision was made
-     */
-    answered_at?: string | null;
   }
 
   /**

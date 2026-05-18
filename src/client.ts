@@ -42,6 +42,8 @@ import {
   EmployerResponse,
   EmployerSubmitCensusSyncParams,
   EmployerSubmitCensusSyncResponse,
+  EmployerUpdateSettingsParams,
+  EmployerUpdateSettingsResponse,
   Employers,
   EmployersPageNumberPage,
 } from './resources/employers';
@@ -51,6 +53,7 @@ import {
   EnrollmentStatus,
   Enrollments,
 } from './resources/enrollments';
+import { PlanListParams, PlanListResponse, PlanListResponsesPageNumberPage, Plans } from './resources/plans';
 import {
   WebhookEvent,
   WebhookEventListDeliveriesResponse,
@@ -59,6 +62,15 @@ import {
   WebhookEvents,
   WebhookEventsPageNumberPage,
 } from './resources/webhook-events';
+import {
+  Group,
+  GroupCreateParams,
+  GroupListParams,
+  GroupResponse,
+  GroupUpdateParams,
+  Groups,
+  GroupsPageNumberPage,
+} from './resources/groups/groups';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -231,6 +243,18 @@ export class VitableConnect {
     this.maxRetries = options.maxRetries ?? 2;
     this.fetch = options.fetch ?? Shims.getDefaultFetch();
     this.#encoder = Opts.FallbackEncoder;
+
+    const customHeadersEnv = readEnv('VITABLE_CONNECT_CUSTOM_HEADERS');
+    if (customHeadersEnv) {
+      const parsed: Record<string, string> = {};
+      for (const line of customHeadersEnv.split('\n')) {
+        const colon = line.indexOf(':');
+        if (colon >= 0) {
+          parsed[line.substring(0, colon).trim()] = line.substring(colon + 1).trim();
+        }
+      }
+      options.defaultHeaders = { ...parsed, ...options.defaultHeaders };
+    }
 
     this._options = options;
 
@@ -822,6 +846,8 @@ export class VitableConnect {
    */
   enrollments: API.Enrollments = new API.Enrollments(this);
   webhookEvents: API.WebhookEvents = new API.WebhookEvents(this);
+  groups: API.Groups = new API.Groups(this);
+  plans: API.Plans = new API.Plans(this);
 }
 
 VitableConnect.Auth = Auth;
@@ -830,6 +856,8 @@ VitableConnect.Employees = Employees;
 VitableConnect.Employers = Employers;
 VitableConnect.Enrollments = Enrollments;
 VitableConnect.WebhookEvents = WebhookEvents;
+VitableConnect.Groups = Groups;
+VitableConnect.Plans = Plans;
 
 export declare namespace VitableConnect {
   export type RequestOptions = Opts.RequestOptions;
@@ -867,12 +895,14 @@ export declare namespace VitableConnect {
     type Employer as Employer,
     type EmployerResponse as EmployerResponse,
     type EmployerSubmitCensusSyncResponse as EmployerSubmitCensusSyncResponse,
+    type EmployerUpdateSettingsResponse as EmployerUpdateSettingsResponse,
     type EmployersPageNumberPage as EmployersPageNumberPage,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerListParams as EmployerListParams,
     type EmployerCreateBenefitEligibilityPolicyParams as EmployerCreateBenefitEligibilityPolicyParams,
     type EmployerListEmployeesParams as EmployerListEmployeesParams,
     type EmployerSubmitCensusSyncParams as EmployerSubmitCensusSyncParams,
+    type EmployerUpdateSettingsParams as EmployerUpdateSettingsParams,
   };
 
   export {
@@ -889,5 +919,22 @@ export declare namespace VitableConnect {
     type WebhookEventListDeliveriesResponse as WebhookEventListDeliveriesResponse,
     type WebhookEventsPageNumberPage as WebhookEventsPageNumberPage,
     type WebhookEventListParams as WebhookEventListParams,
+  };
+
+  export {
+    Groups as Groups,
+    type Group as Group,
+    type GroupResponse as GroupResponse,
+    type GroupsPageNumberPage as GroupsPageNumberPage,
+    type GroupCreateParams as GroupCreateParams,
+    type GroupUpdateParams as GroupUpdateParams,
+    type GroupListParams as GroupListParams,
+  };
+
+  export {
+    Plans as Plans,
+    type PlanListResponse as PlanListResponse,
+    type PlanListResponsesPageNumberPage as PlanListResponsesPageNumberPage,
+    type PlanListParams as PlanListParams,
   };
 }
