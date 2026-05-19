@@ -10,7 +10,7 @@ const client = new VitableConnect({
 describe('resource groups', () => {
   // Mock server tests are disabled
   test.skip('create: only required params', async () => {
-    const responsePromise = client.groups.create({ external_reference_id: 'x', name: 'x' });
+    const responsePromise = client.groups.create({ external_reference_id: 'mol_seg_001', name: 'Tier 1' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,7 +22,7 @@ describe('resource groups', () => {
 
   // Mock server tests are disabled
   test.skip('create: required and optional params', async () => {
-    const response = await client.groups.create({ external_reference_id: 'x', name: 'x' });
+    const response = await client.groups.create({ external_reference_id: 'mol_seg_001', name: 'Tier 1' });
   });
 
   // Mock server tests are disabled
@@ -55,7 +55,7 @@ describe('resource groups', () => {
     await expect(
       client.groups.update(
         'grp_abc123def456',
-        { external_reference_id: 'external_reference_id', name: 'x' },
+        { external_reference_id: 'mol_seg_001_v2', name: 'Tier 1 (renamed)' },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(VitableConnect.NotFoundError);

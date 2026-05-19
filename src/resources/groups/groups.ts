@@ -17,8 +17,8 @@ export class Groups extends APIResource {
    * @example
    * ```ts
    * const groupResponse = await client.groups.create({
-   *   external_reference_id: 'x',
-   *   name: 'x',
+   *   external_reference_id: 'mol_seg_001',
+   *   name: 'Tier 1',
    * });
    * ```
    */
@@ -49,6 +49,10 @@ export class Groups extends APIResource {
    * ```ts
    * const groupResponse = await client.groups.update(
    *   'grp_abc123def456',
+   *   {
+   *     external_reference_id: 'mol_seg_001_v2',
+   *     name: 'Tier 1 (renamed)',
+   *   },
    * );
    * ```
    */
@@ -82,16 +86,34 @@ export class Groups extends APIResource {
 export type GroupsPageNumberPage = PageNumberPage<Group>;
 
 export interface Group {
+  /**
+   * Prefixed group identifier (`grp_<base64-encoded-uuid>`).
+   */
   id: string;
 
+  /**
+   * Group creation timestamp (ISO 8601, UTC).
+   */
   created_at: string | null;
 
+  /**
+   * Stable identifier for this group in the integrator's own system.
+   */
   external_reference_id: string;
 
+  /**
+   * Human-readable group name.
+   */
   name: string;
 
+  /**
+   * Prefixed organization identifier (`org_<base64-encoded-uuid>`).
+   */
   organization_id: string;
 
+  /**
+   * Last-update timestamp (ISO 8601, UTC).
+   */
   updated_at: string | null;
 }
 
