@@ -80,6 +80,11 @@ export interface Employee {
   member_id: string;
 
   /**
+   * Phone number (10-digit US domestic string)
+   */
+  phone: string | null;
+
+  /**
    * Employee status (active or terminated)
    */
   status: string;
@@ -113,11 +118,6 @@ export interface Employee {
    * Employee's hire date with the employer
    */
   hire_date?: string | null;
-
-  /**
-   * Phone number (10-digit US domestic string)
-   */
-  phone?: string | null;
 
   /**
    * Partner-assigned reference ID for the employee
