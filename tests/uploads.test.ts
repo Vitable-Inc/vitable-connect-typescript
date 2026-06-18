@@ -1,7 +1,6 @@
 import fs from 'fs';
 import type { ResponseLike } from '@vitable-inc/vitable-connect/internal/to-file';
 import { toFile } from '@vitable-inc/vitable-connect/core/uploads';
-import { File } from 'node:buffer';
 
 class MyClass {
   name: string = 'foo';

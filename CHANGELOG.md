@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.1 (2026-05-18)
+
+Full Changelog: [v0.4.0...v0.4.1](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.4.0...v0.4.1)
+
+### Bug Fixes
+
+* **typescript:** upgrade tsc-multi so that it works with Node 26 ([5a1dab4](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/5a1dab40a6e84a2a881f3f24edf5788cf28d0baf))
+
+
+### Chores
+
+* **tests:** remove redundant File import ([6dfaa4d](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/6dfaa4d5be1c12ed1eef8621cc4d30ebd80c4e7c))
+
 ## 0.4.0 (2026-05-18)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.3.0...v0.4.0)
