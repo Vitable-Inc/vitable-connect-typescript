@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as BenefitEligibilityPoliciesAPI from './benefit-eligibility-policies';
 import * as EmployeesAPI from './employees';
 import { EmployeesPageNumberPage } from './employees';
 import { APIPromise } from '../core/api-promise';
@@ -71,32 +70,6 @@ export class Employers extends APIResource {
     options?: RequestOptions,
   ): PagePromise<EmployersPageNumberPage, Employer> {
     return this._client.getAPIList('/v1/employers', PageNumberPage<Employer>, { query, ...options });
-  }
-
-  /**
-   * Creates a benefit eligibility policy for the specified employer.
-   *
-   * @example
-   * ```ts
-   * const benefitEligibilityPolicyResponse =
-   *   await client.employers.createBenefitEligibilityPolicy(
-   *     'empr_abc123def456',
-   *     {
-   *       classification: 'classification',
-   *       waiting_period: 'waiting_period',
-   *     },
-   *   );
-   * ```
-   */
-  createBenefitEligibilityPolicy(
-    employerID: string,
-    body: EmployerCreateBenefitEligibilityPolicyParams,
-    options?: RequestOptions,
-  ): APIPromise<BenefitEligibilityPoliciesAPI.BenefitEligibilityPolicyResponse> {
-    return this._client.post(path`/v1/employers/${employerID}/benefit-eligibility-policies`, {
-      body,
-      ...options,
-    });
   }
 
   /**
@@ -221,11 +194,6 @@ export interface Employer {
    * Employer Identification Number (masked in responses)
    */
   ein: string | null;
-
-  /**
-   * ID of the benefit eligibility policy (epol\_\*), if assigned
-   */
-  eligibility_policy_id: string | null;
 
   /**
    * Legal business name for compliance and tax purposes
@@ -409,19 +377,6 @@ export namespace EmployerCreateParams {
 }
 
 export interface EmployerListParams extends PageNumberPageParams {}
-
-export interface EmployerCreateBenefitEligibilityPolicyParams {
-  /**
-   * Which employee classifications are eligible. One of: full_time, part_time, all
-   */
-  classification: string;
-
-  /**
-   * Waiting period before eligibility. One of: first_of_following_month, 30_days,
-   * 60_days, none
-   */
-  waiting_period: string;
-}
 
 export interface EmployerListEmployeesParams extends PageNumberPageParams {}
 
@@ -624,7 +579,6 @@ export declare namespace Employers {
     type EmployersPageNumberPage as EmployersPageNumberPage,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerListParams as EmployerListParams,
-    type EmployerCreateBenefitEligibilityPolicyParams as EmployerCreateBenefitEligibilityPolicyParams,
     type EmployerListEmployeesParams as EmployerListEmployeesParams,
     type EmployerSubmitCensusSyncParams as EmployerSubmitCensusSyncParams,
     type EmployerUpdateSettingsParams as EmployerUpdateSettingsParams,

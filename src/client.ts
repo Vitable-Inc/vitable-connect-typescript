@@ -20,11 +20,7 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import { Auth, AuthIssueAccessTokenParams, AuthIssueAccessTokenResponse, Type } from './resources/auth';
-import {
-  BenefitEligibilityPolicies,
-  BenefitEligibilityPolicy,
-  BenefitEligibilityPolicyResponse,
-} from './resources/benefit-eligibility-policies';
+import { BenefitEligibilityPolicies } from './resources/benefit-eligibility-policies';
 import {
   Employee,
   EmployeeClass,
@@ -35,7 +31,6 @@ import {
 } from './resources/employees';
 import {
   Employer,
-  EmployerCreateBenefitEligibilityPolicyParams,
   EmployerCreateParams,
   EmployerListEmployeesParams,
   EmployerListParams,
@@ -843,9 +838,6 @@ export class VitableConnect {
    * Issue short-lived access tokens for scoped API access
    */
   auth: API.Auth = new API.Auth(this);
-  /**
-   * Define rules that determine which employees qualify for benefits
-   */
   benefitEligibilityPolicies: API.BenefitEligibilityPolicies = new API.BenefitEligibilityPolicies(this);
   employees: API.Employees = new API.Employees(this);
   employers: API.Employers = new API.Employers(this);
@@ -883,11 +875,7 @@ export declare namespace VitableConnect {
     type AuthIssueAccessTokenParams as AuthIssueAccessTokenParams,
   };
 
-  export {
-    BenefitEligibilityPolicies as BenefitEligibilityPolicies,
-    type BenefitEligibilityPolicy as BenefitEligibilityPolicy,
-    type BenefitEligibilityPolicyResponse as BenefitEligibilityPolicyResponse,
-  };
+  export { BenefitEligibilityPolicies as BenefitEligibilityPolicies };
 
   export {
     Employees as Employees,
@@ -907,7 +895,6 @@ export declare namespace VitableConnect {
     type EmployersPageNumberPage as EmployersPageNumberPage,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerListParams as EmployerListParams,
-    type EmployerCreateBenefitEligibilityPolicyParams as EmployerCreateBenefitEligibilityPolicyParams,
     type EmployerListEmployeesParams as EmployerListEmployeesParams,
     type EmployerSubmitCensusSyncParams as EmployerSubmitCensusSyncParams,
     type EmployerUpdateSettingsParams as EmployerUpdateSettingsParams,

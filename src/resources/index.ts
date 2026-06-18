@@ -1,11 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export { Auth, type Type, type AuthIssueAccessTokenResponse, type AuthIssueAccessTokenParams } from './auth';
-export {
-  BenefitEligibilityPolicies,
-  type BenefitEligibilityPolicy,
-  type BenefitEligibilityPolicyResponse,
-} from './benefit-eligibility-policies';
+export { BenefitEligibilityPolicies } from './benefit-eligibility-policies';
 export {
   Employees,
   type Employee,
@@ -23,7 +19,6 @@ export {
   type EmployerUpdateSettingsResponse,
   type EmployerCreateParams,
   type EmployerListParams,
-  type EmployerCreateBenefitEligibilityPolicyParams,
   type EmployerListEmployeesParams,
   type EmployerSubmitCensusSyncParams,
   type EmployerUpdateSettingsParams,
