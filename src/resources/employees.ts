@@ -11,9 +11,10 @@ import { path } from '../internal/utils/path';
 export class Employees extends APIResource {
   /**
    * Retrieves detailed information for a specific employee by ID. Returns employee
-   * details including personal information, employment status, and payroll
-   * deductions from the most recent statement period. Deductions reflect a snapshot
-   * of the current period and are replaced when a new statement is generated.
+   * details including personal information, employment status, classification and
+   * compensation-type effective dates, compensation type, and payroll deductions
+   * from the most recent statement period. Deductions reflect a snapshot of the
+   * current period and are replaced when a new statement is generated.
    */
   retrieve(employeeID: string, options?: RequestOptions): APIPromise<EmployeeRetrieveResponse> {
     return this._client.get(path`/v1/employees/${employeeID}`, options);
@@ -44,6 +45,22 @@ export interface Employee {
   id: string;
 
   /**
+   * Date the employee's current classification took effect
+   */
+  classification_effective_date: string;
+
+  /**
+   * - `Salary` - Salary
+   * - `Hourly` - Hourly
+   */
+  compensation_type: 'Salary' | 'Hourly' | null;
+
+  /**
+   * Date the employee's current compensation type took effect
+   */
+  compensation_type_effective_date: string;
+
+  /**
    * Timestamp when the employee was created
    */
   created_at: string;
@@ -63,6 +80,16 @@ export interface Employee {
    * Email address
    */
   email: string;
+
+  /**
+   * - `Full Time` - Full Time
+   * - `Part Time` - Part Time
+   * - `Temporary` - Temporary
+   * - `Intern` - Intern
+   * - `Seasonal` - Seasonal
+   * - `Individual Contractor` - Individual Contractor
+   */
+  employee_class: EmployeeClass;
 
   /**
    * Employee's legal first name
@@ -85,9 +112,14 @@ export interface Employee {
   phone: string | null;
 
   /**
+   * Employee's start date with the employer
+   */
+  start_date: string;
+
+  /**
    * Employee status (active or terminated)
    */
-  status: string;
+  status: 'active' | 'terminated';
 
   /**
    * Timestamp when the employee was last updated
@@ -100,24 +132,9 @@ export interface Employee {
   address?: Employee.Address | null;
 
   /**
-   * - `Full Time` - Full Time
-   * - `Part Time` - Part Time
-   * - `Temporary` - Temporary
-   * - `Intern` - Intern
-   * - `Seasonal` - Seasonal
-   * - `Individual Contractor` - Individual Contractor
-   */
-  employee_class?: EmployeeClass | null;
-
-  /**
    * Gender identity, if provided
    */
   gender?: string | null;
-
-  /**
-   * Employee's hire date with the employer
-   */
-  hire_date?: string | null;
 
   /**
    * Partner-assigned reference ID for the employee
