@@ -9,8 +9,6 @@ Methods:
 
 - <code title="post /v1/auth/access-tokens">client.auth.<a href="./src/resources/auth.ts">issueAccessToken</a>({ ...params }) -> AuthIssueAccessTokenResponse</code>
 
-# BenefitEligibilityPolicies
-
 # Employees
 
 Types:

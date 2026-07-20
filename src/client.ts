@@ -20,7 +20,6 @@ import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
 import { Auth, AuthIssueAccessTokenParams, AuthIssueAccessTokenResponse, Type } from './resources/auth';
-import { BenefitEligibilityPolicies } from './resources/benefit-eligibility-policies';
 import {
   Employee,
   EmployeeClass,
@@ -838,7 +837,6 @@ export class VitableConnect {
    * Issue short-lived access tokens for scoped API access
    */
   auth: API.Auth = new API.Auth(this);
-  benefitEligibilityPolicies: API.BenefitEligibilityPolicies = new API.BenefitEligibilityPolicies(this);
   employees: API.Employees = new API.Employees(this);
   employers: API.Employers = new API.Employers(this);
   /**
@@ -851,7 +849,6 @@ export class VitableConnect {
 }
 
 VitableConnect.Auth = Auth;
-VitableConnect.BenefitEligibilityPolicies = BenefitEligibilityPolicies;
 VitableConnect.Employees = Employees;
 VitableConnect.Employers = Employers;
 VitableConnect.Enrollments = Enrollments;
@@ -874,8 +871,6 @@ export declare namespace VitableConnect {
     type AuthIssueAccessTokenResponse as AuthIssueAccessTokenResponse,
     type AuthIssueAccessTokenParams as AuthIssueAccessTokenParams,
   };
-
-  export { BenefitEligibilityPolicies as BenefitEligibilityPolicies };
 
   export {
     Employees as Employees,
