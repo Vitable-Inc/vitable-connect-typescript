@@ -19,7 +19,7 @@ import { AbstractPage, type PageNumberPageParams, PageNumberPageResponse } from 
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { Auth, AuthIssueAccessTokenParams, AuthIssueAccessTokenResponse, Type } from './resources/auth';
+import { Auth, AuthIssueAccessTokenParams, AuthIssueAccessTokenResponse } from './resources/auth';
 import {
   Employee,
   EmployeeClass,
@@ -867,7 +867,6 @@ export declare namespace VitableConnect {
 
   export {
     Auth as Auth,
-    type Type as Type,
     type AuthIssueAccessTokenResponse as AuthIssueAccessTokenResponse,
     type AuthIssueAccessTokenParams as AuthIssueAccessTokenParams,
   };

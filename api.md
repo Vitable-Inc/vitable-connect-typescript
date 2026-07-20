@@ -2,7 +2,6 @@
 
 Types:
 
-- <code><a href="./src/resources/auth.ts">Type</a></code>
 - <code><a href="./src/resources/auth.ts">AuthIssueAccessTokenResponse</a></code>
 
 Methods:

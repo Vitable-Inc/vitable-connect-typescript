@@ -1,7 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../core/resource';
-import * as AuthAPI from './auth';
 import { APIPromise } from '../core/api-promise';
 import { RequestOptions } from '../internal/request-options';
 
@@ -28,12 +27,6 @@ export class Auth extends APIResource {
     return this._client.post('/v1/auth/access-tokens', { body, ...options });
   }
 }
-
-/**
- * - `employer` - employer
- * - `employee` - employee
- */
-export type Type = 'employer' | 'employee';
 
 export interface AuthIssueAccessTokenResponse {
   /**
@@ -71,7 +64,7 @@ export namespace AuthIssueAccessTokenResponse {
      * - `employer` - employer
      * - `employee` - employee
      */
-    type: AuthAPI.Type;
+    type: 'employer' | 'employee';
   }
 }
 
@@ -102,13 +95,12 @@ export namespace AuthIssueAccessTokenParams {
      * - `employer` - employer
      * - `employee` - employee
      */
-    type: AuthAPI.Type;
+    type: 'employer' | 'employee';
   }
 }
 
 export declare namespace Auth {
   export {
-    type Type as Type,
     type AuthIssueAccessTokenResponse as AuthIssueAccessTokenResponse,
     type AuthIssueAccessTokenParams as AuthIssueAccessTokenParams,
   };
