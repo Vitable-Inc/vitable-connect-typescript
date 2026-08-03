@@ -53,14 +53,17 @@ export class Employers extends APIResource {
   }
 
   /**
-   * Retrieves a paginated list of all employers belonging to the authenticated
-   * organization. Results are sorted by creation date (newest first) and paginated
-   * using page and limit parameters.
+   * Returns the caller's organization book — every employer with its computed
+   * columns (enrollment-rate summary, benefit-family tags, HRIS connection,
+   * benefit-lifecycle stage) merged with the employer's flat CRM fields (legal name,
+   * EIN, contact, address, timestamps). The organization is derived from the
+   * authenticated principal. Supports name search, benefit-family/lifecycle/HRIS
+   * filters, and page/limit pagination.
    *
    * @example
    * ```ts
    * // Automatically fetches more pages as needed.
-   * for await (const employer of client.employers.list()) {
+   * for await (const employerListResponse of client.employers.list()) {
    *   // ...
    * }
    * ```
@@ -68,8 +71,11 @@ export class Employers extends APIResource {
   list(
     query: EmployerListParams | null | undefined = {},
     options?: RequestOptions,
-  ): PagePromise<EmployersPageNumberPage, Employer> {
-    return this._client.getAPIList('/v1/employers', PageNumberPage<Employer>, { query, ...options });
+  ): PagePromise<EmployerListResponsesPageNumberPage, EmployerListResponse> {
+    return this._client.getAPIList('/v1/employers', PageNumberPage<EmployerListResponse>, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -164,7 +170,7 @@ export class Employers extends APIResource {
   }
 }
 
-export type EmployersPageNumberPage = PageNumberPage<Employer>;
+export type EmployerListResponsesPageNumberPage = PageNumberPage<EmployerListResponse>;
 
 /**
  * Serializer for Employer entity in public API responses.
@@ -274,6 +280,185 @@ export interface EmployerResponse {
 }
 
 /**
+ * One employer row of the organization's book (list projection).
+ *
+ * Carries the enriched/computed columns (enrollment roll-up, benefit-family tags,
+ * HRIS connection, benefit-lifecycle stage) alongside the flat CRM fields of the
+ * underlying employer (legal name, EIN, contact, address, timestamps) for parity
+ * with the legacy `Employer` contract.
+ */
+export interface EmployerListResponse {
+  /**
+   * Whether the employer is currently active in the system.
+   */
+  active: boolean;
+
+  /**
+   * Shared read serializer for a postal address on public API responses.
+   *
+   * One definition for the address block every public resource emits (employer,
+   * employee, …), so the 5-field shape isn't hand-rolled per endpoint. Read-only: it
+   * renders an already-built address value object (e.g. `AddressDVO`) whose
+   * attributes map 1:1 to these fields.
+   */
+  address: EmployerListResponse.Address;
+
+  /**
+   * Distinct benefit-family tags across the employer's active benefits (e.g. `MEC`,
+   * `ICHRA`, `VPC`).
+   */
+  benefit_families: Array<string>;
+
+  benefit_lifecycle_stage: EmployerListResponse.BenefitLifecycleStage;
+
+  /**
+   * Timestamp when the employer was created.
+   */
+  created_at: string;
+
+  /**
+   * Employer Identification Number (masked in responses).
+   */
+  ein: string | null;
+
+  /**
+   * Email address for billing and communications.
+   */
+  email: string | null;
+
+  /**
+   * Prefixed employer identifier (`empr_<base64-encoded-uuid>`).
+   */
+  employer_id: string;
+
+  /**
+   * Enrolled/eligible employees roll-up.
+   */
+  enrollment_rate_summary: EmployerListResponse.EnrollmentRateSummary;
+
+  /**
+   * HRIS connection, or null when the employer has none.
+   */
+  hris_status: EmployerListResponse.HRISStatus | null;
+
+  /**
+   * Legal business name for compliance and tax purposes.
+   */
+  legal_name: string | null;
+
+  /**
+   * Employer name.
+   */
+  name: string;
+
+  /**
+   * ID of the parent organization (`org_*`), or null when unknown.
+   */
+  organization_id: string | null;
+
+  /**
+   * Employer phone number.
+   */
+  phone_number: string | null;
+
+  /**
+   * The organization's own reference id for this employer, or null when none was
+   * assigned.
+   */
+  reference_id: string | null;
+
+  /**
+   * Timestamp when the employer was last updated.
+   */
+  updated_at: string;
+}
+
+export namespace EmployerListResponse {
+  /**
+   * Shared read serializer for a postal address on public API responses.
+   *
+   * One definition for the address block every public resource emits (employer,
+   * employee, …), so the 5-field shape isn't hand-rolled per endpoint. Read-only: it
+   * renders an already-built address value object (e.g. `AddressDVO`) whose
+   * attributes map 1:1 to these fields.
+   */
+  export interface Address {
+    /**
+     * Primary street address.
+     */
+    address_line_1: string;
+
+    /**
+     * Secondary street address (apt, suite, etc.).
+     */
+    address_line_2: string | null;
+
+    /**
+     * City name.
+     */
+    city: string;
+
+    /**
+     * Two-letter state code (e.g. `CA`, `NY`).
+     */
+    state: string;
+
+    /**
+     * ZIP code (5 or 9 digit).
+     */
+    zipcode: string;
+  }
+
+  export interface BenefitLifecycleStage {
+    /**
+     * Anchor date for the stage (e.g. renewal date); null when not applicable.
+     */
+    as_of_date: string | null;
+
+    /**
+     * Computed employer benefit-lifecycle stage: `open_enrollment`, `renewal`,
+     * `active`, `onboarding`, or `cancelled`.
+     */
+    stage: string;
+  }
+
+  /**
+   * Enrolled/eligible employees roll-up.
+   */
+  export interface EnrollmentRateSummary {
+    /**
+     * Employees eligible for at least one active benefit.
+     */
+    eligible: number;
+
+    /**
+     * Employees enrolled in at least one active benefit.
+     */
+    enrolled: number;
+
+    /**
+     * `enrolled / eligible` as a whole-number percent (0 when none eligible).
+     */
+    percentage: number;
+  }
+
+  /**
+   * HRIS connection, or null when the employer has none.
+   */
+  export interface HRISStatus {
+    /**
+     * HRIS/payroll provider the employer is connected to (e.g. `Paychex`).
+     */
+    provider: string;
+
+    /**
+     * Connection status reported by the integration.
+     */
+    status: string;
+  }
+}
+
+/**
  * Response containing a single census sync detail resource.
  */
 export interface EmployerSubmitCensusSyncResponse {
@@ -376,7 +561,33 @@ export namespace EmployerCreateParams {
   }
 }
 
-export interface EmployerListParams extends PageNumberPageParams {}
+export interface EmployerListParams extends PageNumberPageParams {
+  /**
+   * Filter to employers with at least one active benefit in these families.
+   */
+  benefit_family?: Array<'mec' | 'mvp' | 'ichra' | 'vpc' | 'dental' | 'vision'>;
+
+  /**
+   * Filter to employers in one of these computed benefit-lifecycle stages.
+   */
+  benefit_lifecycle_stage?: Array<'open_enrollment' | 'renewal' | 'active' | 'onboarding' | 'cancelled'>;
+
+  /**
+   * Filter to employers whose HRIS connection is in one of these statuses.
+   */
+  hris_status?: Array<'Pending' | 'Active' | 'Inactive' | 'Paused' | 'Terminated'>;
+
+  /**
+   * Include cancelled employers (hidden by default unless their stage is explicitly
+   * requested).
+   */
+  include_cancelled?: boolean;
+
+  /**
+   * Case-insensitive employer-name substring filter.
+   */
+  search?: string | null;
+}
 
 export interface EmployerListEmployeesParams extends PageNumberPageParams {}
 
@@ -574,9 +785,10 @@ export declare namespace Employers {
   export {
     type Employer as Employer,
     type EmployerResponse as EmployerResponse,
+    type EmployerListResponse as EmployerListResponse,
     type EmployerSubmitCensusSyncResponse as EmployerSubmitCensusSyncResponse,
     type EmployerUpdateSettingsResponse as EmployerUpdateSettingsResponse,
-    type EmployersPageNumberPage as EmployersPageNumberPage,
+    type EmployerListResponsesPageNumberPage as EmployerListResponsesPageNumberPage,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerListParams as EmployerListParams,
     type EmployerListEmployeesParams as EmployerListEmployeesParams,

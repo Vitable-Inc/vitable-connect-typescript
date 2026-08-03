@@ -78,7 +78,18 @@ describe('resource employers', () => {
   test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.employers.list({ limit: 20, page: 1 }, { path: '/_stainless_unknown_path' }),
+      client.employers.list(
+        {
+          benefit_family: ['mec'],
+          benefit_lifecycle_stage: ['open_enrollment'],
+          hris_status: ['Pending'],
+          include_cancelled: true,
+          limit: 20,
+          page: 1,
+          search: 'x',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(VitableConnect.NotFoundError);
   });
 

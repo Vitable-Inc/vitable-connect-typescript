@@ -14,6 +14,7 @@ export {
   Employers,
   type Employer,
   type EmployerResponse,
+  type EmployerListResponse,
   type EmployerSubmitCensusSyncResponse,
   type EmployerUpdateSettingsResponse,
   type EmployerCreateParams,
@@ -21,7 +22,7 @@ export {
   type EmployerListEmployeesParams,
   type EmployerSubmitCensusSyncParams,
   type EmployerUpdateSettingsParams,
-  type EmployersPageNumberPage,
+  type EmployerListResponsesPageNumberPage,
 } from './employers';
 export {
   Enrollments,

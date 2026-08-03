@@ -28,6 +28,7 @@ Types:
 
 - <code><a href="./src/resources/employers.ts">Employer</a></code>
 - <code><a href="./src/resources/employers.ts">EmployerResponse</a></code>
+- <code><a href="./src/resources/employers.ts">EmployerListResponse</a></code>
 - <code><a href="./src/resources/employers.ts">EmployerSubmitCensusSyncResponse</a></code>
 - <code><a href="./src/resources/employers.ts">EmployerUpdateSettingsResponse</a></code>
 
@@ -35,7 +36,7 @@ Methods:
 
 - <code title="post /v1/employers">client.employers.<a href="./src/resources/employers.ts">create</a>({ ...params }) -> EmployerResponse</code>
 - <code title="get /v1/employers/{employer_id}">client.employers.<a href="./src/resources/employers.ts">retrieve</a>(employerID) -> EmployerResponse</code>
-- <code title="get /v1/employers">client.employers.<a href="./src/resources/employers.ts">list</a>({ ...params }) -> EmployersPageNumberPage</code>
+- <code title="get /v1/employers">client.employers.<a href="./src/resources/employers.ts">list</a>({ ...params }) -> EmployerListResponsesPageNumberPage</code>
 - <code title="get /v1/employers/{employer_id}/employees">client.employers.<a href="./src/resources/employers.ts">listEmployees</a>(employerID, { ...params }) -> EmployeesPageNumberPage</code>
 - <code title="post /v1/employers/{employer_id}/census-sync">client.employers.<a href="./src/resources/employers.ts">submitCensusSync</a>(employerID, { ...params }) -> EmployerSubmitCensusSyncResponse</code>
 - <code title="put /v1/employers/{employer_id}/settings">client.employers.<a href="./src/resources/employers.ts">updateSettings</a>(employerID, { ...params }) -> EmployerUpdateSettingsResponse</code>

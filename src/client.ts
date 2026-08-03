@@ -33,13 +33,14 @@ import {
   EmployerCreateParams,
   EmployerListEmployeesParams,
   EmployerListParams,
+  EmployerListResponse,
+  EmployerListResponsesPageNumberPage,
   EmployerResponse,
   EmployerSubmitCensusSyncParams,
   EmployerSubmitCensusSyncResponse,
   EmployerUpdateSettingsParams,
   EmployerUpdateSettingsResponse,
   Employers,
-  EmployersPageNumberPage,
 } from './resources/employers';
 import {
   Enrollment,
@@ -294,9 +295,6 @@ export class VitableConnect {
     return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
-  /**
-   * Basic re-implementation of `qs.stringify` for primitive types.
-   */
   protected stringifyQuery(query: object | Record<string, unknown>): string {
     return stringifyQuery(query);
   }
@@ -884,9 +882,10 @@ export declare namespace VitableConnect {
     Employers as Employers,
     type Employer as Employer,
     type EmployerResponse as EmployerResponse,
+    type EmployerListResponse as EmployerListResponse,
     type EmployerSubmitCensusSyncResponse as EmployerSubmitCensusSyncResponse,
     type EmployerUpdateSettingsResponse as EmployerUpdateSettingsResponse,
-    type EmployersPageNumberPage as EmployersPageNumberPage,
+    type EmployerListResponsesPageNumberPage as EmployerListResponsesPageNumberPage,
     type EmployerCreateParams as EmployerCreateParams,
     type EmployerListParams as EmployerListParams,
     type EmployerListEmployeesParams as EmployerListEmployeesParams,
