@@ -192,6 +192,12 @@ export interface Employer {
   address: Employer.Address;
 
   /**
+   * Primary company-admin contact (email + phone; company admins have no person
+   * name).
+   */
+  contact: Employer.Contact | null;
+
+  /**
    * Timestamp when the employer was created
    */
   created_at: string;
@@ -266,6 +272,22 @@ export namespace Employer {
      * Secondary street address (apt, suite, etc.)
      */
     address_line_2?: string | null;
+  }
+
+  /**
+   * Primary company-admin contact (email + phone; company admins have no person
+   * name).
+   */
+  export interface Contact {
+    /**
+     * Primary contact email
+     */
+    email: string | null;
+
+    /**
+     * Primary contact phone, or null
+     */
+    phone: string | null;
   }
 }
 
