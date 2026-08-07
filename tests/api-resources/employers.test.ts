@@ -111,7 +111,12 @@ describe('resource employers', () => {
     await expect(
       client.employers.listEmployees(
         'empr_abc123def456',
-        { limit: 20, page: 1 },
+        {
+          employment_status: 'active',
+          limit: 20,
+          page: 1,
+          search: 'x',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(VitableConnect.NotFoundError);

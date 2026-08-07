@@ -79,10 +79,13 @@ export class Employers extends APIResource {
   }
 
   /**
-   * Retrieves a paginated list of all employees for a specific employer. Results are
-   * paginated using page and limit parameters. Each employee includes payroll
-   * deductions from the most recent statement period. When a new deduction statement
-   * is generated, previous period deductions are replaced.
+   * Retrieves a paginated list of employees for a specific employer. The caller must
+   * be authorized for the employer; an unknown or unauthorized employer returns 404.
+   * Results are paginated using page and limit parameters and can be narrowed with a
+   * case-insensitive `search` (first name, last name, or email) and an
+   * `employment_status` filter (active or terminated). Each employee includes
+   * payroll deductions from the most recent statement period. When a new deduction
+   * statement is generated, previous period deductions are replaced.
    *
    * @example
    * ```ts
@@ -506,8 +509,8 @@ export namespace EmployerUpdateSettingsResponse {
   export interface Data {
     /**
      * - `weekly` - Weekly
-     * - `bi_weekly` - Bi-Weekly
-     * - `semi_monthly` - Semi-Monthly
+     * - `bi_weekly` - Bi Weekly
+     * - `semi_monthly` - Semi Monthly
      * - `monthly` - Monthly
      */
     pay_frequency: 'weekly' | 'bi_weekly' | 'semi_monthly' | 'monthly' | null;
@@ -611,7 +614,17 @@ export interface EmployerListParams extends PageNumberPageParams {
   search?: string | null;
 }
 
-export interface EmployerListEmployeesParams extends PageNumberPageParams {}
+export interface EmployerListEmployeesParams extends PageNumberPageParams {
+  /**
+   * Filter by employment status (active or terminated)
+   */
+  employment_status?: 'active' | 'terminated';
+
+  /**
+   * Case-insensitive search across employee first name, last name, and email
+   */
+  search?: string | null;
+}
 
 export interface EmployerSubmitCensusSyncParams {
   employees: Array<EmployerSubmitCensusSyncParams.Employee>;
@@ -795,10 +808,10 @@ export namespace EmployerSubmitCensusSyncParams {
 
 export interface EmployerUpdateSettingsParams {
   /**
-   * - `weekly` - weekly
-   * - `bi_weekly` - bi_weekly
-   * - `semi_monthly` - semi_monthly
-   * - `monthly` - monthly
+   * - `weekly` - Weekly
+   * - `bi_weekly` - Bi Weekly
+   * - `semi_monthly` - Semi Monthly
+   * - `monthly` - Monthly
    */
   pay_frequency: 'weekly' | 'bi_weekly' | 'semi_monthly' | 'monthly';
 }
