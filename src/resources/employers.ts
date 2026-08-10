@@ -623,7 +623,7 @@ export interface EmployerListEmployeesParams extends PageNumberPageParams {
   /**
    * Case-insensitive search across employee first name, last name, and email
    */
-  search?: string | null;
+  search?: string;
 }
 
 export interface EmployerSubmitCensusSyncParams {

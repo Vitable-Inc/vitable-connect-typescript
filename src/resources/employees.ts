@@ -132,6 +132,11 @@ export interface Employee {
   address?: Employee.Address | null;
 
   /**
+   * Name of the employer this employment is with
+   */
+  employer_name?: string | null;
+
+  /**
    * Gender identity, if provided
    */
   gender?: string | null;

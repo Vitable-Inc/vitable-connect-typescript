@@ -115,7 +115,7 @@ describe('resource employers', () => {
           employment_status: 'active',
           limit: 20,
           page: 1,
-          search: 'x',
+          search: 'jane',
         },
         { path: '/_stainless_unknown_path' },
       ),

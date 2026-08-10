@@ -1,4 +1,4 @@
 configured_endpoints: 20
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/vitable/vitable-connect-96d7ff59599f27e83c426f3cc7623ffd2ca8eddb24a5c9ffcfc12dfa4798f069.yml
-openapi_spec_hash: 2ef92d84cea64a656a2a5cce274d2412
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/vitable/vitable-connect-9a8094daa688e91a9660bf704cd9bbb74940c56ab40365775b64e728bc6d5bc2.yml
+openapi_spec_hash: 1535a57c22d66f7bc46b55dddf21bc7b
 config_hash: 7295ebbd0e718c807378a7e264b1f400
