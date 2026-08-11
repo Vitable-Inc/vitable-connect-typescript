@@ -149,13 +149,13 @@ export namespace SyncSubmitParams {
 
     last_name: string;
 
-    phone: string;
-
     plan_id: string;
 
     reference_id: string;
 
     email?: string | null;
+
+    phone?: string | null;
   }
 
   export namespace Member {
