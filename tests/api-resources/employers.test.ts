@@ -131,14 +131,12 @@ describe('resource employers', () => {
           email: 'jane.doe@acme.com',
           first_name: 'Jane',
           last_name: 'Doe',
-          phone: '4155550100',
         },
         {
           date_of_birth: '1985-11-20',
           email: 'john.smith@acme.com',
           first_name: 'John',
           last_name: 'Smith',
-          phone: '4155550101',
         },
       ],
     });
@@ -160,7 +158,6 @@ describe('resource employers', () => {
           email: 'jane.doe@acme.com',
           first_name: 'Jane',
           last_name: 'Doe',
-          phone: '4155550100',
           address: {
             address_line_1: '123 Main Street',
             city: 'San Francisco',
@@ -170,6 +167,7 @@ describe('resource employers', () => {
           },
           compensation_type: 'Salary',
           employee_class: 'Full Time',
+          phone: '4155550100',
           reference_id: 'EMP-001',
           start_date: '2024-01-15',
         },
@@ -178,7 +176,6 @@ describe('resource employers', () => {
           email: 'john.smith@acme.com',
           first_name: 'John',
           last_name: 'Smith',
-          phone: '4155550101',
           address: {
             address_line_1: 'address_line_1',
             city: 'city',
@@ -188,6 +185,7 @@ describe('resource employers', () => {
           },
           compensation_type: 'Hourly',
           employee_class: 'Part Time',
+          phone: '4155550101',
           reference_id: 'reference_id',
           start_date: '2024-03-01',
         },

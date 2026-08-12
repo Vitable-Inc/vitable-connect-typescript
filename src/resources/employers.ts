@@ -640,8 +640,6 @@ export namespace EmployerSubmitCensusSyncParams {
 
     last_name: string;
 
-    phone: string;
-
     address?: Employee.Address | null;
 
     /**
@@ -659,6 +657,11 @@ export namespace EmployerSubmitCensusSyncParams {
      * - `Individual Contractor` - Individual Contractor
      */
     employee_class?: EmployeesAPI.EmployeeClass | null;
+
+    /**
+     * Phone number
+     */
+    phone?: string | null;
 
     reference_id?: string | null;
 
