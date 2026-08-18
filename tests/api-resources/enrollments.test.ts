@@ -10,7 +10,7 @@ const client = new VitableConnect({
 describe('resource enrollments', () => {
   // Mock server tests are disabled
   test.skip('retrieve', async () => {
-    const responsePromise = client.enrollments.retrieve('enrl_abc123def456');
+    const responsePromise = client.enrollments.retrieve('enrl_AAAAAAAAAAAAAAAAAAAAAQ');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
