@@ -82,6 +82,7 @@ describe('resource employers', () => {
         {
           benefit_family: ['mec'],
           benefit_lifecycle_stage: ['open_enrollment'],
+          hris_provider: ['string'],
           hris_status: ['Pending'],
           include_cancelled: true,
           limit: 20,
