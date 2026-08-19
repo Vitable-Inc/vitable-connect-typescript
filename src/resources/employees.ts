@@ -92,6 +92,11 @@ export interface Employee {
   employee_class: EmployeeClass;
 
   /**
+   * Unique identifier of the employer this employment is with (empr\_\*)
+   */
+  employer_id: string;
+
+  /**
    * Employee's legal first name
    */
   first_name: string;
