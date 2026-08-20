@@ -1,17 +1,26 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export { Auth, type Type, type AuthIssueAccessTokenResponse, type AuthIssueAccessTokenParams } from './auth';
 export {
-  BenefitEligibilityPolicies,
-  type BenefitEligibilityPolicy,
-  type BenefitEligibilityPolicyResponse,
-} from './benefit-eligibility-policies';
+  Auth,
+  type AuthCompleteProfileResponse,
+  type AuthIssueAccessTokenResponse,
+  type AuthListPersonasResponse,
+  type AuthLoginResponse,
+  type AuthRetrieveMeResponse,
+  type AuthSignUpResponse,
+  type AuthCompleteProfileParams,
+  type AuthIssueAccessTokenParams,
+  type AuthLoginParams,
+  type AuthSignUpParams,
+} from './auth';
 export {
   Employees,
   type Employee,
   type EmployeeClass,
   type Pagination,
   type EmployeeRetrieveResponse,
+  type EmployeeUpdateResponse,
+  type EmployeeUpdateParams,
   type EmployeeListEnrollmentsParams,
   type EmployeesPageNumberPage,
 } from './employees';
@@ -19,21 +28,44 @@ export {
   Employers,
   type Employer,
   type EmployerResponse,
+  type EmployerListResponse,
+  type EmployerEnsurePayrollIntegrationEmailResponse,
+  type EmployerListBenefitPlanYearEnrollmentsResponse,
+  type EmployerListBenefitPlanYearsResponse,
+  type EmployerListHRISProvidersResponse,
+  type EmployerListInvoicesResponse,
+  type EmployerListPayrollDeductionStatementsResponse,
+  type EmployerRetrieveBenefitPlanYearResponse,
+  type EmployerRetrieveHRISResponse,
+  type EmployerRetrieveInvoicePdfResponse,
+  type EmployerRetrievePayrollAccessSetupResponse,
   type EmployerSubmitCensusSyncResponse,
+  type EmployerSubmitPayrollAccessSetupResponse,
   type EmployerUpdateSettingsResponse,
   type EmployerCreateParams,
+  type EmployerUpdateParams,
   type EmployerListParams,
-  type EmployerCreateBenefitEligibilityPolicyParams,
+  type EmployerListBenefitPlanYearEnrollmentsParams,
   type EmployerListEmployeesParams,
+  type EmployerListInvoicesParams,
+  type EmployerListPayrollDeductionStatementsParams,
+  type EmployerRetrieveBenefitPlanYearParams,
+  type EmployerRetrieveInvoicePdfParams,
   type EmployerSubmitCensusSyncParams,
+  type EmployerSubmitPayrollAccessSetupParams,
   type EmployerUpdateSettingsParams,
-  type EmployersPageNumberPage,
+  type EmployerListResponsesPageNumberPage,
+  type EmployerListBenefitPlanYearEnrollmentsResponsesPageNumberPage,
+  type EmployerListPayrollDeductionStatementsResponsesPageNumberPage,
 } from './employers';
 export {
   Enrollments,
   type Enrollment,
   type EnrollmentStatus,
   type EnrollmentRetrieveResponse,
+  type EnrollmentReissueResponse,
+  type EnrollmentReissueParams,
+  type EnrollmentTerminateParams,
   type EnrollmentsPageNumberPage,
 } from './enrollments';
 export {
@@ -45,6 +77,27 @@ export {
   type GroupListParams,
   type GroupsPageNumberPage,
 } from './groups/groups';
+export {
+  Members,
+  type MemberRetrieveResponse,
+  type MemberListResponse,
+  type MemberListDependentsResponse,
+  type MemberListEmploymentsResponse,
+  type MemberListEnrollmentsResponse,
+  type MemberListIDCardsResponse,
+  type MemberListQualifyingLifeEventsResponse,
+  type MemberRetrieveHouseholdResponse,
+  type MemberListParams,
+  type MemberListQualifyingLifeEventsParams,
+  type MemberListResponsesPageNumberPage,
+  type MemberListQualifyingLifeEventsResponsesPageNumberPage,
+} from './members';
+export {
+  Organizations,
+  type OrganizationCreateResponse,
+  type OrganizationListResponse,
+  type OrganizationCreateParams,
+} from './organizations';
 export {
   Plans,
   type PlanListResponse,

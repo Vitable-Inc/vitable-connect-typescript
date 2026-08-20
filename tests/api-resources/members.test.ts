@@ -7,14 +7,10 @@ const client = new VitableConnect({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource auth', () => {
+describe('resource members', () => {
   // Mock server tests are disabled
-  test.skip('completeProfile: only required params', async () => {
-    const responsePromise = client.auth.completeProfile({
-      first_name: 'first_name',
-      last_name: 'last_name',
-      phone: 'phone',
-    });
+  test.skip('retrieve', async () => {
+    const responsePromise = client.members.retrieve('member_id');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -25,18 +21,8 @@ describe('resource auth', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('completeProfile: required and optional params', async () => {
-    const response = await client.auth.completeProfile({
-      first_name: 'first_name',
-      last_name: 'last_name',
-      phone: 'phone',
-      user_type: 'Member',
-    });
-  });
-
-  // Mock server tests are disabled
-  test.skip('issueAccessToken: only required params', async () => {
-    const responsePromise = client.auth.issueAccessToken({ grant_type: 'client_credentials' });
+  test.skip('list', async () => {
+    const responsePromise = client.members.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -47,78 +33,105 @@ describe('resource auth', () => {
   });
 
   // Mock server tests are disabled
-  test.skip('issueAccessToken: required and optional params', async () => {
-    const response = await client.auth.issueAccessToken({
-      grant_type: 'client_credentials',
-      bound_entity: { id: 'id', type: 'employer' },
-    });
-  });
-
-  // Mock server tests are disabled
-  test.skip('listPersonas', async () => {
-    const responsePromise = client.auth.listPersonas();
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('login: only required params', async () => {
-    const responsePromise = client.auth.login({ email_or_phone: 'email_or_phone', user_type: 'Member' });
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('login: required and optional params', async () => {
-    const response = await client.auth.login({
-      email_or_phone: 'email_or_phone',
-      user_type: 'Member',
-      app_name: 'app_name',
-      app_version: 'app_version',
-      password: 'password',
-      two_factor_token: 'two_factor_token',
-    });
-  });
-
-  // Mock server tests are disabled
-  test.skip('retrieveMe', async () => {
-    const responsePromise = client.auth.retrieveMe();
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('signUp', async () => {
-    const responsePromise = client.auth.signUp();
-    const rawResponse = await responsePromise.asResponse();
-    expect(rawResponse).toBeInstanceOf(Response);
-    const response = await responsePromise;
-    expect(response).not.toBeInstanceOf(Response);
-    const dataAndResponse = await responsePromise.withResponse();
-    expect(dataAndResponse.data).toBe(response);
-    expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Mock server tests are disabled
-  test.skip('signUp: request options and params are passed correctly', async () => {
+  test.skip('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.auth.signUp({ user_type: 'Member' }, { path: '/_stainless_unknown_path' }),
+      client.members.list(
+        {
+          limit: 20,
+          page: 1,
+          search: 'search',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(VitableConnect.NotFoundError);
+  });
+
+  // Mock server tests are disabled
+  test.skip('listDependents', async () => {
+    const responsePromise = client.members.listDependents('member_id');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('listEmployments', async () => {
+    const responsePromise = client.members.listEmployments('member_id');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('listEnrollments', async () => {
+    const responsePromise = client.members.listEnrollments('member_id');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('listIDCards', async () => {
+    const responsePromise = client.members.listIDCards('member_id');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('listQualifyingLifeEvents', async () => {
+    const responsePromise = client.members.listQualifyingLifeEvents('member_id');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('listQualifyingLifeEvents: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.members.listQualifyingLifeEvents(
+        'member_id',
+        {
+          limit: 20,
+          page: 1,
+          status: 'approved',
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(VitableConnect.NotFoundError);
+  });
+
+  // Mock server tests are disabled
+  test.skip('retrieveHousehold', async () => {
+    const responsePromise = client.members.retrieveHousehold('member_id');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
   });
 });

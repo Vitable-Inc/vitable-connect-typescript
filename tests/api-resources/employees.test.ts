@@ -21,6 +21,39 @@ describe('resource employees', () => {
   });
 
   // Mock server tests are disabled
+  test.skip('update: only required params', async () => {
+    const responsePromise = client.employees.update('empl_abc123def456', { effective_date: '2023-03-01' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('update: required and optional params', async () => {
+    const response = await client.employees.update('empl_abc123def456', {
+      effective_date: '2023-03-01',
+      address: {
+        city: 'city',
+        state: 'xx',
+        street_1: 'street_1',
+        zip_code: 'zip_code',
+        country: 'country',
+        street_2: 'street_2',
+      },
+      compensation_type: 'Salary',
+      email: 'dev@stainless.com',
+      employee_class: 'Full Time',
+      gender: 'Male',
+      phone: 'phone',
+      start_date: '2023-01-15',
+    });
+  });
+
+  // Mock server tests are disabled
   test.skip('listEnrollments', async () => {
     const responsePromise = client.employees.listEnrollments('empl_abc123def456');
     const rawResponse = await responsePromise.asResponse();

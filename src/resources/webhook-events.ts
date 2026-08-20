@@ -140,6 +140,7 @@ export interface WebhookEventListParams extends PageNumberPageParams {
   /**
    * - `enrollment.accepted` - Enrollment Accepted
    * - `enrollment.terminated` - Enrollment Terminated
+   * - `enrollment.termination_rescheduled` - Enrollment Termination Rescheduled
    * - `enrollment.elected` - Enrollment Elected
    * - `enrollment.granted` - Enrollment Granted
    * - `enrollment.waived` - Enrollment Waived
@@ -147,12 +148,12 @@ export interface WebhookEventListParams extends PageNumberPageParams {
    * - `employee.eligibility_granted` - Employee Eligibility Granted
    * - `employee.eligibility_terminated` - Employee Eligibility Terminated
    * - `employee.deactivated` - Employee Deactivated
-   * - `employer.eligibility_policy_created` - Employer Eligibility Policy Created
    * - `employee.deduction_created` - Employee Deduction Created
    */
   event_name?:
     | 'enrollment.accepted'
     | 'enrollment.terminated'
+    | 'enrollment.termination_rescheduled'
     | 'enrollment.elected'
     | 'enrollment.granted'
     | 'enrollment.waived'
@@ -160,7 +161,6 @@ export interface WebhookEventListParams extends PageNumberPageParams {
     | 'employee.eligibility_granted'
     | 'employee.eligibility_terminated'
     | 'employee.deactivated'
-    | 'employer.eligibility_policy_created'
     | 'employee.deduction_created';
 
   resource_id?: string;
