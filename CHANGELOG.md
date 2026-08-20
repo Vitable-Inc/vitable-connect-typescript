@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.1 (2026-08-20)
+
+Full Changelog: [v0.5.0...v0.5.1](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.5.0...v0.5.1)
+
+### Bug Fixes
+
+* **client:** bind IdentityProviderBearer to an identity_token client option ([e636d96](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/e636d96ebd147da4c663cf6efaeb66b3df88cf1a))
+
+
+### Refactors
+
+* **api:** drop the IdP session endpoints from the SDK surface ([3472c5e](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/3472c5e483bd598b54ebb338a91e03548967676d))
+
 ## 0.5.0 (2026-08-20)
 
 Full Changelog: [v0.4.1...v0.5.0](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.4.1...v0.5.0)

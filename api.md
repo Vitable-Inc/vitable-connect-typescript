@@ -2,21 +2,11 @@
 
 Types:
 
-- <code><a href="./src/resources/auth.ts">AuthCompleteProfileResponse</a></code>
 - <code><a href="./src/resources/auth.ts">AuthIssueAccessTokenResponse</a></code>
-- <code><a href="./src/resources/auth.ts">AuthListPersonasResponse</a></code>
-- <code><a href="./src/resources/auth.ts">AuthLoginResponse</a></code>
-- <code><a href="./src/resources/auth.ts">AuthRetrieveMeResponse</a></code>
-- <code><a href="./src/resources/auth.ts">AuthSignUpResponse</a></code>
 
 Methods:
 
-- <code title="post /v1/auth/complete-profile">client.auth.<a href="./src/resources/auth.ts">completeProfile</a>({ ...params }) -> AuthCompleteProfileResponse</code>
 - <code title="post /v1/auth/access-tokens">client.auth.<a href="./src/resources/auth.ts">issueAccessToken</a>({ ...params }) -> AuthIssueAccessTokenResponse</code>
-- <code title="get /v1/auth/personas">client.auth.<a href="./src/resources/auth.ts">listPersonas</a>() -> AuthListPersonasResponse</code>
-- <code title="post /v1/auth/login">client.auth.<a href="./src/resources/auth.ts">login</a>({ ...params }) -> AuthLoginResponse</code>
-- <code title="get /v1/auth/me">client.auth.<a href="./src/resources/auth.ts">retrieveMe</a>() -> AuthRetrieveMeResponse</code>
-- <code title="post /v1/auth/sign-up">client.auth.<a href="./src/resources/auth.ts">signUp</a>({ ...params }) -> AuthSignUpResponse</code>
 
 # Employees
 

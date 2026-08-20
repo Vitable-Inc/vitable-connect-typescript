@@ -1,18 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-export {
-  Auth,
-  type AuthCompleteProfileResponse,
-  type AuthIssueAccessTokenResponse,
-  type AuthListPersonasResponse,
-  type AuthLoginResponse,
-  type AuthRetrieveMeResponse,
-  type AuthSignUpResponse,
-  type AuthCompleteProfileParams,
-  type AuthIssueAccessTokenParams,
-  type AuthLoginParams,
-  type AuthSignUpParams,
-} from './auth';
+export { Auth, type AuthIssueAccessTokenResponse, type AuthIssueAccessTokenParams } from './auth';
 export {
   Employees,
   type Employee,

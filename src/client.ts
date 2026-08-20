@@ -19,19 +19,7 @@ import { AbstractPage, type PageNumberPageParams, PageNumberPageResponse } from 
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import {
-  Auth,
-  AuthCompleteProfileParams,
-  AuthCompleteProfileResponse,
-  AuthIssueAccessTokenParams,
-  AuthIssueAccessTokenResponse,
-  AuthListPersonasResponse,
-  AuthLoginParams,
-  AuthLoginResponse,
-  AuthRetrieveMeResponse,
-  AuthSignUpParams,
-  AuthSignUpResponse,
-} from './resources/auth';
+import { Auth, AuthIssueAccessTokenParams, AuthIssueAccessTokenResponse } from './resources/auth';
 import {
   Employee,
   EmployeeClass,
@@ -896,6 +884,9 @@ export class VitableConnect {
 
   static toFile = Uploads.toFile;
 
+  /**
+   * Issue short-lived access tokens for scoped API access
+   */
   auth: API.Auth = new API.Auth(this);
   employees: API.Employees = new API.Employees(this);
   employers: API.Employers = new API.Employers(this);
@@ -934,16 +925,8 @@ export declare namespace VitableConnect {
 
   export {
     Auth as Auth,
-    type AuthCompleteProfileResponse as AuthCompleteProfileResponse,
     type AuthIssueAccessTokenResponse as AuthIssueAccessTokenResponse,
-    type AuthListPersonasResponse as AuthListPersonasResponse,
-    type AuthLoginResponse as AuthLoginResponse,
-    type AuthRetrieveMeResponse as AuthRetrieveMeResponse,
-    type AuthSignUpResponse as AuthSignUpResponse,
-    type AuthCompleteProfileParams as AuthCompleteProfileParams,
     type AuthIssueAccessTokenParams as AuthIssueAccessTokenParams,
-    type AuthLoginParams as AuthLoginParams,
-    type AuthSignUpParams as AuthSignUpParams,
   };
 
   export {
