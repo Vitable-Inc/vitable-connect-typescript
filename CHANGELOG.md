@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.5.0 (2026-08-20)
+
+Full Changelog: [v0.4.1...v0.5.0](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.4.1...v0.5.0)
+
+### Features
+
+* **api:** api update ([d7aaa4d](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/d7aaa4d468f340cd434d6b8b4c8aaa4445961819))
+* **api:** api update ([eff155b](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/eff155b646aba65cbb799b678ce40d4d1874d676))
+* **api:** api update ([47afec6](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/47afec60a1ec7da9f2304bce84d269c844d68355))
+* **api:** api update ([1c85353](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/1c853539db26448a2b823f79f7b41b064a5e3028))
+* **api:** api update ([8ce9be1](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/8ce9be1647a9ad4c277eda984c6a1ff3f77c2732))
+* **api:** api update ([e0b0ab0](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/e0b0ab0700680a7d63493dbf406c2b255f10435e))
+* **api:** api update ([e896420](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/e8964206ffc436e7b07d8664d9aa116c0b2d1e8f))
+* **api:** api update ([be9eab2](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/be9eab24178034188e9ff1cf17dd03fcf225f5b7))
+* **api:** api update ([dc13e82](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/dc13e8230bbe25770a0cafbc402f83be76a81178))
+* **api:** api update ([6b740e4](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/6b740e4de9f43b46ea6c1d800ae15b31141308fb))
+* **api:** api update ([6f0f4ac](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/6f0f4ac700440b220eaa1e1214dcfdadd20c7a84))
+* **api:** api update ([456b892](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/456b8928b7c58c73eb62e54da93be7942c581688))
+* **api:** api update ([49afe13](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/49afe133dcf68c99cd98bd0342a8e1346ef9f357))
+* **api:** api update ([51a27a5](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/51a27a55abf0b201b99cd90c80cbb6b53674825d))
+* **api:** configure all public v1 endpoints and drop dangling Type model ref ([8cb58a0](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/8cb58a0cb8b60c42a87b9e5be6ba1830605875ac))
+* **api:** removed benefit policies from api reference ([984f878](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/984f878cfa71c7c86f3c34927d11d777d29f630a))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([1ccff90](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/1ccff90e7c06059c069919b0049ec24c77fcdb38))
+
+
+### Bug Fixes
+
+* **ci:** bump @arethetypeswrong/cli to ^0.18.0 and run CI workflows on Node 24 ([f301405](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/f30140597ec7e9e60fe9ba5488d376a9ce818e88))
+* **client:** send content-type header for requests with an omitted optional body ([bc5eb57](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/bc5eb57b0f17933a3880bb4a37be9439bf21b1d0))
+* fix nullable total pages accessor ([dff6ff3](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/dff6ff3595c54e361a61c90aece2095cf4933a23))
+
 ## 0.4.1 (2026-05-18)
 
 Full Changelog: [v0.4.0...v0.4.1](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.4.0...v0.4.1)
