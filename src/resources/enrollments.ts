@@ -22,10 +22,7 @@ export class Enrollments extends APIResource {
    * ```
    */
   retrieve(enrollmentID: string, options?: RequestOptions): APIPromise<EnrollmentRetrieveResponse> {
-    return this._client.get(path`/v1/enrollments/${enrollmentID}`, {
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.get(path`/v1/enrollments/${enrollmentID}`, options);
   }
 
   /**
@@ -57,11 +54,7 @@ export class Enrollments extends APIResource {
     body: EnrollmentReissueParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<EnrollmentReissueResponse> {
-    return this._client.post(path`/v1/enrollments/${enrollmentID}/reissue`, {
-      body,
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.post(path`/v1/enrollments/${enrollmentID}/reissue`, { body, ...options });
   }
 
   /**
@@ -94,7 +87,6 @@ export class Enrollments extends APIResource {
       body,
       ...options,
       headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-      __security: { apiKeyAuth: true },
     });
   }
 }

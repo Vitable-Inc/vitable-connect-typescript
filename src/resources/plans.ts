@@ -13,11 +13,7 @@ export class Plans extends APIResource {
     query: PlanListParams | null | undefined = {},
     options?: RequestOptions,
   ): PagePromise<PlanListResponsesPageNumberPage, PlanListResponse> {
-    return this._client.getAPIList('/v1/plans', PageNumberPage<PlanListResponse>, {
-      query,
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.getAPIList('/v1/plans', PageNumberPage<PlanListResponse>, { query, ...options });
   }
 }
 

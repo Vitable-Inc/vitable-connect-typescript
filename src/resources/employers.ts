@@ -34,7 +34,7 @@ export class Employers extends APIResource {
    * ```
    */
   create(body: EmployerCreateParams, options?: RequestOptions): APIPromise<EmployerResponse> {
-    return this._client.post('/v1/employers', { body, ...options, __security: { apiKeyAuth: true } });
+    return this._client.post('/v1/employers', { body, ...options });
   }
 
   /**
@@ -49,10 +49,7 @@ export class Employers extends APIResource {
    * ```
    */
   retrieve(employerID: string, options?: RequestOptions): APIPromise<EmployerResponse> {
-    return this._client.get(path`/v1/employers/${employerID}`, {
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.get(path`/v1/employers/${employerID}`, options);
   }
 
   /**
@@ -71,11 +68,7 @@ export class Employers extends APIResource {
     body: EmployerUpdateParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<EmployerResponse> {
-    return this._client.put(path`/v1/employers/${employerID}`, {
-      body,
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.put(path`/v1/employers/${employerID}`, { body, ...options });
   }
 
   /**
@@ -102,7 +95,6 @@ export class Employers extends APIResource {
     return this._client.getAPIList('/v1/employers', PageNumberPage<EmployerListResponse>, {
       query,
       ...options,
-      __security: { apiKeyAuth: true },
     });
   }
 
@@ -121,10 +113,7 @@ export class Employers extends APIResource {
     employerID: string,
     options?: RequestOptions,
   ): APIPromise<EmployerEnsurePayrollIntegrationEmailResponse> {
-    return this._client.put(path`/v1/employers/${employerID}/payroll-integration-email`, {
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.put(path`/v1/employers/${employerID}/payroll-integration-email`, options);
   }
 
   /**
@@ -158,7 +147,7 @@ export class Employers extends APIResource {
     return this._client.getAPIList(
       path`/v1/employers/${employer_id}/benefit-plan-years/${benefitPlanYearID}/enrollments`,
       PageNumberPage<EmployerListBenefitPlanYearEnrollmentsResponse>,
-      { query, ...options, __security: { apiKeyAuth: true } },
+      { query, ...options },
     );
   }
 
@@ -180,10 +169,7 @@ export class Employers extends APIResource {
     employerID: string,
     options?: RequestOptions,
   ): APIPromise<EmployerListBenefitPlanYearsResponse> {
-    return this._client.get(path`/v1/employers/${employerID}/benefit-plan-years`, {
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.get(path`/v1/employers/${employerID}/benefit-plan-years`, options);
   }
 
   /**
@@ -213,7 +199,7 @@ export class Employers extends APIResource {
     return this._client.getAPIList(
       path`/v1/employers/${employerID}/employees`,
       PageNumberPage<EmployeesAPI.Employee>,
-      { query, ...options, __security: { apiKeyAuth: true } },
+      { query, ...options },
     );
   }
 
@@ -229,7 +215,7 @@ export class Employers extends APIResource {
    * ```
    */
   listHRISProviders(options?: RequestOptions): APIPromise<EmployerListHRISProvidersResponse> {
-    return this._client.get('/v1/employers/hris-providers', { ...options, __security: { apiKeyAuth: true } });
+    return this._client.get('/v1/employers/hris-providers', options);
   }
 
   /**
@@ -250,11 +236,7 @@ export class Employers extends APIResource {
     query: EmployerListInvoicesParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<EmployerListInvoicesResponse> {
-    return this._client.get(path`/v1/employers/${employerID}/invoices`, {
-      query,
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.get(path`/v1/employers/${employerID}/invoices`, { query, ...options });
   }
 
   /**
@@ -285,7 +267,7 @@ export class Employers extends APIResource {
     return this._client.getAPIList(
       path`/v1/employers/${employerID}/payroll-deduction-statements`,
       PageNumberPage<EmployerListPayrollDeductionStatementsResponse>,
-      { query, ...options, __security: { apiKeyAuth: true } },
+      { query, ...options },
     );
   }
 
@@ -310,10 +292,10 @@ export class Employers extends APIResource {
     options?: RequestOptions,
   ): APIPromise<EmployerRetrieveBenefitPlanYearResponse> {
     const { employer_id } = params;
-    return this._client.get(path`/v1/employers/${employer_id}/benefit-plan-years/${benefitPlanYearID}`, {
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.get(
+      path`/v1/employers/${employer_id}/benefit-plan-years/${benefitPlanYearID}`,
+      options,
+    );
   }
 
   /**
@@ -329,10 +311,7 @@ export class Employers extends APIResource {
    * ```
    */
   retrieveHRIS(employerID: string, options?: RequestOptions): APIPromise<EmployerRetrieveHRISResponse> {
-    return this._client.get(path`/v1/employers/${employerID}/hris`, {
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.get(path`/v1/employers/${employerID}/hris`, options);
   }
 
   /**
@@ -355,10 +334,7 @@ export class Employers extends APIResource {
     options?: RequestOptions,
   ): APIPromise<EmployerRetrieveInvoicePdfResponse> {
     const { employer_id } = params;
-    return this._client.get(path`/v1/employers/${employer_id}/invoices/${invoiceID}/pdf`, {
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.get(path`/v1/employers/${employer_id}/invoices/${invoiceID}/pdf`, options);
   }
 
   /**
@@ -376,10 +352,7 @@ export class Employers extends APIResource {
     employerID: string,
     options?: RequestOptions,
   ): APIPromise<EmployerRetrievePayrollAccessSetupResponse> {
-    return this._client.get(path`/v1/employers/${employerID}/payroll-access-setup`, {
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.get(path`/v1/employers/${employerID}/payroll-access-setup`, options);
   }
 
   /**
@@ -422,11 +395,7 @@ export class Employers extends APIResource {
     body: EmployerSubmitCensusSyncParams,
     options?: RequestOptions,
   ): APIPromise<EmployerSubmitCensusSyncResponse> {
-    return this._client.post(path`/v1/employers/${employerID}/census-sync`, {
-      body,
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.post(path`/v1/employers/${employerID}/census-sync`, { body, ...options });
   }
 
   /**
@@ -454,11 +423,7 @@ export class Employers extends APIResource {
     body: EmployerSubmitPayrollAccessSetupParams,
     options?: RequestOptions,
   ): APIPromise<EmployerSubmitPayrollAccessSetupResponse> {
-    return this._client.put(path`/v1/employers/${employerID}/payroll-access-setup`, {
-      body,
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.put(path`/v1/employers/${employerID}/payroll-access-setup`, { body, ...options });
   }
 
   /**
@@ -478,11 +443,7 @@ export class Employers extends APIResource {
     body: EmployerUpdateSettingsParams,
     options?: RequestOptions,
   ): APIPromise<EmployerUpdateSettingsResponse> {
-    return this._client.put(path`/v1/employers/${employerID}/settings`, {
-      body,
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.put(path`/v1/employers/${employerID}/settings`, { body, ...options });
   }
 }
 

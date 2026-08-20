@@ -26,10 +26,7 @@ export class Sync extends APIResource {
     options?: RequestOptions,
   ): APIPromise<SyncRetrieveResponse> {
     const { group_id } = params;
-    return this._client.get(path`/v1/groups/${group_id}/members/sync/${requestID}`, {
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.get(path`/v1/groups/${group_id}/members/sync/${requestID}`, options);
   }
 
   /**
@@ -65,11 +62,7 @@ export class Sync extends APIResource {
    * ```
    */
   submit(groupID: string, body: SyncSubmitParams, options?: RequestOptions): APIPromise<SyncSubmitResponse> {
-    return this._client.post(path`/v1/groups/${groupID}/members/sync`, {
-      body,
-      ...options,
-      __security: { apiKeyAuth: true },
-    });
+    return this._client.post(path`/v1/groups/${groupID}/members/sync`, { body, ...options });
   }
 }
 

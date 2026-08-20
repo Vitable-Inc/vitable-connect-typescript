@@ -19,19 +19,7 @@ import { AbstractPage, type PageNumberPageParams, PageNumberPageResponse } from 
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import {
-  Auth,
-  AuthCompleteProfileParams,
-  AuthCompleteProfileResponse,
-  AuthIssueAccessTokenParams,
-  AuthIssueAccessTokenResponse,
-  AuthListPersonasResponse,
-  AuthLoginParams,
-  AuthLoginResponse,
-  AuthRetrieveMeResponse,
-  AuthSignUpParams,
-  AuthSignUpResponse,
-} from './resources/auth';
+import { Auth, AuthIssueAccessTokenParams, AuthIssueAccessTokenResponse } from './resources/auth';
 import {
   Employee,
   EmployeeClass,
@@ -150,11 +138,6 @@ export interface ClientOptions {
   apiKey?: string | undefined;
 
   /**
-   * IdP-issued bearer token (WorkOS or vitable), required by the identity endpoints under /v1/auth. Leave unset when authenticating with an API key.
-   */
-  identityToken?: string | null | undefined;
-
-  /**
    * Specifies the environment to use for the API.
    *
    * Each environment maps to a different base URL:
@@ -237,7 +220,6 @@ export interface ClientOptions {
  */
 export class VitableConnect {
   apiKey: string;
-  identityToken: string | null;
 
   baseURL: string;
   maxRetries: number;
@@ -255,7 +237,6 @@ export class VitableConnect {
    * API Client for interfacing with the Vitable Connect API.
    *
    * @param {string | undefined} [opts.apiKey=process.env['VITABLE_CONNECT_API_KEY'] ?? undefined]
-   * @param {string | null | undefined} [opts.identityToken=process.env['VITABLE_CONNECT_IDENTITY_TOKEN'] ?? null]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
    * @param {string} [opts.baseURL=process.env['VITABLE_CONNECT_BASE_URL'] ?? https://api.vitablehealth.com] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
@@ -268,7 +249,6 @@ export class VitableConnect {
   constructor({
     baseURL = readEnv('VITABLE_CONNECT_BASE_URL'),
     apiKey = readEnv('VITABLE_CONNECT_API_KEY'),
-    identityToken = readEnv('VITABLE_CONNECT_IDENTITY_TOKEN') ?? null,
     ...opts
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
@@ -279,7 +259,6 @@ export class VitableConnect {
 
     const options: ClientOptions = {
       apiKey,
-      identityToken,
       ...opts,
       baseURL,
       environment: opts.environment ?? 'production',
@@ -321,7 +300,6 @@ export class VitableConnect {
     this._options = options;
 
     this.apiKey = apiKey;
-    this.identityToken = identityToken;
   }
 
   /**
@@ -339,7 +317,6 @@ export class VitableConnect {
       fetch: this.fetch,
       fetchOptions: this.fetchOptions,
       apiKey: this.apiKey,
-      identityToken: this.identityToken,
       ...options,
     });
     return client;
@@ -362,25 +339,13 @@ export class VitableConnect {
 
   protected async authHeaders(
     opts: FinalRequestOptions,
-    schemes: { apiKeyAuth?: boolean; identityProviderBearerAuth?: boolean },
+    schemes: { apiKeyAuth?: boolean },
   ): Promise<NullableHeaders | undefined> {
-    return buildHeaders([
-      schemes.apiKeyAuth ? await this.apiKeyAuth(opts) : null,
-      schemes.identityProviderBearerAuth ? await this.identityProviderBearerAuth(opts) : null,
-    ]);
+    return buildHeaders([schemes.apiKeyAuth ? await this.apiKeyAuth(opts) : null]);
   }
 
   protected async apiKeyAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
     return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
-  }
-
-  protected async identityProviderBearerAuth(
-    opts: FinalRequestOptions,
-  ): Promise<NullableHeaders | undefined> {
-    if (this.identityToken == null) {
-      return undefined;
-    }
-    return buildHeaders([{ Authorization: `Bearer ${this.identityToken}` }]);
   }
 
   protected stringifyQuery(query: object | Record<string, unknown>): string {
@@ -830,10 +795,7 @@ export class VitableConnect {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
-      await this.authHeaders(
-        options,
-        options.__security ?? { apiKeyAuth: true, identityProviderBearerAuth: true },
-      ),
+      await this.authHeaders(options, options.__security ?? { apiKeyAuth: true }),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -922,6 +884,9 @@ export class VitableConnect {
 
   static toFile = Uploads.toFile;
 
+  /**
+   * Issue short-lived access tokens for scoped API access
+   */
   auth: API.Auth = new API.Auth(this);
   employees: API.Employees = new API.Employees(this);
   employers: API.Employers = new API.Employers(this);
@@ -960,16 +925,8 @@ export declare namespace VitableConnect {
 
   export {
     Auth as Auth,
-    type AuthCompleteProfileResponse as AuthCompleteProfileResponse,
     type AuthIssueAccessTokenResponse as AuthIssueAccessTokenResponse,
-    type AuthListPersonasResponse as AuthListPersonasResponse,
-    type AuthLoginResponse as AuthLoginResponse,
-    type AuthRetrieveMeResponse as AuthRetrieveMeResponse,
-    type AuthSignUpResponse as AuthSignUpResponse,
-    type AuthCompleteProfileParams as AuthCompleteProfileParams,
     type AuthIssueAccessTokenParams as AuthIssueAccessTokenParams,
-    type AuthLoginParams as AuthLoginParams,
-    type AuthSignUpParams as AuthSignUpParams,
   };
 
   export {
