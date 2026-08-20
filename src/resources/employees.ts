@@ -15,13 +15,58 @@ export class Employees extends APIResource {
    * compensation-type effective dates, compensation type, and payroll deductions
    * from the most recent statement period. Deductions reflect a snapshot of the
    * current period and are replaced when a new statement is generated.
+   *
+   * @example
+   * ```ts
+   * const employee = await client.employees.retrieve(
+   *   'empl_abc123def456',
+   * );
+   * ```
    */
   retrieve(employeeID: string, options?: RequestOptions): APIPromise<EmployeeRetrieveResponse> {
     return this._client.get(path`/v1/employees/${employeeID}`, options);
   }
 
   /**
+   * Updates employee personal, contact, address, and employment fields. This
+   * endpoint currently supports email, phone, gender, address, employee_class,
+   * start_date, and compensation_type. effective_date is required and applies to
+   * employee_class and compensation_type when those fields are included in the
+   * request.
+   *
+   * @example
+   * ```ts
+   * const employee = await client.employees.update(
+   *   'empl_abc123def456',
+   *   {
+   *     effective_date: '2023-03-01',
+   *     compensation_type: 'Salary',
+   *     employee_class: 'Full Time',
+   *     start_date: '2023-01-15',
+   *   },
+   * );
+   * ```
+   */
+  update(
+    employeeID: string,
+    body: EmployeeUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<EmployeeUpdateResponse> {
+    return this._client.patch(path`/v1/employees/${employeeID}`, { body, ...options });
+  }
+
+  /**
    * Retrieves a paginated list of benefit enrollments for an employee.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const enrollment of client.employees.listEnrollments(
+   *   'empl_abc123def456',
+   * )) {
+   *   // ...
+   * }
+   * ```
    */
   listEnrollments(
     employeeID: string,
@@ -284,6 +329,103 @@ export interface EmployeeRetrieveResponse {
   data: Employee;
 }
 
+/**
+ * Response containing a single employee resource.
+ */
+export interface EmployeeUpdateResponse {
+  data: Employee;
+}
+
+export interface EmployeeUpdateParams {
+  /**
+   * Past or present date applied to each tracked employment field included in this
+   * request
+   */
+  effective_date: string;
+
+  /**
+   * Employee's residential address
+   */
+  address?: EmployeeUpdateParams.Address | null;
+
+  /**
+   * - `Salary` - Salary
+   * - `Hourly` - Hourly
+   */
+  compensation_type?: 'Salary' | 'Hourly' | null;
+
+  /**
+   * Email address
+   */
+  email?: string | null;
+
+  /**
+   * - `Full Time` - Full Time
+   * - `Part Time` - Part Time
+   * - `Temporary` - Temporary
+   * - `Intern` - Intern
+   * - `Seasonal` - Seasonal
+   * - `Individual Contractor` - Individual Contractor
+   */
+  employee_class?: EmployeeClass | null;
+
+  /**
+   * - `Male` - Male
+   * - `Female` - Female
+   * - `Transgender` - Transgender
+   * - `Non-binary` - Non-binary
+   * - `Prefer not to respond` - Prefer not to respond
+   */
+  gender?: 'Male' | 'Female' | 'Transgender' | 'Non-binary' | 'Prefer not to respond' | null;
+
+  /**
+   * Phone number
+   */
+  phone?: string | null;
+
+  /**
+   * Employment start date
+   */
+  start_date?: string | null;
+}
+
+export namespace EmployeeUpdateParams {
+  /**
+   * Employee's residential address
+   */
+  export interface Address {
+    /**
+     * City name
+     */
+    city: string;
+
+    /**
+     * Two-letter state code
+     */
+    state: string;
+
+    /**
+     * Primary street address
+     */
+    street_1: string;
+
+    /**
+     * ZIP code
+     */
+    zip_code: string;
+
+    /**
+     * Country code
+     */
+    country?: string;
+
+    /**
+     * Secondary street address
+     */
+    street_2?: string | null;
+  }
+}
+
 export interface EmployeeListEnrollmentsParams extends PageNumberPageParams {}
 
 export declare namespace Employees {
@@ -292,6 +434,8 @@ export declare namespace Employees {
     type EmployeeClass as EmployeeClass,
     type Pagination as Pagination,
     type EmployeeRetrieveResponse as EmployeeRetrieveResponse,
+    type EmployeeUpdateResponse as EmployeeUpdateResponse,
+    type EmployeeUpdateParams as EmployeeUpdateParams,
     type EmployeeListEnrollmentsParams as EmployeeListEnrollmentsParams,
   };
 }

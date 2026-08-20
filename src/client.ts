@@ -19,35 +19,93 @@ import { AbstractPage, type PageNumberPageParams, PageNumberPageResponse } from 
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { Auth, AuthIssueAccessTokenParams, AuthIssueAccessTokenResponse } from './resources/auth';
+import {
+  Auth,
+  AuthCompleteProfileParams,
+  AuthCompleteProfileResponse,
+  AuthIssueAccessTokenParams,
+  AuthIssueAccessTokenResponse,
+  AuthListPersonasResponse,
+  AuthLoginParams,
+  AuthLoginResponse,
+  AuthRetrieveMeResponse,
+  AuthSignUpParams,
+  AuthSignUpResponse,
+} from './resources/auth';
 import {
   Employee,
   EmployeeClass,
   EmployeeListEnrollmentsParams,
   EmployeeRetrieveResponse,
+  EmployeeUpdateParams,
+  EmployeeUpdateResponse,
   Employees,
   Pagination as EmployeesAPIPagination,
 } from './resources/employees';
 import {
   Employer,
   EmployerCreateParams,
+  EmployerEnsurePayrollIntegrationEmailResponse,
+  EmployerListBenefitPlanYearEnrollmentsParams,
+  EmployerListBenefitPlanYearEnrollmentsResponse,
+  EmployerListBenefitPlanYearEnrollmentsResponsesPageNumberPage,
+  EmployerListBenefitPlanYearsResponse,
   EmployerListEmployeesParams,
+  EmployerListHRISProvidersResponse,
+  EmployerListInvoicesParams,
+  EmployerListInvoicesResponse,
   EmployerListParams,
+  EmployerListPayrollDeductionStatementsParams,
+  EmployerListPayrollDeductionStatementsResponse,
+  EmployerListPayrollDeductionStatementsResponsesPageNumberPage,
   EmployerListResponse,
   EmployerListResponsesPageNumberPage,
   EmployerResponse,
+  EmployerRetrieveBenefitPlanYearParams,
+  EmployerRetrieveBenefitPlanYearResponse,
+  EmployerRetrieveHRISResponse,
+  EmployerRetrieveInvoicePdfParams,
+  EmployerRetrieveInvoicePdfResponse,
+  EmployerRetrievePayrollAccessSetupResponse,
   EmployerSubmitCensusSyncParams,
   EmployerSubmitCensusSyncResponse,
+  EmployerSubmitPayrollAccessSetupParams,
+  EmployerSubmitPayrollAccessSetupResponse,
+  EmployerUpdateParams,
   EmployerUpdateSettingsParams,
   EmployerUpdateSettingsResponse,
   Employers,
 } from './resources/employers';
 import {
   Enrollment,
+  EnrollmentReissueParams,
+  EnrollmentReissueResponse,
   EnrollmentRetrieveResponse,
   EnrollmentStatus,
+  EnrollmentTerminateParams,
   Enrollments,
 } from './resources/enrollments';
+import {
+  MemberListDependentsResponse,
+  MemberListEmploymentsResponse,
+  MemberListEnrollmentsResponse,
+  MemberListIDCardsResponse,
+  MemberListParams,
+  MemberListQualifyingLifeEventsParams,
+  MemberListQualifyingLifeEventsResponse,
+  MemberListQualifyingLifeEventsResponsesPageNumberPage,
+  MemberListResponse,
+  MemberListResponsesPageNumberPage,
+  MemberRetrieveHouseholdResponse,
+  MemberRetrieveResponse,
+  Members,
+} from './resources/members';
+import {
+  OrganizationCreateParams,
+  OrganizationCreateResponse,
+  OrganizationListResponse,
+  Organizations,
+} from './resources/organizations';
 import { PlanListParams, PlanListResponse, PlanListResponsesPageNumberPage, Plans } from './resources/plans';
 import {
   WebhookEvent,
@@ -291,7 +349,14 @@ export class VitableConnect {
     return;
   }
 
-  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+  protected async authHeaders(
+    opts: FinalRequestOptions,
+    schemes: { apiKeyAuth?: boolean },
+  ): Promise<NullableHeaders | undefined> {
+    return buildHeaders([schemes.apiKeyAuth ? await this.apiKeyAuth(opts) : null]);
+  }
+
+  protected async apiKeyAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
     return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
   }
 
@@ -742,7 +807,7 @@ export class VitableConnect {
         ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
-      await this.authHeaders(options),
+      await this.authHeaders(options, options.__security ?? { apiKeyAuth: true }),
       this._options.defaultHeaders,
       bodyHeaders,
       options.headers,
@@ -831,9 +896,6 @@ export class VitableConnect {
 
   static toFile = Uploads.toFile;
 
-  /**
-   * Issue short-lived access tokens for scoped API access
-   */
   auth: API.Auth = new API.Auth(this);
   employees: API.Employees = new API.Employees(this);
   employers: API.Employers = new API.Employers(this);
@@ -843,6 +905,11 @@ export class VitableConnect {
   enrollments: API.Enrollments = new API.Enrollments(this);
   webhookEvents: API.WebhookEvents = new API.WebhookEvents(this);
   groups: API.Groups = new API.Groups(this);
+  /**
+   * Browse the members covered across your book and read a member's profile
+   */
+  members: API.Members = new API.Members(this);
+  organizations: API.Organizations = new API.Organizations(this);
   plans: API.Plans = new API.Plans(this);
 }
 
@@ -852,6 +919,8 @@ VitableConnect.Employers = Employers;
 VitableConnect.Enrollments = Enrollments;
 VitableConnect.WebhookEvents = WebhookEvents;
 VitableConnect.Groups = Groups;
+VitableConnect.Members = Members;
+VitableConnect.Organizations = Organizations;
 VitableConnect.Plans = Plans;
 
 export declare namespace VitableConnect {
@@ -865,8 +934,16 @@ export declare namespace VitableConnect {
 
   export {
     Auth as Auth,
+    type AuthCompleteProfileResponse as AuthCompleteProfileResponse,
     type AuthIssueAccessTokenResponse as AuthIssueAccessTokenResponse,
+    type AuthListPersonasResponse as AuthListPersonasResponse,
+    type AuthLoginResponse as AuthLoginResponse,
+    type AuthRetrieveMeResponse as AuthRetrieveMeResponse,
+    type AuthSignUpResponse as AuthSignUpResponse,
+    type AuthCompleteProfileParams as AuthCompleteProfileParams,
     type AuthIssueAccessTokenParams as AuthIssueAccessTokenParams,
+    type AuthLoginParams as AuthLoginParams,
+    type AuthSignUpParams as AuthSignUpParams,
   };
 
   export {
@@ -875,6 +952,8 @@ export declare namespace VitableConnect {
     type EmployeeClass as EmployeeClass,
     type EmployeesAPIPagination as Pagination,
     type EmployeeRetrieveResponse as EmployeeRetrieveResponse,
+    type EmployeeUpdateResponse as EmployeeUpdateResponse,
+    type EmployeeUpdateParams as EmployeeUpdateParams,
     type EmployeeListEnrollmentsParams as EmployeeListEnrollmentsParams,
   };
 
@@ -883,13 +962,33 @@ export declare namespace VitableConnect {
     type Employer as Employer,
     type EmployerResponse as EmployerResponse,
     type EmployerListResponse as EmployerListResponse,
+    type EmployerEnsurePayrollIntegrationEmailResponse as EmployerEnsurePayrollIntegrationEmailResponse,
+    type EmployerListBenefitPlanYearEnrollmentsResponse as EmployerListBenefitPlanYearEnrollmentsResponse,
+    type EmployerListBenefitPlanYearsResponse as EmployerListBenefitPlanYearsResponse,
+    type EmployerListHRISProvidersResponse as EmployerListHRISProvidersResponse,
+    type EmployerListInvoicesResponse as EmployerListInvoicesResponse,
+    type EmployerListPayrollDeductionStatementsResponse as EmployerListPayrollDeductionStatementsResponse,
+    type EmployerRetrieveBenefitPlanYearResponse as EmployerRetrieveBenefitPlanYearResponse,
+    type EmployerRetrieveHRISResponse as EmployerRetrieveHRISResponse,
+    type EmployerRetrieveInvoicePdfResponse as EmployerRetrieveInvoicePdfResponse,
+    type EmployerRetrievePayrollAccessSetupResponse as EmployerRetrievePayrollAccessSetupResponse,
     type EmployerSubmitCensusSyncResponse as EmployerSubmitCensusSyncResponse,
+    type EmployerSubmitPayrollAccessSetupResponse as EmployerSubmitPayrollAccessSetupResponse,
     type EmployerUpdateSettingsResponse as EmployerUpdateSettingsResponse,
     type EmployerListResponsesPageNumberPage as EmployerListResponsesPageNumberPage,
+    type EmployerListBenefitPlanYearEnrollmentsResponsesPageNumberPage as EmployerListBenefitPlanYearEnrollmentsResponsesPageNumberPage,
+    type EmployerListPayrollDeductionStatementsResponsesPageNumberPage as EmployerListPayrollDeductionStatementsResponsesPageNumberPage,
     type EmployerCreateParams as EmployerCreateParams,
+    type EmployerUpdateParams as EmployerUpdateParams,
     type EmployerListParams as EmployerListParams,
+    type EmployerListBenefitPlanYearEnrollmentsParams as EmployerListBenefitPlanYearEnrollmentsParams,
     type EmployerListEmployeesParams as EmployerListEmployeesParams,
+    type EmployerListInvoicesParams as EmployerListInvoicesParams,
+    type EmployerListPayrollDeductionStatementsParams as EmployerListPayrollDeductionStatementsParams,
+    type EmployerRetrieveBenefitPlanYearParams as EmployerRetrieveBenefitPlanYearParams,
+    type EmployerRetrieveInvoicePdfParams as EmployerRetrieveInvoicePdfParams,
     type EmployerSubmitCensusSyncParams as EmployerSubmitCensusSyncParams,
+    type EmployerSubmitPayrollAccessSetupParams as EmployerSubmitPayrollAccessSetupParams,
     type EmployerUpdateSettingsParams as EmployerUpdateSettingsParams,
   };
 
@@ -898,6 +997,9 @@ export declare namespace VitableConnect {
     type Enrollment as Enrollment,
     type EnrollmentStatus as EnrollmentStatus,
     type EnrollmentRetrieveResponse as EnrollmentRetrieveResponse,
+    type EnrollmentReissueResponse as EnrollmentReissueResponse,
+    type EnrollmentReissueParams as EnrollmentReissueParams,
+    type EnrollmentTerminateParams as EnrollmentTerminateParams,
   };
 
   export {
@@ -917,6 +1019,29 @@ export declare namespace VitableConnect {
     type GroupCreateParams as GroupCreateParams,
     type GroupUpdateParams as GroupUpdateParams,
     type GroupListParams as GroupListParams,
+  };
+
+  export {
+    Members as Members,
+    type MemberRetrieveResponse as MemberRetrieveResponse,
+    type MemberListResponse as MemberListResponse,
+    type MemberListDependentsResponse as MemberListDependentsResponse,
+    type MemberListEmploymentsResponse as MemberListEmploymentsResponse,
+    type MemberListEnrollmentsResponse as MemberListEnrollmentsResponse,
+    type MemberListIDCardsResponse as MemberListIDCardsResponse,
+    type MemberListQualifyingLifeEventsResponse as MemberListQualifyingLifeEventsResponse,
+    type MemberRetrieveHouseholdResponse as MemberRetrieveHouseholdResponse,
+    type MemberListResponsesPageNumberPage as MemberListResponsesPageNumberPage,
+    type MemberListQualifyingLifeEventsResponsesPageNumberPage as MemberListQualifyingLifeEventsResponsesPageNumberPage,
+    type MemberListParams as MemberListParams,
+    type MemberListQualifyingLifeEventsParams as MemberListQualifyingLifeEventsParams,
+  };
+
+  export {
+    Organizations as Organizations,
+    type OrganizationCreateResponse as OrganizationCreateResponse,
+    type OrganizationListResponse as OrganizationListResponse,
+    type OrganizationCreateParams as OrganizationCreateParams,
   };
 
   export {
