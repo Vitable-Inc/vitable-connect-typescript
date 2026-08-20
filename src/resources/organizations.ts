@@ -24,7 +24,10 @@ export class Organizations extends APIResource {
   create(body: OrganizationCreateParams, options?: RequestOptions): APIPromise<OrganizationCreateResponse> {
     return this._client.post(
       '/v1/organizations',
-      maybeMultipartFormRequestOptions({ body, ...options, __security: {} }, this._client),
+      maybeMultipartFormRequestOptions(
+        { body, ...options, __security: { identityProviderBearerAuth: true } },
+        this._client,
+      ),
     );
   }
 
@@ -38,7 +41,10 @@ export class Organizations extends APIResource {
    * ```
    */
   list(options?: RequestOptions): APIPromise<OrganizationListResponse> {
-    return this._client.get('/v1/organizations', { ...options, __security: {} });
+    return this._client.get('/v1/organizations', {
+      ...options,
+      __security: { identityProviderBearerAuth: true },
+    });
   }
 }
 

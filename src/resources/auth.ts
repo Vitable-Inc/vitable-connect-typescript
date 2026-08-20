@@ -32,7 +32,10 @@ export class Auth extends APIResource {
   ): APIPromise<AuthCompleteProfileResponse> {
     return this._client.post(
       '/v1/auth/complete-profile',
-      maybeMultipartFormRequestOptions({ body, ...options, __security: {} }, this._client),
+      maybeMultipartFormRequestOptions(
+        { body, ...options, __security: { identityProviderBearerAuth: true } },
+        this._client,
+      ),
     );
   }
 
@@ -52,7 +55,11 @@ export class Auth extends APIResource {
     body: AuthIssueAccessTokenParams,
     options?: RequestOptions,
   ): APIPromise<AuthIssueAccessTokenResponse> {
-    return this._client.post('/v1/auth/access-tokens', { body, ...options });
+    return this._client.post('/v1/auth/access-tokens', {
+      body,
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 
   /**
@@ -67,7 +74,10 @@ export class Auth extends APIResource {
    * ```
    */
   listPersonas(options?: RequestOptions): APIPromise<AuthListPersonasResponse> {
-    return this._client.get('/v1/auth/personas', { ...options, __security: {} });
+    return this._client.get('/v1/auth/personas', {
+      ...options,
+      __security: { identityProviderBearerAuth: true },
+    });
   }
 
   /**
@@ -93,7 +103,7 @@ export class Auth extends APIResource {
   login(body: AuthLoginParams, options?: RequestOptions): APIPromise<AuthLoginResponse> {
     return this._client.post(
       '/v1/auth/login',
-      maybeMultipartFormRequestOptions({ body, ...options }, this._client),
+      maybeMultipartFormRequestOptions({ body, ...options, __security: { apiKeyAuth: true } }, this._client),
     );
   }
 
@@ -108,7 +118,7 @@ export class Auth extends APIResource {
    * ```
    */
   retrieveMe(options?: RequestOptions): APIPromise<AuthRetrieveMeResponse> {
-    return this._client.get('/v1/auth/me', { ...options, __security: {} });
+    return this._client.get('/v1/auth/me', { ...options, __security: { identityProviderBearerAuth: true } });
   }
 
   /**
@@ -131,7 +141,10 @@ export class Auth extends APIResource {
   ): APIPromise<AuthSignUpResponse> {
     return this._client.post(
       '/v1/auth/sign-up',
-      maybeMultipartFormRequestOptions({ body, ...options, __security: {} }, this._client),
+      maybeMultipartFormRequestOptions(
+        { body, ...options, __security: { identityProviderBearerAuth: true } },
+        this._client,
+      ),
     );
   }
 }

@@ -12,7 +12,10 @@ export class WebhookEvents extends APIResource {
    * does not exist or belongs to a different organization.
    */
   retrieve(eventID: string, options?: RequestOptions): APIPromise<WebhookEventRetrieveResponse> {
-    return this._client.get(path`/v1/webhook-events/${eventID}`, options);
+    return this._client.get(path`/v1/webhook-events/${eventID}`, {
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 
   /**
@@ -23,7 +26,11 @@ export class WebhookEvents extends APIResource {
     query: WebhookEventListParams | null | undefined = {},
     options?: RequestOptions,
   ): PagePromise<WebhookEventsPageNumberPage, WebhookEvent> {
-    return this._client.getAPIList('/v1/webhook-events', PageNumberPage<WebhookEvent>, { query, ...options });
+    return this._client.getAPIList('/v1/webhook-events', PageNumberPage<WebhookEvent>, {
+      query,
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 
   /**
@@ -32,7 +39,10 @@ export class WebhookEvents extends APIResource {
    * Progress, Delivered, or Failed).
    */
   listDeliveries(eventID: string, options?: RequestOptions): APIPromise<WebhookEventListDeliveriesResponse> {
-    return this._client.get(path`/v1/webhook-events/${eventID}/deliveries`, options);
+    return this._client.get(path`/v1/webhook-events/${eventID}/deliveries`, {
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 }
 

@@ -4,6 +4,7 @@ import VitableConnect from '@vitable-inc/vitable-connect';
 
 const client = new VitableConnect({
   apiKey: 'My API Key',
+  identityToken: 'My Identity Token',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 

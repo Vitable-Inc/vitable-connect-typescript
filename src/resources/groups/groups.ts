@@ -23,7 +23,7 @@ export class Groups extends APIResource {
    * ```
    */
   create(body: GroupCreateParams, options?: RequestOptions): APIPromise<GroupResponse> {
-    return this._client.post('/v1/groups', { body, ...options });
+    return this._client.post('/v1/groups', { body, ...options, __security: { apiKeyAuth: true } });
   }
 
   /**
@@ -38,7 +38,7 @@ export class Groups extends APIResource {
    * ```
    */
   retrieve(groupID: string, options?: RequestOptions): APIPromise<GroupResponse> {
-    return this._client.get(path`/v1/groups/${groupID}`, options);
+    return this._client.get(path`/v1/groups/${groupID}`, { ...options, __security: { apiKeyAuth: true } });
   }
 
   /**
@@ -61,7 +61,11 @@ export class Groups extends APIResource {
     body: GroupUpdateParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<GroupResponse> {
-    return this._client.patch(path`/v1/groups/${groupID}`, { body, ...options });
+    return this._client.patch(path`/v1/groups/${groupID}`, {
+      body,
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 
   /**
@@ -79,7 +83,11 @@ export class Groups extends APIResource {
     query: GroupListParams | null | undefined = {},
     options?: RequestOptions,
   ): PagePromise<GroupsPageNumberPage, Group> {
-    return this._client.getAPIList('/v1/groups', PageNumberPage<Group>, { query, ...options });
+    return this._client.getAPIList('/v1/groups', PageNumberPage<Group>, {
+      query,
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 }
 

@@ -17,7 +17,7 @@ export class Members extends APIResource {
    * authenticated principal; a member not visible to the caller returns a 404.
    */
   retrieve(memberID: string, options?: RequestOptions): APIPromise<MemberRetrieveResponse> {
-    return this._client.get(path`/v1/members/${memberID}`, options);
+    return this._client.get(path`/v1/members/${memberID}`, { ...options, __security: { apiKeyAuth: true } });
   }
 
   /**
@@ -30,7 +30,11 @@ export class Members extends APIResource {
     query: MemberListParams | null | undefined = {},
     options?: RequestOptions,
   ): PagePromise<MemberListResponsesPageNumberPage, MemberListResponse> {
-    return this._client.getAPIList('/v2/members', PageNumberPage<MemberListResponse>, { query, ...options });
+    return this._client.getAPIList('/v2/members', PageNumberPage<MemberListResponse>, {
+      query,
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 
   /**
@@ -39,7 +43,10 @@ export class Members extends APIResource {
    * not visible to the caller returns a 404.
    */
   listDependents(memberID: string, options?: RequestOptions): APIPromise<MemberListDependentsResponse> {
-    return this._client.get(path`/v1/members/${memberID}/dependents`, options);
+    return this._client.get(path`/v1/members/${memberID}/dependents`, {
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 
   /**
@@ -50,7 +57,10 @@ export class Members extends APIResource {
    * not visible to the caller returns a 404.
    */
   listEmployments(memberID: string, options?: RequestOptions): APIPromise<MemberListEmploymentsResponse> {
-    return this._client.get(path`/v1/members/${memberID}/employments`, options);
+    return this._client.get(path`/v1/members/${memberID}/employments`, {
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 
   /**
@@ -71,7 +81,10 @@ export class Members extends APIResource {
    * not visible to the caller returns a 404.
    */
   listEnrollments(memberID: string, options?: RequestOptions): APIPromise<MemberListEnrollmentsResponse> {
-    return this._client.get(path`/v1/members/${memberID}/enrollments`, options);
+    return this._client.get(path`/v1/members/${memberID}/enrollments`, {
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 
   /**
@@ -85,7 +98,10 @@ export class Members extends APIResource {
    * employers in its book; a member not visible to the caller returns a 404.
    */
   listIDCards(memberID: string, options?: RequestOptions): APIPromise<MemberListIDCardsResponse> {
-    return this._client.get(path`/v1/members/${memberID}/id-cards`, options);
+    return this._client.get(path`/v1/members/${memberID}/id-cards`, {
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 
   /**
@@ -110,7 +126,7 @@ export class Members extends APIResource {
     return this._client.getAPIList(
       path`/v1/members/${memberID}/qualifying-life-events`,
       PageNumberPage<MemberListQualifyingLifeEventsResponse>,
-      { query, ...options },
+      { query, ...options, __security: { apiKeyAuth: true } },
     );
   }
 
@@ -122,7 +138,10 @@ export class Members extends APIResource {
    * a 404.
    */
   retrieveHousehold(memberID: string, options?: RequestOptions): APIPromise<MemberRetrieveHouseholdResponse> {
-    return this._client.get(path`/v1/members/${memberID}/household`, options);
+    return this._client.get(path`/v1/members/${memberID}/household`, {
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 }
 

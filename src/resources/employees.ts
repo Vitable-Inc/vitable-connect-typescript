@@ -24,7 +24,10 @@ export class Employees extends APIResource {
    * ```
    */
   retrieve(employeeID: string, options?: RequestOptions): APIPromise<EmployeeRetrieveResponse> {
-    return this._client.get(path`/v1/employees/${employeeID}`, options);
+    return this._client.get(path`/v1/employees/${employeeID}`, {
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 
   /**
@@ -52,7 +55,11 @@ export class Employees extends APIResource {
     body: EmployeeUpdateParams,
     options?: RequestOptions,
   ): APIPromise<EmployeeUpdateResponse> {
-    return this._client.patch(path`/v1/employees/${employeeID}`, { body, ...options });
+    return this._client.patch(path`/v1/employees/${employeeID}`, {
+      body,
+      ...options,
+      __security: { apiKeyAuth: true },
+    });
   }
 
   /**
@@ -76,7 +83,7 @@ export class Employees extends APIResource {
     return this._client.getAPIList(
       path`/v1/employees/${employeeID}/enrollments`,
       PageNumberPage<EnrollmentsAPI.Enrollment>,
-      { query, ...options },
+      { query, ...options, __security: { apiKeyAuth: true } },
     );
   }
 }
