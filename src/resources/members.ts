@@ -57,7 +57,8 @@ export class Members extends APIResource {
    * Lists a member's benefit enrollments across every employer — benefit type and
    * product, employer, carrier, plan, tier, employee deduction, employer
    * contribution and total premium, the individual enrollment coverage boundary
-   * (`coverage_end`), the distinct benefit plan-year boundary
+   * (`coverage_end`), the separate pre-effective cancellation boundary
+   * (`cancelled_date`), and the distinct benefit plan-year boundary
    * (`plan_year_coverage_end`) used to determine whether the plan year itself has
    * ended, whether a qualifying life event would currently be required for reissue
    * under the product/open-enrollment rule, enrollment/open-enrollment window, and
@@ -406,6 +407,12 @@ export namespace MemberListEnrollmentsResponse {
     benefit_type: 'Medical' | 'Dental' | 'Vision' | 'Hospital';
 
     /**
+     * Earliest applicable coverage boundary (YYYY-MM-DD) when coverage was cancelled
+     * before its effective start; null unless the enrollment was cancelled
+     */
+    cancelled_date: string | null;
+
+    /**
      * - `Enrolled` - Enrolled
      * - `Waived` - Waived
      * - `Pending` - Pending
@@ -445,8 +452,9 @@ export namespace MemberListEnrollmentsResponse {
      * - `Coverage Upcoming` - Coverage Upcoming
      * - `Coverage Effective` - Coverage Effective
      * - `Coverage Ended` - Coverage Ended
+     * - `Cancelled` - Cancelled
      */
-    policy_status: 'Coverage Upcoming' | 'Coverage Effective' | 'Coverage Ended' | null;
+    policy_status: 'Coverage Upcoming' | 'Coverage Effective' | 'Coverage Ended' | 'Cancelled' | null;
 
     /**
      * - `EBA` - Eba Mec

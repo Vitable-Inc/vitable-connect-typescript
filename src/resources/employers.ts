@@ -206,8 +206,9 @@ export class Employers extends APIResource {
   /**
    * Returns the distinct HRIS/payroll providers across the same book
    * `GET /v1/employers` returns, sorted for display. Use these as the values for the
-   * employers list's `hris_provider` filter — the providers are free text, so they
-   * cannot be enumerated in advance.
+   * employers list's `hris_provider` filter — filter on `provider`, show
+   * `provider_label`. The stored providers are free text, so they cannot be
+   * enumerated in advance.
    *
    * @example
    * ```ts
@@ -752,9 +753,14 @@ export namespace EmployerListResponse {
    */
   export interface HRISStatus {
     /**
-     * HRIS/payroll provider the employer is connected to (e.g. `Paychex`).
+     * Id of the HRIS/payroll provider the employer is connected to (e.g. `paylocity`).
      */
     provider: string;
+
+    /**
+     * Display name of that provider (e.g. `Paylocity`).
+     */
+    provider_label: string;
 
     /**
      * Connection status reported by the integration.
@@ -846,8 +852,9 @@ export interface EmployerListBenefitPlanYearEnrollmentsResponse {
    * - `Coverage Upcoming` - Coverage Upcoming
    * - `Coverage Effective` - Coverage Effective
    * - `Coverage Ended` - Coverage Ended
+   * - `Cancelled` - Cancelled
    */
-  policy_status: 'Coverage Upcoming' | 'Coverage Effective' | 'Coverage Ended' | null;
+  policy_status: 'Coverage Upcoming' | 'Coverage Effective' | 'Coverage Ended' | 'Cancelled' | null;
 
   /**
    * Monthly premium in cents for the chosen plan, dependents included. The plan's
@@ -1036,9 +1043,15 @@ export interface EmployerListHRISProvidersResponse {
 export namespace EmployerListHRISProvidersResponse {
   export interface Data {
     /**
-     * HRIS/payroll provider name, as stored on the connection (e.g. `ADP RUN`).
+     * HRIS/payroll provider id, as stored on the connection (e.g. `adp_run`). Filter
+     * with this.
      */
     provider: string;
+
+    /**
+     * Display name of that provider (e.g. `ADP Run`).
+     */
+    provider_label: string;
   }
 }
 
@@ -1542,45 +1555,68 @@ export namespace EmployerRetrieveBenefitPlanYearResponse {
   }
 }
 
+/**
+ * Response containing a single employer hris resource.
+ */
 export interface EmployerRetrieveHRISResponse {
-  /**
-   * HRIS connection details, or null when the employer has no integration.
-   */
-  hris: EmployerRetrieveHRISResponse.HRIS | null;
+  data: EmployerRetrieveHRISResponse.Data;
 }
 
 export namespace EmployerRetrieveHRISResponse {
-  /**
-   * HRIS connection details, or null when the employer has no integration.
-   */
-  export interface HRIS {
+  export interface Data {
     /**
-     * When the last sync completed, or null when none has.
+     * HRIS connection details, or null when the employer has no integration.
      */
-    last_sync_on: string | null;
+    hris: Data.HRIS | null;
+  }
 
+  export namespace Data {
     /**
-     * HRIS/payroll provider the employer is connected to (e.g. `Paychex`).
+     * HRIS connection details, or null when the employer has no integration.
      */
-    provider: string;
+    export interface HRIS {
+      /**
+       * When the last sync completed, or null when none has.
+       */
+      last_sync_on: string | null;
 
-    /**
-     * Connection status reported by the integration.
-     */
-    status: string;
+      /**
+       * Id of the HRIS/payroll provider the employer is connected to (e.g. `paylocity`).
+       */
+      provider: string;
 
-    /**
-     * Rows in the latest completed sync, or null when none has.
-     */
-    synced_row_count: number | null;
+      /**
+       * Display name of that provider (e.g. `Paylocity`).
+       */
+      provider_label: string;
+
+      /**
+       * Connection status reported by the integration.
+       */
+      status: string;
+
+      /**
+       * Rows in the latest completed sync, or null when none has.
+       */
+      synced_row_count: number | null;
+    }
   }
 }
 
+/**
+ * Response containing a single employer invoice pdf resource.
+ */
 export interface EmployerRetrieveInvoicePdfResponse {
-  /**
-   * Time-limited Chargebee PDF download link for the invoice.
-   */
-  download_url: string;
+  data: EmployerRetrieveInvoicePdfResponse.Data;
+}
+
+export namespace EmployerRetrieveInvoicePdfResponse {
+  export interface Data {
+    /**
+     * Time-limited Chargebee PDF download link for the invoice.
+     */
+    download_url: string;
+  }
 }
 
 /**
