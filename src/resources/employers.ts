@@ -487,7 +487,7 @@ export interface Employer {
   created_at: string;
 
   /**
-   * Employer Identification Number (masked in responses)
+   * Employer Identification Number (format: XX-XXXXXXX)
    */
   ein: string | null;
 
@@ -1340,6 +1340,15 @@ export namespace EmployerRetrieveBenefitPlanYearResponse {
         cost_per_dependent: number;
 
         /**
+         * - `Unspecified` - Unspecified
+         * - `EE` - EE
+         * - `ES` - ES
+         * - `EC` - EC
+         * - `EF` - EF
+         */
+        coverage_tier: 'Unspecified' | 'EE' | 'ES' | 'EC' | 'EF';
+
+        /**
          * Whether dependents are required for this tier.
          */
         dependents_required_in: boolean;
@@ -1386,10 +1395,10 @@ export namespace EmployerRetrieveBenefitPlanYearResponse {
 
         /**
          * - `Unspecified` - Unspecified
-         * - `EE` - Ee
-         * - `ES` - Es
-         * - `EC` - Ec
-         * - `EF` - Ef
+         * - `EE` - EE
+         * - `ES` - ES
+         * - `EC` - EC
+         * - `EF` - EF
          */
         family_status: 'Unspecified' | 'EE' | 'ES' | 'EC' | 'EF';
 

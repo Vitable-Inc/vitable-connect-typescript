@@ -30,11 +30,8 @@ export class Enrollments extends APIResource {
    * same member and plan year. VPC never requires a qualifying life event; other
    * products require an accepted, member-owned event outside open enrollment.
    * User-backed callers must provide a reason; it is optional for userless
-   * organization callers. API keys and unbound access tokens may act across the
-   * caller organization's book. Employer-bound access tokens may act only on that
-   * employer's enrollments, and employee-bound access tokens may act only on that
-   * employee's enrollment. Tenant or token-scope mismatches return the same
-   * non-disclosing 404 before the request body is validated.
+   * organization callers. Tenant mismatches return a non-disclosing 404 before the
+   * request body is validated.
    *
    * @example
    * ```ts
