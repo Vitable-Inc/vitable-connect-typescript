@@ -10,7 +10,7 @@ const client = new VitableConnect({
 describe('resource members', () => {
   // Mock server tests are disabled
   test.skip('retrieve', async () => {
-    const responsePromise = client.members.retrieve('member_id');
+    const responsePromise = client.members.retrieve('mbr_abc123def456');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -49,7 +49,7 @@ describe('resource members', () => {
 
   // Mock server tests are disabled
   test.skip('listDependents', async () => {
-    const responsePromise = client.members.listDependents('member_id');
+    const responsePromise = client.members.listDependents('mbr_abc123def456');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -61,7 +61,7 @@ describe('resource members', () => {
 
   // Mock server tests are disabled
   test.skip('listEmployments', async () => {
-    const responsePromise = client.members.listEmployments('member_id');
+    const responsePromise = client.members.listEmployments('mbr_abc123def456');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -73,7 +73,7 @@ describe('resource members', () => {
 
   // Mock server tests are disabled
   test.skip('listEnrollments', async () => {
-    const responsePromise = client.members.listEnrollments('member_id');
+    const responsePromise = client.members.listEnrollments('mbr_abc123def456');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -85,7 +85,7 @@ describe('resource members', () => {
 
   // Mock server tests are disabled
   test.skip('listIDCards', async () => {
-    const responsePromise = client.members.listIDCards('member_id');
+    const responsePromise = client.members.listIDCards('mbr_abc123def456');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -97,7 +97,7 @@ describe('resource members', () => {
 
   // Mock server tests are disabled
   test.skip('listQualifyingLifeEvents', async () => {
-    const responsePromise = client.members.listQualifyingLifeEvents('member_id');
+    const responsePromise = client.members.listQualifyingLifeEvents('mbr_abc123def456');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -112,7 +112,7 @@ describe('resource members', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.members.listQualifyingLifeEvents(
-        'member_id',
+        'mbr_abc123def456',
         {
           limit: 20,
           page: 1,
@@ -125,7 +125,7 @@ describe('resource members', () => {
 
   // Mock server tests are disabled
   test.skip('retrieveHousehold', async () => {
-    const responsePromise = client.members.retrieveHousehold('member_id');
+    const responsePromise = client.members.retrieveHousehold('mbr_abc123def456');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;

@@ -176,7 +176,7 @@ export namespace MemberRetrieveResponse {
     last_name: string;
 
     /**
-     * Member's full name
+     * Member's full legal name
      */
     name: string;
 
@@ -196,19 +196,52 @@ export namespace MemberRetrieveResponse {
     email?: string | null;
 
     /**
+     * - `Male` - Male
+     * - `Female` - Female
+     * - `Transgender` - Transgender
+     * - `Non-binary` - Non Binary
+     * - `Prefer not to respond` - Prefer Not To Respond
+     */
+    gender?: 'Male' | 'Female' | 'Transgender' | 'Non-binary' | 'Prefer not to respond' | null;
+
+    /**
+     * Member's legal middle name
+     */
+    middle_name?: string | null;
+
+    /**
      * Phone number (10-digit US domestic string)
      */
     phone?: string | null;
 
     /**
-     * Member's preferred language code (e.g., en, es)
+     * - `en` - English
+     * - `es` - Spanish
+     * - `zh` - Chinese
+     * - `ru` - Russian
+     * - `sw` - Swahili
+     * - `th` - Thai
      */
-    preferred_language?: string | null;
+    preferred_language?: 'en' | 'es' | 'zh' | 'ru' | 'sw' | 'th' | null;
 
     /**
-     * Sex assigned at birth, if provided
+     * - `Male` - Male
+     * - `Female` - Female
+     * - `Other` - Other
+     * - `Unknown` - Unknown
      */
-    sex_at_birth?: string | null;
+    sex_at_birth?: 'Male' | 'Female' | 'Other' | 'Unknown' | null;
+
+    /**
+     * - `Sr` - Sr
+     * - `Jr` - Jr
+     * - `I` - I
+     * - `II` - II
+     * - `III` - III
+     * - `IV` - IV
+     * - `V` - V
+     */
+    suffix?: 'Sr' | 'Jr' | 'I' | 'II' | 'III' | 'IV' | 'V' | null;
 
     /**
      * Whether the member uses tobacco, if known
@@ -232,9 +265,132 @@ export namespace MemberRetrieveResponse {
       city: string;
 
       /**
-       * Two-letter state code (e.g., CA, NY)
+       * - `AL` - AL
+       * - `AK` - AK
+       * - `AZ` - AZ
+       * - `AR` - AR
+       * - `CA` - CA
+       * - `CO` - CO
+       * - `CT` - CT
+       * - `DC` - DC
+       * - `DE` - DE
+       * - `FL` - FL
+       * - `GA` - GA
+       * - `HI` - HI
+       * - `ID` - ID
+       * - `IL` - IL
+       * - `IN` - IN
+       * - `IA` - IA
+       * - `KS` - KS
+       * - `KY` - KY
+       * - `LA` - LA
+       * - `ME` - ME
+       * - `MD` - MD
+       * - `MA` - MA
+       * - `MI` - MI
+       * - `MN` - MN
+       * - `MS` - MS
+       * - `MO` - MO
+       * - `MT` - MT
+       * - `NE` - NE
+       * - `NV` - NV
+       * - `NH` - NH
+       * - `NJ` - NJ
+       * - `NM` - NM
+       * - `NY` - NY
+       * - `NC` - NC
+       * - `ND` - ND
+       * - `OH` - OH
+       * - `OK` - OK
+       * - `OR` - OR
+       * - `PA` - PA
+       * - `RI` - RI
+       * - `SC` - SC
+       * - `SD` - SD
+       * - `TN` - TN
+       * - `TX` - TX
+       * - `UT` - UT
+       * - `VT` - VT
+       * - `VA` - VA
+       * - `WA` - WA
+       * - `WI` - WI
+       * - `WV` - WV
+       * - `WY` - WY
+       * - `PR` - PR
+       * - `GU` - GU
+       * - `AS` - AS
+       * - `VI` - VI
+       * - `MP` - MP
+       * - `MH` - MH
+       * - `PW` - PW
+       * - `FM` - FM
+       * - `AE` - AE
+       * - `AA` - AA
+       * - `AP` - AP
        */
-      state: string;
+      state:
+        | 'AL'
+        | 'AK'
+        | 'AZ'
+        | 'AR'
+        | 'CA'
+        | 'CO'
+        | 'CT'
+        | 'DC'
+        | 'DE'
+        | 'FL'
+        | 'GA'
+        | 'HI'
+        | 'ID'
+        | 'IL'
+        | 'IN'
+        | 'IA'
+        | 'KS'
+        | 'KY'
+        | 'LA'
+        | 'ME'
+        | 'MD'
+        | 'MA'
+        | 'MI'
+        | 'MN'
+        | 'MS'
+        | 'MO'
+        | 'MT'
+        | 'NE'
+        | 'NV'
+        | 'NH'
+        | 'NJ'
+        | 'NM'
+        | 'NY'
+        | 'NC'
+        | 'ND'
+        | 'OH'
+        | 'OK'
+        | 'OR'
+        | 'PA'
+        | 'RI'
+        | 'SC'
+        | 'SD'
+        | 'TN'
+        | 'TX'
+        | 'UT'
+        | 'VT'
+        | 'VA'
+        | 'WA'
+        | 'WI'
+        | 'WV'
+        | 'WY'
+        | 'PR'
+        | 'GU'
+        | 'AS'
+        | 'VI'
+        | 'MP'
+        | 'MH'
+        | 'PW'
+        | 'FM'
+        | 'AE'
+        | 'AA'
+        | 'AP';
 
       /**
        * ZIP code (5 or 9 digit)
@@ -301,9 +457,132 @@ export namespace MemberListResponse {
     city: string;
 
     /**
-     * Two-letter state code (e.g., CA, NY)
+     * - `AL` - AL
+     * - `AK` - AK
+     * - `AZ` - AZ
+     * - `AR` - AR
+     * - `CA` - CA
+     * - `CO` - CO
+     * - `CT` - CT
+     * - `DC` - DC
+     * - `DE` - DE
+     * - `FL` - FL
+     * - `GA` - GA
+     * - `HI` - HI
+     * - `ID` - ID
+     * - `IL` - IL
+     * - `IN` - IN
+     * - `IA` - IA
+     * - `KS` - KS
+     * - `KY` - KY
+     * - `LA` - LA
+     * - `ME` - ME
+     * - `MD` - MD
+     * - `MA` - MA
+     * - `MI` - MI
+     * - `MN` - MN
+     * - `MS` - MS
+     * - `MO` - MO
+     * - `MT` - MT
+     * - `NE` - NE
+     * - `NV` - NV
+     * - `NH` - NH
+     * - `NJ` - NJ
+     * - `NM` - NM
+     * - `NY` - NY
+     * - `NC` - NC
+     * - `ND` - ND
+     * - `OH` - OH
+     * - `OK` - OK
+     * - `OR` - OR
+     * - `PA` - PA
+     * - `RI` - RI
+     * - `SC` - SC
+     * - `SD` - SD
+     * - `TN` - TN
+     * - `TX` - TX
+     * - `UT` - UT
+     * - `VT` - VT
+     * - `VA` - VA
+     * - `WA` - WA
+     * - `WI` - WI
+     * - `WV` - WV
+     * - `WY` - WY
+     * - `PR` - PR
+     * - `GU` - GU
+     * - `AS` - AS
+     * - `VI` - VI
+     * - `MP` - MP
+     * - `MH` - MH
+     * - `PW` - PW
+     * - `FM` - FM
+     * - `AE` - AE
+     * - `AA` - AA
+     * - `AP` - AP
      */
-    state: string;
+    state:
+      | 'AL'
+      | 'AK'
+      | 'AZ'
+      | 'AR'
+      | 'CA'
+      | 'CO'
+      | 'CT'
+      | 'DC'
+      | 'DE'
+      | 'FL'
+      | 'GA'
+      | 'HI'
+      | 'ID'
+      | 'IL'
+      | 'IN'
+      | 'IA'
+      | 'KS'
+      | 'KY'
+      | 'LA'
+      | 'ME'
+      | 'MD'
+      | 'MA'
+      | 'MI'
+      | 'MN'
+      | 'MS'
+      | 'MO'
+      | 'MT'
+      | 'NE'
+      | 'NV'
+      | 'NH'
+      | 'NJ'
+      | 'NM'
+      | 'NY'
+      | 'NC'
+      | 'ND'
+      | 'OH'
+      | 'OK'
+      | 'OR'
+      | 'PA'
+      | 'RI'
+      | 'SC'
+      | 'SD'
+      | 'TN'
+      | 'TX'
+      | 'UT'
+      | 'VT'
+      | 'VA'
+      | 'WA'
+      | 'WI'
+      | 'WV'
+      | 'WY'
+      | 'PR'
+      | 'GU'
+      | 'AS'
+      | 'VI'
+      | 'MP'
+      | 'MH'
+      | 'PW'
+      | 'FM'
+      | 'AE'
+      | 'AA'
+      | 'AP';
 
     /**
      * ZIP code (5 or 9 digit)
