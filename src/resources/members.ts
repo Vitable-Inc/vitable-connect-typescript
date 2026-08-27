@@ -205,6 +205,12 @@ export namespace MemberRetrieveResponse {
     gender?: 'Male' | 'Female' | 'Transgender' | 'Non-binary' | 'Prefer not to respond' | null;
 
     /**
+     * - `Single` - Single
+     * - `Married` - Married
+     */
+    marital_status?: 'Single' | 'Married' | null;
+
+    /**
      * Member's legal middle name
      */
     middle_name?: string | null;
