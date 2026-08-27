@@ -77,8 +77,9 @@ export class Employers extends APIResource {
    * benefit-lifecycle stage) merged with the employer's flat CRM fields (legal name,
    * EIN, contact, address, timestamps). The book is derived from the authenticated
    * principal: one organization's employers, or every organization's for a caller
-   * whose reach is not a single organization. Supports name search,
-   * benefit-family/lifecycle/HRIS filters, and page/limit pagination.
+   * whose reach is not a single organization. Supports search by display name, legal
+   * name or exact EIN, benefit-family/lifecycle/HRIS filters, and page/limit
+   * pagination.
    *
    * @example
    * ```ts
@@ -1845,7 +1846,8 @@ export interface EmployerListParams extends PageNumberPageParams {
   include_cancelled?: boolean;
 
   /**
-   * Case-insensitive employer-name substring filter.
+   * Employer filter. Matches the display name or the legal name case-insensitively
+   * as a substring, or the EIN exactly (with or without its dash).
    */
   search?: string | null;
 }
