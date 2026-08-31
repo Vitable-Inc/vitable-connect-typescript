@@ -60,10 +60,12 @@ export class Members extends APIResource {
    * (`coverage_end`), the separate pre-effective cancellation boundary
    * (`cancelled_date`), and the distinct benefit plan-year boundary
    * (`plan_year_coverage_end`) used to determine whether the plan year itself has
-   * ended, whether a qualifying life event would currently be required for reissue
-   * under the product/open-enrollment rule, enrollment/open-enrollment window, and
-   * two statuses: `election_status` (what the member answered) and `policy_status`
-   * (what became of their coverage, null unless they enrolled). Every row includes a
+   * ended, the date the enrollment record was created (`issued_date`, the value Ops
+   * labels Issued on, reported for every row whatever the member answered), whether
+   * a qualifying life event would currently be required for reissue under the
+   * product/open-enrollment rule, enrollment/open-enrollment window, and two
+   * statuses: `election_status` (what the member answered) and `policy_status` (what
+   * became of their coverage, null unless they enrolled). Every row includes a
    * stable enrollment ID and the exact employer and benefit plan-year IDs used to
    * fetch that row's plan-year detail. The full list is returned across all states
    * so the client derives active plans (effective and upcoming) and the enrollment
@@ -727,6 +729,13 @@ export namespace MemberListEnrollmentsResponse {
     enrollment_window_start: string;
 
     /**
+     * How this member's monthly share compares with the ACA affordability line for
+     * their income. Null unless the row is an ICHRA election whose plan year, premium
+     * and the member's individual income are all on file.
+     */
+    ichra_affordability: Data.IchraAffordability | null;
+
+    /**
      * True when today falls in the final month of the plan-year coverage window;
      * drives end-of-coverage enrollment actions on the client.
      */
@@ -737,6 +746,15 @@ export namespace MemberListEnrollmentsResponse {
      * drives enrollment-action availability on the client.
      */
     is_within_enrollment_window: boolean;
+
+    /**
+     * Date the enrollment record was created (YYYY-MM-DD), the value Ops labels Issued
+     * on. Present on every row whatever the member answered, and distinct from
+     * `coverage_start`. It does not imply the member could answer the enrollment on
+     * that date; the window they can answer in is
+     * `enrollment_window_start`/`enrollment_window_end`.
+     */
+    issued_date: string;
 
     /**
      * Benefit plan-year coverage end date (YYYY-MM-DD), distinct from this
@@ -842,6 +860,25 @@ export namespace MemberListEnrollmentsResponse {
      * election
      */
     tier_name?: string | null;
+  }
+
+  export namespace Data {
+    /**
+     * How this member's monthly share compares with the ACA affordability line for
+     * their income. Null unless the row is an ICHRA election whose plan year, premium
+     * and the member's individual income are all on file.
+     */
+    export interface IchraAffordability {
+      /**
+       * True when `employee_deduction_in_cents` is at or below the IRS affordability
+       * percentage of the member's individual income for the year this plan year
+       * started. It measures what the member pays for the plan they chose, so it is
+       * **not** a statement that the employer's offer satisfies the ACA employer
+       * mandate: that test is benchmarked against the lowest-cost silver plan at
+       * self-only coverage, which this does not use.
+       */
+      is_affordable: boolean;
+    }
   }
 }
 

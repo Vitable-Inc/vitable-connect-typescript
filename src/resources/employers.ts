@@ -78,8 +78,8 @@ export class Employers extends APIResource {
    * EIN, contact, address, timestamps). The book is derived from the authenticated
    * principal: one organization's employers, or every organization's for a caller
    * whose reach is not a single organization. Supports search by display name, legal
-   * name or exact EIN, benefit-family/lifecycle/HRIS filters, and page/limit
-   * pagination.
+   * name, or exact EIN, employer id or contact email, benefit-family/lifecycle/HRIS
+   * filters, and page/limit pagination.
    *
    * @example
    * ```ts
@@ -1847,7 +1847,8 @@ export interface EmployerListParams extends PageNumberPageParams {
 
   /**
    * Employer filter. Matches the display name or the legal name case-insensitively
-   * as a substring, or the EIN exactly (with or without its dash).
+   * as a substring, or one of these exactly: the EIN (with or without its dash), the
+   * employer id, or the contact email of one of the employer's non-disabled admins.
    */
   search?: string | null;
 }
