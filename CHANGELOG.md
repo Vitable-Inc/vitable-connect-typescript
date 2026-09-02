@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.6.0 (2026-09-02)
+
+Full Changelog: [v0.5.1...v0.6.0](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.5.1...v0.6.0)
+
+### Features
+
+* **api:** api update ([f92a9da](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/f92a9da6732ae9ac4764fbd6bb0fb212b0c08b36))
+* **api:** api update ([cb323c7](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/cb323c76f205c73440875701a8872663ab74c76e))
+* **api:** api update ([3ed8a94](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/3ed8a944cc2035b2158194cf9d0830bb0e677c47))
+* **api:** api update ([14af1dc](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/14af1dcad31e127bf0cbc13463efeed28de9acb9))
+* **api:** api update ([cb48ded](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/cb48ded3e5032542192b67076d4ab2f1aad95344))
+* **api:** api update ([981c609](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/981c609e631ae1fb7dea1956658819853bfdc9d5))
+* **api:** api update ([078a9db](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/078a9dbe98189db7feb91ec22bb3a4b68707d446))
+
 ## 0.5.1 (2026-08-20)
 
 Full Changelog: [v0.5.0...v0.5.1](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.5.0...v0.5.1)
