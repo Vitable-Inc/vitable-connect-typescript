@@ -24,7 +24,7 @@ export class Members extends APIResource {
    * Retrieves a paginated list of the members in the authenticated organization's
    * book — identity, contact details, and address. The book covers members reached
    * through an employer in the organization's book as well as members of a group it
-   * owns. Supports free-text search (name, email, or exact member id).
+   * owns. Supports free-text search (name, email, phone number, or exact member id).
    */
   list(
     query: MemberListParams | null | undefined = {},
@@ -61,9 +61,11 @@ export class Members extends APIResource {
    * (`cancelled_date`), and the distinct benefit plan-year boundary
    * (`plan_year_coverage_end`) used to determine whether the plan year itself has
    * ended, the date the enrollment record was created (`issued_date`, the value Ops
-   * labels Issued on, reported for every row whatever the member answered), whether
-   * a qualifying life event would currently be required for reissue under the
-   * product/open-enrollment rule, enrollment/open-enrollment window, and two
+   * labels Issued on, reported for every row whatever the member answered), the
+   * window the member could answer in -- which never opens before the enrollment was
+   * issued, so a row issued mid-open-enrollment starts its window on its issue date
+   * -- whether a qualifying life event would currently be required for reissue under
+   * the product/open-enrollment rule, enrollment/open-enrollment window, and two
    * statuses: `election_status` (what the member answered) and `policy_status` (what
    * became of their coverage, null unless they enrolled). Every row includes a
    * stable enrollment ID and the exact employer and benefit plan-year IDs used to
@@ -724,16 +726,12 @@ export namespace MemberListEnrollmentsResponse {
     employer_name: string;
 
     /**
-     * Enrollment / open-enrollment window start date (YYYY-MM-DD)
+     * First date the member could answer this enrollment (YYYY-MM-DD). Open
+     * enrollment's start date for a row issued before open enrollment opened,
+     * otherwise the date the row was issued -- an enrollment is never answerable
+     * before it exists, so this is never earlier than `issued_date`.
      */
     enrollment_window_start: string;
-
-    /**
-     * How this member's monthly share compares with the ACA affordability line for
-     * their income. Null unless the row is an ICHRA election whose plan year, premium
-     * and the member's individual income are all on file.
-     */
-    ichra_affordability: Data.IchraAffordability | null;
 
     /**
      * True when today falls in the final month of the plan-year coverage window;
@@ -750,9 +748,9 @@ export namespace MemberListEnrollmentsResponse {
     /**
      * Date the enrollment record was created (YYYY-MM-DD), the value Ops labels Issued
      * on. Present on every row whatever the member answered, and distinct from
-     * `coverage_start`. It does not imply the member could answer the enrollment on
-     * that date; the window they can answer in is
-     * `enrollment_window_start`/`enrollment_window_end`.
+     * `coverage_start`. It equals `enrollment_window_start` for a row issued once its
+     * open enrollment had already opened, and precedes it for a row issued ahead of
+     * open enrollment.
      */
     issued_date: string;
 
@@ -860,25 +858,6 @@ export namespace MemberListEnrollmentsResponse {
      * election
      */
     tier_name?: string | null;
-  }
-
-  export namespace Data {
-    /**
-     * How this member's monthly share compares with the ACA affordability line for
-     * their income. Null unless the row is an ICHRA election whose plan year, premium
-     * and the member's individual income are all on file.
-     */
-    export interface IchraAffordability {
-      /**
-       * True when `employee_deduction_in_cents` is at or below the IRS affordability
-       * percentage of the member's individual income for the year this plan year
-       * started. It measures what the member pays for the plan they chose, so it is
-       * **not** a statement that the employer's offer satisfies the ACA employer
-       * mandate: that test is benchmarked against the lowest-cost silver plan at
-       * self-only coverage, which this does not use.
-       */
-      is_affordable: boolean;
-    }
   }
 }
 
@@ -1095,13 +1074,56 @@ export interface MemberListQualifyingLifeEventsResponse {
   id: string;
 
   /**
-   * - `Married` - Married
-   * - `Divorced` - Divorced
-   * - `New child` - New Child
-   * - `Court ordered` - Court Ordered
-   * - `Other` - Other
+   * - `lost_job_based_coverage` - lost_job_based_coverage
+   * - `aged_off_parent_plan` - aged_off_parent_plan
+   * - `lost_medicaid_chip_medicare` - lost_medicaid_chip_medicare
+   * - `lost_decertified_individual_plan` - lost_decertified_individual_plan
+   * - `married` - married
+   * - `divorced` - divorced
+   * - `had_baby` - had_baby
+   * - `adopted_child` - adopted_child
+   * - `foster_care_placement` - foster_care_placement
+   * - `death_of_spouse_or_dependent` - death_of_spouse_or_dependent
+   * - `court_ordered` - court_ordered
+   * - `moved_to_new_coverage_area` - moved_to_new_coverage_area
+   * - `moved_to_us` - moved_to_us
+   * - `moved_to_or_from_school_housing` - moved_to_or_from_school_housing
+   * - `moved_to_or_from_seasonal_work_housing` -
+   *   moved_to_or_from_seasonal_work_housing
+   * - `became_us_citizen` - became_us_citizen
+   * - `left_incarceration` - left_incarceration
+   * - `gained_tribal_status` - gained_tribal_status
+   * - `started_or_ended_americorps_service` - started_or_ended_americorps_service
+   * - `new_child` - new_child
+   * - `other` - other
    */
-  event_type: 'Married' | 'Divorced' | 'New child' | 'Court ordered' | 'Other';
+  event_type:
+    | 'lost_job_based_coverage'
+    | 'aged_off_parent_plan'
+    | 'lost_medicaid_chip_medicare'
+    | 'lost_decertified_individual_plan'
+    | 'married'
+    | 'divorced'
+    | 'had_baby'
+    | 'adopted_child'
+    | 'foster_care_placement'
+    | 'death_of_spouse_or_dependent'
+    | 'court_ordered'
+    | 'moved_to_new_coverage_area'
+    | 'moved_to_us'
+    | 'moved_to_or_from_school_housing'
+    | 'moved_to_or_from_seasonal_work_housing'
+    | 'became_us_citizen'
+    | 'left_incarceration'
+    | 'gained_tribal_status'
+    | 'started_or_ended_americorps_service'
+    | 'new_child'
+    | 'other';
+
+  /**
+   * Human-readable label for event_type
+   */
+  event_type_label: string;
 
   /**
    * Custom event description when event_type is Other; otherwise normally null
@@ -1177,7 +1199,8 @@ export namespace MemberRetrieveHouseholdResponse {
 
 export interface MemberListParams extends PageNumberPageParams {
   /**
-   * Case-insensitive search across member name and email; exact match on member id
+   * Case-insensitive search across member name, email, and phone number; exact match
+   * on member id (prefixed or raw uuid)
    */
   search?: string;
 }
