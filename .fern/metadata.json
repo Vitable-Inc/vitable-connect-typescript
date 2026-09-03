@@ -1,0 +1,17 @@
+{
+    "cliVersion": "5.112.1",
+    "generatorName": "fernapi/fern-typescript-sdk",
+    "generatorVersion": "3.88.3",
+    "generatorConfig": {
+        "namespaceExport": "VitableConnect",
+        "allowCustomFetcher": true,
+        "includeApiReference": true,
+        "offsetSemantics": "page-index"
+    },
+    "originGitCommit": "c81f2000d5ca2d89b44dee19a4889b48e7fcc732",
+    "originGitCommitIsDirty": false,
+    "invokedBy": "ci",
+    "requestedVersion": "1.0.0",
+    "ciProvider": "github",
+    "sdkVersion": "1.0.0"
+}
