@@ -24,6 +24,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      # Reads the pinned version from package.json's packageManager field.
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up Node
         uses: actions/setup-node@v5
         with:
@@ -36,8 +40,10 @@ jobs:
 
       - name: Install and build
         run: |
-          npm install
-          npm run build --if-present
+          pnpm install --frozen-lockfile
+          pnpm build
 
+      # npm (not pnpm) does the publish: it carries the OIDC trusted
+      # publishing support.
       - name: Publish to NPM
         run: npm publish --access public
