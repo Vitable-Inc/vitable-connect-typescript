@@ -1,6 +1,8 @@
-# This workflow is triggered when a GitHub release is created.
-# It can also be run manually to re-publish to NPM in case it failed for some reason.
-# You can run this workflow by navigating to https://www.github.com/Vitable-Inc/vitable-connect-typescript/actions/workflows/publish-npm.yml
+# Publishes the Fern-generated SDK to npm via OIDC trusted publishing (the
+# npm package trusts this repo + workflow file; no token). Triggered when a
+# GitHub release is published, or manually to re-publish after a failure.
+#
+# This file is listed in .fernignore so Fern regeneration preserves it.
 name: Publish NPM
 on:
   workflow_dispatch:
@@ -11,26 +13,31 @@ on:
 jobs:
   publish:
     name: publish
+    # Keep in sync with the npm trusted publisher registration, which pins
+    # this environment name.
+    environment: prod
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@v5
 
       - name: Set up Node
-        uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
+        uses: actions/setup-node@v5
         with:
-          node-version: '24'
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+      # OIDC trusted publishing requires npm >= 11.5.1.
+      - name: Update npm
+        run: npm install -g npm@latest
 
-      - name: Install dependencies
+      - name: Install and build
         run: |
-          pnpm install
+          npm install
+          npm run build --if-present
 
       - name: Publish to NPM
-        run: |
-          bash ./bin/publish-npm
+        run: npm publish --access public
