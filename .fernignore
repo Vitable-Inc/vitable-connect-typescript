@@ -1,4 +1,5 @@
 # Files Fern must not overwrite or delete when regenerating this repo.
+# publish-npm.yml is intentionally NOT listed: publishing moved into Fern's
+# generated ci.yml (token: OIDC), so the next regeneration deletes it.
 LICENSE
 SECURITY.md
-.github/workflows/publish-npm.yml
