@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.2 (2026-09-04)
+
+Full Changelog: [v0.5.1...v0.5.2](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.5.1...v0.5.2)
+
+### Chores
+
+* prep for full Fern automated releases ([ef53b6e](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/ef53b6ebaca588bafd3f79825ff33ba3e6406958))
+* sync repo ([87b057b](https://github.com/Vitable-Inc/vitable-connect-typescript/commit/87b057b5a6f7a3bb2cb774d2a6ba69453d80fbfe))
+
 ## 0.5.1 (2026-08-20)
 
 Full Changelog: [v0.5.0...v0.5.1](https://github.com/Vitable-Inc/vitable-connect-typescript/compare/v0.5.0...v0.5.1)
