@@ -1,11 +1,19 @@
-# Publishes the Fern-generated SDK to npm via OIDC trusted publishing (the
-# npm package trusts this repo + workflow file; no token). Triggered when a
-# GitHub release is published, or manually to re-publish after a failure.
+# Publishes the Fern-generated SDK to npm via OIDC trusted publishing. The
+# npm package trusts this repo + this workflow file + the `prod` environment;
+# do not rename any of the three without updating the registration.
 #
-# This file is listed in .fernignore so Fern regeneration preserves it.
+# Triggers on tag pushes because Fern (github mode: release) creates tags, not
+# GitHub releases. This file is listed in .fernignore so Fern regeneration
+# preserves it.
 name: Publish NPM
 on:
   workflow_dispatch:
+
+  push:
+    tags:
+      # Fern tags bare semver (1.0.1); v-prefixed kept for manual tags.
+      - "[0-9]*"
+      - "v[0-9]*"
 
   release:
     types: [published]
