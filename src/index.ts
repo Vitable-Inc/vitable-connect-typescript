@@ -1,6 +1,23 @@
-export * as VitableConnect from "./api/index.js";
-export type { BaseClientOptions, BaseRequestOptions } from "./BaseClient.js";
-export { VitableConnectClient } from "./Client.js";
-export { VitableConnectEnvironment } from "./environments.js";
-export { VitableConnectError, VitableConnectTimeoutError } from "./errors/index.js";
-export * from "./exports.js";
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+export { VitableConnect as default } from './client';
+
+export { type Uploadable, toFile } from './core/uploads';
+export { APIPromise } from './core/api-promise';
+export { VitableConnect, type ClientOptions } from './client';
+export { PagePromise } from './core/pagination';
+export {
+  VitableConnectError,
+  APIError,
+  APIConnectionError,
+  APIConnectionTimeoutError,
+  APIUserAbortError,
+  NotFoundError,
+  ConflictError,
+  RateLimitError,
+  BadRequestError,
+  AuthenticationError,
+  InternalServerError,
+  PermissionDeniedError,
+  UnprocessableEntityError,
+} from './core/error';
