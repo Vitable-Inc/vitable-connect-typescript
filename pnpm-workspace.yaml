@@ -1,1 +1,5 @@
-packages: ['.']
+onlyBuiltDependencies:
+  - '@swc/core'
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - '@vitable-inc/vitable-connect'

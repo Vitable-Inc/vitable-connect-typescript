@@ -1,7 +1,4 @@
 # Files Fern must not overwrite or delete when regenerating this repo.
 LICENSE
 SECURITY.md
-# Owned publishing: the npm trusted publisher registration is pinned to
-# publish-npm.yml + the `prod` environment; keep publishing here rather than
-# in Fern's generated ci.yml.
 .github/workflows/publish-npm.yml

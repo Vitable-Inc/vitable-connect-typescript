@@ -1,0 +1,79 @@
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+import VitableConnect from '@vitable-inc/vitable-connect';
+
+const client = new VitableConnect({
+  apiKey: 'My API Key',
+  baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
+});
+
+describe('resource employees', () => {
+  // Mock server tests are disabled
+  test.skip('retrieve', async () => {
+    const responsePromise = client.employees.retrieve('empl_abc123def456');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('update: only required params', async () => {
+    const responsePromise = client.employees.update('empl_abc123def456', { effective_date: '2023-03-01' });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('update: required and optional params', async () => {
+    const response = await client.employees.update('empl_abc123def456', {
+      effective_date: '2023-03-01',
+      address: {
+        city: 'city',
+        state: 'xx',
+        street_1: 'street_1',
+        zip_code: 'zip_code',
+        country: 'country',
+        street_2: 'street_2',
+      },
+      compensation_type: 'Salary',
+      email: 'dev@stainless.com',
+      employee_class: 'Full Time',
+      gender: 'Male',
+      phone: 'phone',
+      start_date: '2023-01-15',
+    });
+  });
+
+  // Mock server tests are disabled
+  test.skip('listEnrollments', async () => {
+    const responsePromise = client.employees.listEnrollments('empl_abc123def456');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  // Mock server tests are disabled
+  test.skip('listEnrollments: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.employees.listEnrollments(
+        'empl_abc123def456',
+        { limit: 20, page: 1 },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(VitableConnect.NotFoundError);
+  });
+});
