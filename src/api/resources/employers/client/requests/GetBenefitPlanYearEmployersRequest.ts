@@ -14,4 +14,6 @@ export interface GetBenefitPlanYearEmployersRequest {
     employer_id: VitableConnect.EmployerId;
     /** Unique benefit-plan-year identifier (plyr_*). */
     benefit_plan_year_id: VitableConnect.BenefitPlanYearId;
+    /** Organization to act as for this request (e.g. `org_SGVsbG8gV29ybGQ`). Optional when your credentials reach a single organization. Required when they reach several — omitting it then returns 400 `organization_required`. A malformed value returns 400 `invalid_organization_header`, and naming an organization you do not have access to returns 403 `organization_access_denied`. */
+    "X-Vitable-Organization"?: VitableConnect.XVitableOrganization;
 }

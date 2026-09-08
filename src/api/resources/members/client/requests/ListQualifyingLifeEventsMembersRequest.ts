@@ -19,4 +19,6 @@ export interface ListQualifyingLifeEventsMembersRequest {
     page?: VitableConnect.Page;
     /** Optional. Filter to a single QLE status; omit to return all statuses. */
     status?: VitableConnect.Status;
+    /** Organization to act as for this request (e.g. `org_SGVsbG8gV29ybGQ`). Optional when your credentials reach a single organization. Required when they reach several — omitting it then returns 400 `organization_required`. A malformed value returns 400 `invalid_organization_header`, and naming an organization you do not have access to returns 403 `organization_access_denied`. */
+    "X-Vitable-Organization"?: VitableConnect.XVitableOrganization;
 }

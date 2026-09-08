@@ -2,7 +2,7 @@
 
 import type { BaseClientOptions, BaseRequestOptions } from "../../../../BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../BaseClient.js";
-import { mergeHeaders } from "../../../../core/headers.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
 import * as core from "../../../../core/index.js";
 import { mergeAdditionalBodyParameters } from "../../../../core/requestBody.js";
 import * as environments from "../../../../environments.js";
@@ -59,11 +59,12 @@ export class EnrollmentsClient {
         request: VitableConnect.GetEnrollmentsRequest,
         requestOptions?: EnrollmentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.EnrollmentResponse>> {
-        const { enrollment_id: enrollmentId } = request;
+        const { enrollment_id: enrollmentId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -188,11 +189,12 @@ export class EnrollmentsClient {
         request: VitableConnect.ReissueEnrollmentRequest,
         requestOptions?: EnrollmentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.ReissueEnrollmentResponse>> {
-        const { enrollment_id: enrollmentId, ..._body } = request;
+        const { enrollment_id: enrollmentId, "X-Vitable-Organization": vitableOrganization, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -328,11 +330,12 @@ export class EnrollmentsClient {
         request: VitableConnect.TerminateEnrollmentRequest,
         requestOptions?: EnrollmentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        const { enrollment_id: enrollmentId, ..._body } = request;
+        const { enrollment_id: enrollmentId, "X-Vitable-Organization": vitableOrganization, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({

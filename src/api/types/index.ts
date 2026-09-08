@@ -173,3 +173,4 @@ export * from "./WebhookDelivery.js";
 export * from "./WebhookEvent.js";
 export * from "./WebhookEventListResponse.js";
 export * from "./WebhookEventResponse.js";
+export * from "./XVitableOrganization.js";

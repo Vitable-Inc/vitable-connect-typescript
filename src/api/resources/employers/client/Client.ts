@@ -2,7 +2,7 @@
 
 import type { BaseClientOptions, BaseRequestOptions } from "../../../../BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../BaseClient.js";
-import { mergeHeaders } from "../../../../core/headers.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
 import * as core from "../../../../core/index.js";
 import { mergeAdditionalBodyParameters } from "../../../../core/requestBody.js";
 import * as environments from "../../../../environments.js";
@@ -66,6 +66,7 @@ export class EmployersClient {
                     limit,
                     page,
                     search,
+                    "X-Vitable-Organization": vitableOrganization,
                 } = request;
                 const _queryParams: Record<string, unknown> = {
                     benefit_family: Array.isArray(benefitFamily)
@@ -93,6 +94,7 @@ export class EmployersClient {
                 const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     _authRequest.headers,
                     this._options?.headers,
+                    mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
                     requestOptions?.headers,
                 );
                 const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -234,10 +236,12 @@ export class EmployersClient {
         request: VitableConnect.CreateEmployerRequest,
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.EmployerResponse>> {
+        const { "X-Vitable-Organization": vitableOrganization, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -252,7 +256,7 @@ export class EmployersClient {
             contentType: "application/json",
             queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
             requestType: "json",
-            body: mergeAdditionalBodyParameters(request, requestOptions?.additionalBodyParameters),
+            body: mergeAdditionalBodyParameters(_body, requestOptions?.additionalBodyParameters),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -355,11 +359,12 @@ export class EmployersClient {
         request: VitableConnect.GetEmployersRequest,
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.EmployerResponse>> {
-        const { employer_id: employerId } = request;
+        const { employer_id: employerId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -470,11 +475,12 @@ export class EmployersClient {
         request: VitableConnect.UpdateEmployerRequest,
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.EmployerResponse>> {
-        const { employer_id: employerId, ..._body } = request;
+        const { employer_id: employerId, "X-Vitable-Organization": vitableOrganization, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -592,11 +598,12 @@ export class EmployersClient {
         request: VitableConnect.ListBenefitPlanYearsEmployersRequest,
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.EmployerBenefitPlanYearsListResponse>> {
-        const { employer_id: employerId } = request;
+        const { employer_id: employerId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -715,11 +722,16 @@ export class EmployersClient {
         request: VitableConnect.GetBenefitPlanYearEmployersRequest,
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.EmployerBenefitPlanYearResponse>> {
-        const { employer_id: employerId, benefit_plan_year_id: benefitPlanYearId } = request;
+        const {
+            employer_id: employerId,
+            benefit_plan_year_id: benefitPlanYearId,
+            "X-Vitable-Organization": vitableOrganization,
+        } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -844,6 +856,7 @@ export class EmployersClient {
                     limit,
                     page,
                     search,
+                    "X-Vitable-Organization": vitableOrganization,
                 } = request;
                 const _queryParams: Record<string, unknown> = {
                     election_status: Array.isArray(electionStatus)
@@ -859,6 +872,7 @@ export class EmployersClient {
                 const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     _authRequest.headers,
                     this._options?.headers,
+                    mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
                     requestOptions?.headers,
                 );
                 const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -1145,7 +1159,14 @@ export class EmployersClient {
             async (
                 request: VitableConnect.ListEmployeesEmployersRequest,
             ): Promise<core.WithRawResponse<VitableConnect.EmployeeListResponse>> => {
-                const { employer_id: employerId, employment_status: employmentStatus, limit, page, search } = request;
+                const {
+                    employer_id: employerId,
+                    employment_status: employmentStatus,
+                    limit,
+                    page,
+                    search,
+                    "X-Vitable-Organization": vitableOrganization,
+                } = request;
                 const _queryParams: Record<string, unknown> = {
                     employment_status: employmentStatus != null ? employmentStatus : undefined,
                     limit,
@@ -1156,6 +1177,7 @@ export class EmployersClient {
                 const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     _authRequest.headers,
                     this._options?.headers,
+                    mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
                     requestOptions?.headers,
                 );
                 const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -1294,11 +1316,12 @@ export class EmployersClient {
         request: VitableConnect.GetHrisEmployersRequest,
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.EmployerHrisResponse>> {
-        const { employer_id: employerId } = request;
+        const { employer_id: employerId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -1415,7 +1438,7 @@ export class EmployersClient {
         request: VitableConnect.ListInvoicesEmployersRequest,
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.EmployerInvoicesListResponse>> {
-        const { employer_id: employerId, limit, offset } = request;
+        const { employer_id: employerId, limit, offset, "X-Vitable-Organization": vitableOrganization } = request;
         const _queryParams: Record<string, unknown> = {
             limit,
             offset,
@@ -1424,6 +1447,7 @@ export class EmployersClient {
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -1551,11 +1575,16 @@ export class EmployersClient {
         request: VitableConnect.GetInvoicePdfEmployersRequest,
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.EmployerInvoicePdfResponse>> {
-        const { employer_id: employerId, invoice_id: invoiceId } = request;
+        const {
+            employer_id: employerId,
+            invoice_id: invoiceId,
+            "X-Vitable-Organization": vitableOrganization,
+        } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -1673,11 +1702,12 @@ export class EmployersClient {
         request: VitableConnect.GetPayrollAccessSetupEmployersRequest,
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.PayrollAccessSetupStatusResponse>> {
-        const { employer_id: employerId } = request;
+        const { employer_id: employerId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -1802,11 +1832,12 @@ export class EmployersClient {
         request: VitableConnect.SubmitPayrollAccessSetupRequest,
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.PayrollAccessSetupStatusResponse>> {
-        const { employer_id: employerId, ..._body } = request;
+        const { employer_id: employerId, "X-Vitable-Organization": vitableOrganization, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -1932,7 +1963,7 @@ export class EmployersClient {
             async (
                 request: VitableConnect.ListPayrollDeductionStatementsEmployersRequest,
             ): Promise<core.WithRawResponse<VitableConnect.EmployerPayrollDeductionStatementListResponse>> => {
-                const { employer_id: employerId, limit, page } = request;
+                const { employer_id: employerId, limit, page, "X-Vitable-Organization": vitableOrganization } = request;
                 const _queryParams: Record<string, unknown> = {
                     limit,
                     page,
@@ -1941,6 +1972,7 @@ export class EmployersClient {
                 const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     _authRequest.headers,
                     this._options?.headers,
+                    mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
                     requestOptions?.headers,
                 );
                 const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -2082,11 +2114,12 @@ export class EmployersClient {
         request: VitableConnect.EnsurePayrollIntegrationEmailEmployersRequest,
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.PayrollIntegrationEmailResponse>> {
-        const { employer_id: employerId } = request;
+        const { employer_id: employerId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -2205,11 +2238,12 @@ export class EmployersClient {
         request: VitableConnect.UpdateEmployerSettingsRequest,
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.EmployerSettingsResponse>> {
-        const { employer_id: employerId, ..._body } = request;
+        const { employer_id: employerId, "X-Vitable-Organization": vitableOrganization, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -2300,6 +2334,7 @@ export class EmployersClient {
     /**
      * Returns the distinct HRIS/payroll providers across the same book `GET /v1/employers` returns, sorted for display. Use these as the values for the employers list's `hris_provider` filter — filter on `provider`, show `provider_label`. The stored providers are free text, so they cannot be enumerated in advance.
      *
+     * @param {VitableConnect.ListHrisProvidersEmployersRequest} request
      * @param {EmployersClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link VitableConnect.BadRequestError}
@@ -2317,18 +2352,22 @@ export class EmployersClient {
      *     await client.employers.listHrisProviders()
      */
     public listHrisProviders(
+        request: VitableConnect.ListHrisProvidersEmployersRequest = {},
         requestOptions?: EmployersClient.RequestOptions,
     ): core.HttpResponsePromise<VitableConnect.OrganizationHrisProvidersResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__listHrisProviders(requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__listHrisProviders(request, requestOptions));
     }
 
     private async __listHrisProviders(
+        request: VitableConnect.ListHrisProvidersEmployersRequest = {},
         requestOptions?: EmployersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.OrganizationHrisProvidersResponse>> {
+        const { "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({

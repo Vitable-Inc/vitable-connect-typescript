@@ -1513,7 +1513,7 @@ await client.employers.updateSettings({
 </dl>
 </details>
 
-<details><summary><code>client.employers.<a href="/src/api/resources/employers/client/Client.ts">listHrisProviders</a>() -> VitableConnect.OrganizationHrisProvidersResponse</code></summary>
+<details><summary><code>client.employers.<a href="/src/api/resources/employers/client/Client.ts">listHrisProviders</a>({ ...params }) -> VitableConnect.OrganizationHrisProvidersResponse</code></summary>
 <dl>
 <dd>
 
@@ -1552,6 +1552,14 @@ await client.employers.listHrisProviders();
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**request:** `VitableConnect.ListHrisProvidersEmployersRequest` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -2673,7 +2681,7 @@ await client.organizations.list();
 <dl>
 <dd>
 
-Onboards the authenticated user's partner Organization: creates the local Organization + the creator's admin membership atomically, then mirrors it to WorkOS (creates the WorkOS org and binds the creator as admin). 409 `organization_already_exists` when the user already has an organization (v0: one organization per user).
+Onboards the authenticated user's partner Organization: creates the local Organization + the creator's admin membership atomically, then mirrors it to WorkOS (creates the WorkOS org and binds the creator as admin). A user may hold several organizations and selects which one a request acts as with the `X-Vitable-Organization` header. The founder's email domain is claimed only when no other organization holds it, so a taken domain is left with its owner rather than rejected.
 </dd>
 </dl>
 </dd>

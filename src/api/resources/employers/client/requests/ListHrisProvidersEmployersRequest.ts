@@ -4,21 +4,9 @@ import type * as VitableConnect from "../../../../index.js";
 
 /**
  * @example
- *     {
- *         employer_id: "empr_abc123def456"
- *     }
+ *     {}
  */
-export interface UpdateEmployerRequest {
-    /** Unique employer identifier (empr_*) */
-    employer_id: VitableConnect.EmployerId;
+export interface ListHrisProvidersEmployersRequest {
     /** Organization to act as for this request (e.g. `org_SGVsbG8gV29ybGQ`). Optional when your credentials reach a single organization. Required when they reach several — omitting it then returns 400 `organization_required`. A malformed value returns 400 `invalid_organization_header`, and naming an organization you do not have access to returns 403 `organization_access_denied`. */
     "X-Vitable-Organization"?: VitableConnect.XVitableOrganization;
-    /** Employer display name */
-    name?: string | null;
-    /** Legal business name */
-    legal_name?: string | null;
-    /** Employer address */
-    address?: VitableConnect.UpdateEmployerAddressInput | null;
-    /** Whether the employer is active */
-    active?: boolean | null;
 }

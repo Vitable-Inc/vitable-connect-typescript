@@ -10,6 +10,7 @@ export type { ListBenefitPlanYearEnrollmentsEmployersRequest } from "./ListBenef
 export type { ListBenefitPlanYearsEmployersRequest } from "./ListBenefitPlanYearsEmployersRequest.js";
 export type { ListEmployeesEmployersRequest } from "./ListEmployeesEmployersRequest.js";
 export type { ListEmployersRequest } from "./ListEmployersRequest.js";
+export type { ListHrisProvidersEmployersRequest } from "./ListHrisProvidersEmployersRequest.js";
 export type { ListInvoicesEmployersRequest } from "./ListInvoicesEmployersRequest.js";
 export type { ListPayrollDeductionStatementsEmployersRequest } from "./ListPayrollDeductionStatementsEmployersRequest.js";
 export type { SubmitPayrollAccessSetupRequest } from "./SubmitPayrollAccessSetupRequest.js";

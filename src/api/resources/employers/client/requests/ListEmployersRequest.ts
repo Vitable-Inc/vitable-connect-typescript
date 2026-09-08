@@ -26,4 +26,6 @@ export interface ListEmployersRequest {
     page?: VitableConnect.Page;
     /** Employer filter. Matches the display name or the legal name case-insensitively as a substring, or one of these exactly: the EIN (with or without its dash), the employer id, or the contact email of one of the employer's non-disabled admins. */
     search?: VitableConnect.Search | null;
+    /** Organization to act as for this request (e.g. `org_SGVsbG8gV29ybGQ`). Optional when your credentials reach a single organization. Required when they reach several — omitting it then returns 400 `organization_required`. A malformed value returns 400 `invalid_organization_header`, and naming an organization you do not have access to returns 403 `organization_access_denied`. */
+    "X-Vitable-Organization"?: VitableConnect.XVitableOrganization;
 }

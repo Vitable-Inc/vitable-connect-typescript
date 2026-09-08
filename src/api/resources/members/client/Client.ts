@@ -2,7 +2,7 @@
 
 import type { BaseClientOptions, BaseRequestOptions } from "../../../../BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../BaseClient.js";
-import { mergeHeaders } from "../../../../core/headers.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
 import * as core from "../../../../core/index.js";
 import * as environments from "../../../../environments.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
@@ -58,11 +58,12 @@ export class MembersClient {
         request: VitableConnect.GetMembersRequest,
         requestOptions?: MembersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.MemberResponse>> {
-        const { member_id: memberId } = request;
+        const { member_id: memberId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -172,11 +173,12 @@ export class MembersClient {
         request: VitableConnect.ListDependentsMembersRequest,
         requestOptions?: MembersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.MemberDependentsResponse>> {
-        const { member_id: memberId } = request;
+        const { member_id: memberId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -294,11 +296,12 @@ export class MembersClient {
         request: VitableConnect.ListEmploymentsMembersRequest,
         requestOptions?: MembersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.MemberEmploymentsResponse>> {
-        const { member_id: memberId } = request;
+        const { member_id: memberId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -416,11 +419,12 @@ export class MembersClient {
         request: VitableConnect.ListEnrollmentsMembersRequest,
         requestOptions?: MembersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.MemberEnrollmentsResponse>> {
-        const { member_id: memberId } = request;
+        const { member_id: memberId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -538,11 +542,12 @@ export class MembersClient {
         request: VitableConnect.GetHouseholdMembersRequest,
         requestOptions?: MembersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.HouseholdMembersResponse>> {
-        const { member_id: memberId } = request;
+        const { member_id: memberId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -660,11 +665,12 @@ export class MembersClient {
         request: VitableConnect.ListIdCardsMembersRequest,
         requestOptions?: MembersClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.MemberDigitalBenefitCardsResponse>> {
-        const { member_id: memberId } = request;
+        const { member_id: memberId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -783,7 +789,13 @@ export class MembersClient {
             async (
                 request: VitableConnect.ListQualifyingLifeEventsMembersRequest,
             ): Promise<core.WithRawResponse<VitableConnect.MemberQualifyingLifeEventListResponse>> => {
-                const { member_id: memberId, limit, page, status } = request;
+                const {
+                    member_id: memberId,
+                    limit,
+                    page,
+                    status,
+                    "X-Vitable-Organization": vitableOrganization,
+                } = request;
                 const _queryParams: Record<string, unknown> = {
                     limit,
                     page,
@@ -793,6 +805,7 @@ export class MembersClient {
                 const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     _authRequest.headers,
                     this._options?.headers,
+                    mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
                     requestOptions?.headers,
                 );
                 const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -927,7 +940,7 @@ export class MembersClient {
             async (
                 request: VitableConnect.ListMembersRequest,
             ): Promise<core.WithRawResponse<VitableConnect.MemberListResponse>> => {
-                const { limit, page, search } = request;
+                const { limit, page, search, "X-Vitable-Organization": vitableOrganization } = request;
                 const _queryParams: Record<string, unknown> = {
                     limit,
                     page,
@@ -937,6 +950,7 @@ export class MembersClient {
                 const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     _authRequest.headers,
                     this._options?.headers,
+                    mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
                     requestOptions?.headers,
                 );
                 const _response = await (this._options.fetcher ?? core.fetcher)({
