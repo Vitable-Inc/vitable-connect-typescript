@@ -6,7 +6,7 @@ export interface GroupMemberSyncFailure {
     /** Your identifier for the member that failed to sync. */
     reference_id: string;
     /** The sync operation that failed for this member. */
-    operation: VitableConnect.Operation;
+    operation: VitableConnect.GroupMemberSyncFailureOperation;
     /** Human-readable explanation of why the operation failed. */
     reason: string;
 }

@@ -5,3 +5,4 @@ SECURITY.md
 # publish-npm.yml + the `prod` environment; keep publishing here rather than
 # in Fern's generated ci.yml.
 .github/workflows/publish-npm.yml
+changelog.md
