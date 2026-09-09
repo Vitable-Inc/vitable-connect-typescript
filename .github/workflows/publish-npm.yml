@@ -2,9 +2,10 @@
 # npm package trusts this repo + this workflow file + the `prod` environment;
 # do not rename any of the three without updating the registration.
 #
-# Triggers on tag pushes because Fern (github mode: release) creates tags, not
-# GitHub releases. This file is listed in .fernignore so Fern regeneration
-# preserves it.
+# Triggers on tag pushes only. Fern (github mode: release) pushes a tag AND
+# publishes a GitHub release for it — a release trigger here would double-fire
+# and the second run would fail on the already-uploaded version. This file is
+# listed in .fernignore so Fern regeneration preserves it.
 name: Publish NPM
 on:
   workflow_dispatch:
@@ -14,9 +15,6 @@ on:
       # Fern tags bare semver (1.0.1); v-prefixed kept for manual tags.
       - "[0-9]*"
       - "v[0-9]*"
-
-  release:
-    types: [published]
 
 jobs:
   publish:
