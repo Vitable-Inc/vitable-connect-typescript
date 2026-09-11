@@ -22,6 +22,7 @@ describe("OrganizationsClient", () => {
                     idp_org_id: "org_01J0WORKOS",
                     idp_provider: "workos",
                     super_in: false,
+                    role: "ADMIN",
                 },
             ],
             total: 1,

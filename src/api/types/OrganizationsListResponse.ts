@@ -7,7 +7,7 @@ import type * as VitableConnect from "../index.js";
  */
 export interface OrganizationsListResponse {
     /** This page of organizations. */
-    organizations: VitableConnect.Organization[];
+    organizations: VitableConnect.OrganizationMembership[];
     /** Total number of organizations the caller belongs to. */
     total: number;
 }

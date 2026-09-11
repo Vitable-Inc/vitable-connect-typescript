@@ -1,3 +1,11 @@
+## 3.0.0 - 2026-09-11
+### Breaking Changes
+* **`CreateOrganizationRequestType`** has been removed. The `type` field on `CreateOrganizationRequest` now uses `OrganizationType` instead. Update any imports or type annotations from `CreateOrganizationRequestType` to `OrganizationType`; the string values (`BROKERAGE`, `TPA`, etc.) are unchanged.
+* **`OrganizationsListResponse.organizations`** element type has changed from `Organization` to `OrganizationMembership`. Callers that type-annotate or destructure elements of this array must update to `OrganizationMembership`.
+### Added
+* **`OrganizationMembership`** — new interface returned in `OrganizationsListResponse.organizations`, extending the organization shape with a `role` field indicating the caller's role in each organization.
+* **`OrganizationUserRole`** — new enum with values `ADMIN`, `OPERATIONS`, `SALES`, and `ENROLLMENT_AGENT`, representing the caller's role within an organization.
+
 ## 2.1.0 - 2026-09-08
 ### Added
 * **`XVitableOrganization`** — new string type representing the `X-Vitable-Organization` request header, used to scope requests to a specific organization when credentials span multiple organizations.

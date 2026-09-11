@@ -13,5 +13,5 @@ export interface CreateOrganizationRequest {
     /** Legal or trading name of the organization. */
     name: string;
     /** Category of organization being onboarded. */
-    type?: VitableConnect.CreateOrganizationRequestType | null;
+    type?: VitableConnect.OrganizationType | null;
 }
