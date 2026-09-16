@@ -1,3 +1,11 @@
+## 4.0.0 - 2026-09-16
+### Breaking Changes
+* **`organizations.create()`** has been removed. The `OrganizationsClient` no longer exposes a method to onboard a new partner organization; callers must remove any invocations of this method.
+* **`CreateOrganizationRequest`** interface has been removed. Any imports or type annotations referencing this interface must be deleted.
+* **`Organization`** type has been removed. Callers that import or annotate with `Organization` must migrate to `OrganizationMembership`, which is the type now returned by the list endpoint.
+### Changed
+* **`OrganizationType`** enum value display labels have been updated to title-case (e.g. `BROKERAGE` → `Brokerage`, `GENERAL_AGENT` → `General Agent`). The underlying string values are unchanged.
+
 ## 3.0.0 - 2026-09-11
 ### Breaking Changes
 * **`CreateOrganizationRequestType`** has been removed. The `type` field on `CreateOrganizationRequest` now uses `OrganizationType` instead. Update any imports or type annotations from `CreateOrganizationRequestType` to `OrganizationType`; the string values (`BROKERAGE`, `TPA`, etc.) are unchanged.

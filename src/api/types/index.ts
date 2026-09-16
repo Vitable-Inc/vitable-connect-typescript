@@ -129,7 +129,6 @@ export * from "./MemberStatus.js";
 export * from "./MissingEmployeeResolution.js";
 export * from "./NameSuffix.js";
 export * from "./Offset.js";
-export * from "./Organization.js";
 export * from "./OrganizationEmployer.js";
 export * from "./OrganizationEmployerListResponse.js";
 export * from "./OrganizationHrisProvider.js";

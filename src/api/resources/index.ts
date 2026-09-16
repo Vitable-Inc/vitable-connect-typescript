@@ -10,7 +10,6 @@ export * from "./groups/client/requests/index.js";
 export * as groups from "./groups/index.js";
 export * from "./members/client/requests/index.js";
 export * as members from "./members/index.js";
-export * from "./organizations/client/requests/index.js";
 export * as organizations from "./organizations/index.js";
 export * from "./plans/client/requests/index.js";
 export * as plans from "./plans/index.js";

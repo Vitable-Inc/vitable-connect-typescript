@@ -4,7 +4,6 @@ import type { BaseClientOptions, BaseRequestOptions } from "../../../../BaseClie
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../BaseClient.js";
 import { mergeHeaders } from "../../../../core/headers.js";
 import * as core from "../../../../core/index.js";
-import { mergeAdditionalBodyParameters } from "../../../../core/requestBody.js";
 import * as environments from "../../../../environments.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
@@ -17,7 +16,7 @@ export declare namespace OrganizationsClient {
 }
 
 /**
- * Onboard a partner organization and list the organizations the authenticated caller is an active member of.
+ * List the organizations the authenticated caller is an active member of, to discover the ids accepted by `X-Vitable-Organization`.
  */
 export class OrganizationsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<OrganizationsClient.Options>;
@@ -135,122 +134,5 @@ export class OrganizationsClient {
         }
 
         return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v1/organizations");
-    }
-
-    /**
-     * Onboards the authenticated user's partner Organization: creates the local Organization + the creator's admin membership atomically, then mirrors it to WorkOS (creates the WorkOS org and binds the creator as admin). A user may hold several organizations and selects which one a request acts as with the `X-Vitable-Organization` header. The founder's email domain is claimed only when no other organization holds it, so a taken domain is left with its owner rather than rejected.
-     *
-     * @param {VitableConnect.CreateOrganizationRequest} request
-     * @param {OrganizationsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link VitableConnect.BadRequestError}
-     * @throws {@link VitableConnect.UnauthorizedError}
-     * @throws {@link VitableConnect.ForbiddenError}
-     * @throws {@link VitableConnect.NotFoundError}
-     * @throws {@link VitableConnect.ConflictError}
-     * @throws {@link VitableConnect.TooManyRequestsError}
-     * @throws {@link VitableConnect.InternalServerError}
-     * @throws {@link VitableConnect.BadGatewayError}
-     * @throws {@link errors.VitableConnectError}
-     * @throws {@link errors.VitableConnectTimeoutError}
-     *
-     * @example
-     *     await client.organizations.create({
-     *         name: "Acme Brokerage",
-     *         type: "BROKERAGE"
-     *     })
-     */
-    public create(
-        request: VitableConnect.CreateOrganizationRequest,
-        requestOptions?: OrganizationsClient.RequestOptions,
-    ): core.HttpResponsePromise<VitableConnect.Organization> {
-        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
-    }
-
-    private async __create(
-        request: VitableConnect.CreateOrganizationRequest,
-        requestOptions?: OrganizationsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<VitableConnect.Organization>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            requestOptions?.headers,
-        );
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.VitableConnectEnvironment.Production,
-                "v1/organizations",
-            ),
-            method: "POST",
-            headers: _headers,
-            contentType: "application/json",
-            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
-            requestType: "json",
-            body: mergeAdditionalBodyParameters(request, requestOptions?.additionalBodyParameters),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return { data: _response.body as VitableConnect.Organization, rawResponse: _response.rawResponse };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new VitableConnect.BadRequestError(
-                        _response.error.body as VitableConnect.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 401:
-                    throw new VitableConnect.UnauthorizedError(
-                        _response.error.body as VitableConnect.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 403:
-                    throw new VitableConnect.ForbiddenError(
-                        _response.error.body as VitableConnect.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 404:
-                    throw new VitableConnect.NotFoundError(
-                        _response.error.body as VitableConnect.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 409:
-                    throw new VitableConnect.ConflictError(
-                        _response.error.body as VitableConnect.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 429:
-                    throw new VitableConnect.TooManyRequestsError(
-                        _response.error.body as VitableConnect.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 500:
-                    throw new VitableConnect.InternalServerError(
-                        _response.error.body as VitableConnect.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 502:
-                    throw new VitableConnect.BadGatewayError(
-                        _response.error.body as VitableConnect.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.VitableConnectError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/v1/organizations");
     }
 }
