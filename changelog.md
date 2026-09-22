@@ -1,3 +1,7 @@
+## 4.1.0 - 2026-09-22
+### Added
+* **`MemberEnrollment.enrolled_date`** — new nullable `string | null` field representing the date a member enrolled (YYYY-MM-DD); returns `null` for rows that are not elections.
+
 ## 4.0.0 - 2026-09-16
 ### Breaking Changes
 * **`organizations.create()`** has been removed. The `OrganizationsClient` no longer exposes a method to onboard a new partner organization; callers must remove any invocations of this method.

@@ -69,6 +69,8 @@ export interface MemberEnrollment {
     plan_year_coverage_end: string | null;
     /** Date the enrollment record was created (YYYY-MM-DD), the value Ops labels Issued on. Present on every row whatever the member answered, and distinct from `coverage_start`. It equals `enrollment_window_start` for a row issued once its open enrollment had already opened, and precedes it for a row issued ahead of open enrollment. */
     issued_date: string;
+    /** Date the member enrolled (YYYY-MM-DD); null unless the row is an election */
+    enrolled_date: string | null;
     /** First date the member could answer this enrollment (YYYY-MM-DD). Open enrollment's start date for a row issued before open enrollment opened, otherwise the date the row was issued -- an enrollment is never answerable before it exists, so this is never earlier than `issued_date`. */
     enrollment_window_start: string;
     /** Enrollment / open-enrollment window end date (YYYY-MM-DD); null when open-ended */
