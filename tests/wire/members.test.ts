@@ -1518,8 +1518,8 @@ describe("MembersClient", () => {
                         address: {
                             address_line_1: "123 Main Street",
                             city: "San Francisco",
-                            state: "CA",
                             zipcode: "94102",
+                            state: "CA",
                         },
                         edi: "87726",
                         website: "https://firsthealth.example.com",

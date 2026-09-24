@@ -4,8 +4,8 @@
  * * `SELF_SETUP` - SELF_SETUP
  * * `NEEDS_HELP` - NEEDS_HELP
  */
-export const AccessMethod = {
+export const PayrollAccessMethod = {
     SelfSetup: "SELF_SETUP",
     NeedsHelp: "NEEDS_HELP",
 } as const;
-export type AccessMethod = (typeof AccessMethod)[keyof typeof AccessMethod];
+export type PayrollAccessMethod = (typeof PayrollAccessMethod)[keyof typeof PayrollAccessMethod];

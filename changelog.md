@@ -1,3 +1,14 @@
+## 5.0.0 - 2026-09-24
+### Breaking Changes
+* **`AccessMethod`** has been removed and replaced by `PayrollAccessMethod`. Update any imports or type annotations from `AccessMethod` to `PayrollAccessMethod`; the string values (`SELF_SETUP`, `NEEDS_HELP`) are unchanged.
+* **`AdditionalAccessMethod`** has been removed and replaced by `PayrollAccessMethod`. Update any imports or type annotations from `AdditionalAccessMethod` to `PayrollAccessMethod`.
+* **`SubmitPayrollAccessSetupRequest.access_method`** type has changed from `AccessMethod` to `PayrollAccessMethod`. Update usages accordingly.
+* **`SubmitPayrollAccessSetupRequest.additional_access_method`** type has changed from `AdditionalAccessMethod` to `PayrollAccessMethod`. Update usages accordingly.
+* **`BenefitPlanNetwork.address`** type has changed from `Address` to `DetailedAddress`. Callers that type-annotate this field must update to `DetailedAddress`.
+### Added
+* **`PayrollAccessMethod`** — new consolidated enum replacing the former `AccessMethod` and `AdditionalAccessMethod` enums, with the same `SELF_SETUP` and `NEEDS_HELP` values.
+* **`DetailedAddress`** — new interface extending the address shape with optional `latitude`, `longitude`, `county_fips_code`, and `county_name` fields.
+
 ## 4.1.0 - 2026-09-22
 ### Added
 * **`MemberEnrollment.enrolled_date`** — new nullable `string | null` field representing the date a member enrolled (YYYY-MM-DD); returns `null` for rows that are not elections.

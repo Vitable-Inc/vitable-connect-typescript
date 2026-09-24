@@ -39,7 +39,7 @@ export interface SubmitPayrollAccessSetupRequest {
     is_controlled_group: boolean;
     /** Whether this payroll system also covers other EINs in the controlled group. */
     same_payroll_covers_other_eins?: boolean | null;
-    access_method: VitableConnect.AccessMethod;
+    access_method: VitableConnect.PayrollAccessMethod;
     /** Sign-in URL for the payroll system. */
     login_url?: string | null;
     /** Username Vitable should use to access the payroll system. */
@@ -53,7 +53,7 @@ export interface SubmitPayrollAccessSetupRequest {
     /** Whether a second payroll system is in use. When `true`, supply the `additional_*` fields below. */
     has_additional_payroll_system: boolean;
     /** How Vitable will access the second payroll system. */
-    additional_access_method?: VitableConnect.AdditionalAccessMethod | null;
+    additional_access_method?: VitableConnect.PayrollAccessMethod | null;
     /** Sign-in URL for the second payroll system. */
     additional_login_url?: string | null;
     /** Username Vitable should use for the second payroll system. */

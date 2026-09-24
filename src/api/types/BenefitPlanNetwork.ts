@@ -10,7 +10,7 @@ export interface BenefitPlanNetwork {
     /** URL of the network's logo, or `null` if none is on file. */
     logo: string | null;
     /** Postal address of the provider network. */
-    address: VitableConnect.Address;
+    address: VitableConnect.DetailedAddress;
     /** Network's EDI */
     edi?: (string | null) | undefined;
     /** Website of the network */
