@@ -45,4 +45,11 @@ export interface PlanYearEnrollment {
     employer_contribution_in_cents: number | null;
     /** What the employee is deducted monthly, in cents: `premium_in_cents` less `employer_contribution_in_cents`, floored at zero. Null when unanswered/waived. */
     employee_deduction_in_cents: number | null;
+    /**
+     * Whether this ICHRA plan year was marked `Affordable` or `Not Affordable` when it was configured. A plan-year setting, not a calculation for this member. Null for non-ICHRA plan years and for ICHRA plan years where it has not been set.
+     *
+     * * `Affordable` - Affordable
+     * * `Not Affordable` - Not Affordable
+     */
+    plan_year_ichra_affordability: VitableConnect.PlanYearIchraAffordability | null;
 }

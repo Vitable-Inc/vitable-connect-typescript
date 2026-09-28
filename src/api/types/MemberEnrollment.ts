@@ -97,4 +97,11 @@ export interface MemberEnrollment {
     in_last_month_of_coverage: boolean;
     /** True when today falls inside the enrollment window this member has to answer in; drives enrollment-action availability on the client. */
     is_within_enrollment_window: boolean;
+    /**
+     * Whether this ICHRA plan year was marked `Affordable` or `Not Affordable` when it was configured. A plan-year setting, not a calculation for this member. Null for non-ICHRA rows and for ICHRA plan years where it has not been set.
+     *
+     * * `Affordable` - Affordable
+     * * `Not Affordable` - Not Affordable
+     */
+    plan_year_ichra_affordability: VitableConnect.PlanYearIchraAffordability | null;
 }

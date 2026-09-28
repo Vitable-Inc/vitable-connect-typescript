@@ -1979,6 +1979,7 @@ describe("EmployersClient", () => {
                     premium_in_cents: 12000,
                     employer_contribution_in_cents: 9000,
                     employee_deduction_in_cents: 3000,
+                    plan_year_ichra_affordability: "Affordable",
                 },
             ],
             pagination: { page: 1, limit: 20, total: 66, total_pages: 4 },

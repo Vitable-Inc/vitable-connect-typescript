@@ -1,3 +1,9 @@
+## 5.1.0 - 2026-09-28
+### Added
+* **`PlanYearIchraAffordability`** — new enum with values `Affordable` and `Not Affordable` representing whether an ICHRA plan year was configured as affordable.
+* **`MemberEnrollment.plan_year_ichra_affordability`** — new nullable `PlanYearIchraAffordability | null` field indicating the ICHRA affordability setting for the plan year; `null` for non-ICHRA rows or when not configured.
+* **`PlanYearEnrollment.plan_year_ichra_affordability`** — new nullable `PlanYearIchraAffordability | null` field with the same semantics as the `MemberEnrollment` counterpart.
+
 ## 5.0.0 - 2026-09-24
 ### Breaking Changes
 * **`AccessMethod`** has been removed and replaced by `PayrollAccessMethod`. Update any imports or type annotations from `AccessMethod` to `PayrollAccessMethod`; the string values (`SELF_SETUP`, `NEEDS_HELP`) are unchanged.

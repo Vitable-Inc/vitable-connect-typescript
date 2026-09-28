@@ -906,6 +906,7 @@ describe("MembersClient", () => {
                     policy_status: "Coverage Effective",
                     in_last_month_of_coverage: true,
                     is_within_enrollment_window: false,
+                    plan_year_ichra_affordability: "Affordable",
                 },
                 {
                     id: "enrl_AAAAAAAAAAAAAAAAAAAAAg",
@@ -925,6 +926,7 @@ describe("MembersClient", () => {
                     election_status: "Waived",
                     in_last_month_of_coverage: false,
                     is_within_enrollment_window: false,
+                    plan_year_ichra_affordability: "Affordable",
                 },
                 {
                     id: "enrl_AAAAAAAAAAAAAAAAAAAAAw",
@@ -951,6 +953,7 @@ describe("MembersClient", () => {
                     policy_status: "Cancelled",
                     in_last_month_of_coverage: false,
                     is_within_enrollment_window: false,
+                    plan_year_ichra_affordability: "Affordable",
                 },
             ],
         };

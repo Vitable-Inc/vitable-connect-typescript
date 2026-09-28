@@ -150,6 +150,7 @@ export * from "./PlanYearEnrollment.js";
 export * from "./PlanYearEnrollmentElectionStatus.js";
 export * from "./PlanYearEnrollmentListResponse.js";
 export * from "./PlanYearEnrollmentPolicyStatus.js";
+export * from "./PlanYearIchraAffordability.js";
 export * from "./PreferredLanguage.js";
 export * from "./ProductCode.js";
 export * from "./QualifyingLifeEventStatus.js";
