@@ -17,7 +17,7 @@ export interface PatchedUpdateEmployeeRequest {
     employee_id: VitableConnect.EmployeeId;
     /** Email address */
     email?: string | null;
-    /** Phone number */
+    /** 10-digit US phone number; formatting characters and a leading 1 are ignored */
     phone?: string | null;
     /**
      * Gender identity

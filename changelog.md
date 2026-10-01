@@ -1,3 +1,12 @@
+## 5.1.1 - 2026-10-01
+* chore: clarify phone and country field documentation
+* Update JSDoc comments for two request/input fields to provide more
+* precise usage guidance for SDK consumers.
+* Key changes:
+* `PatchedUpdateEmployeeRequest.phone` doc now specifies it accepts a 10-digit US phone number and that formatting characters and a leading 1 are ignored
+* `EmployeeAddressInput.country` doc now clarifies that only US addresses are supported and the value is ignored
+* 🌿 Generated with Fern
+
 ## 5.1.0 - 2026-09-28
 ### Added
 * **`PlanYearIchraAffordability`** — new enum with values `Affordable` and `Not Affordable` representing whether an ICHRA plan year was configured as affordable.

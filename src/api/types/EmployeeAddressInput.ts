@@ -11,6 +11,6 @@ export interface EmployeeAddressInput {
     state: string;
     /** ZIP code */
     zip_code: string;
-    /** Country code */
+    /** Country code. Only US addresses are supported; the value is ignored. */
     country?: string | undefined;
 }
