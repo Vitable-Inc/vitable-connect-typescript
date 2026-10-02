@@ -4,6 +4,7 @@ import type { BaseClientOptions, BaseRequestOptions } from "../../../../BaseClie
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../BaseClient.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
 import * as core from "../../../../core/index.js";
+import { mergeAdditionalBodyParameters } from "../../../../core/requestBody.js";
 import * as environments from "../../../../environments.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
@@ -259,6 +260,149 @@ export class MembersClient {
             _response.error,
             _response.rawResponse,
             "GET",
+            "/v1/members/{member_id}/dependents",
+        );
+    }
+
+    /**
+     * Saves a dependent (spouse or child) for a member. Saving does not enroll the dependent or change the member's coverage or coverage tier. If the member already has an active dependent matching this person, that relationship is reused and returned with a 200 and `created: false`; otherwise a new one is created with a 201 and `created: true`. In both cases the dependent's address is set to the one supplied; other details of a person Vitable already has on file are not changed. When a new dependent is created at exactly the member's address, Vitable also adds them to the member's household where it can; this never fails the request. The returned IDs identify the saved dependent. Social Security numbers are not accepted, and a body with an `ssn` field returns a 400. The caller must have write access to the target member, and API access tokens cannot save dependents. A member not visible to the caller returns a 404 before the body is validated. Business-rule failures return a 422 with `child_over_max_age` (a child must be under 26), `duplicate_active_spouse` (the member already has a different active spouse), `same_member`, `member_creation_failed`, or `legal_dependent_creation_failed`.
+     *
+     * @param {VitableConnect.CreateMemberDependentRequest} request
+     * @param {MembersClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link VitableConnect.BadRequestError}
+     * @throws {@link VitableConnect.UnauthorizedError}
+     * @throws {@link VitableConnect.ForbiddenError}
+     * @throws {@link VitableConnect.NotFoundError}
+     * @throws {@link VitableConnect.ConflictError}
+     * @throws {@link VitableConnect.UnprocessableEntityError}
+     * @throws {@link VitableConnect.TooManyRequestsError}
+     * @throws {@link VitableConnect.InternalServerError}
+     * @throws {@link VitableConnect.BadGatewayError}
+     * @throws {@link errors.VitableConnectError}
+     * @throws {@link errors.VitableConnectTimeoutError}
+     *
+     * @example
+     *     await client.members.createDependent({
+     *         member_id: "mbr_abc123def456",
+     *         first_name: "Sam",
+     *         last_name: "Doe",
+     *         date_of_birth: "2015-06-01",
+     *         sex_at_birth: "Male",
+     *         relationship: "Child",
+     *         address: {
+     *             address_line_1: "123 Main St",
+     *             city: "Detroit",
+     *             state: "MI",
+     *             zipcode: "48201"
+     *         }
+     *     })
+     */
+    public createDependent(
+        request: VitableConnect.CreateMemberDependentRequest,
+        requestOptions?: MembersClient.RequestOptions,
+    ): core.HttpResponsePromise<VitableConnect.SavedMemberDependentResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__createDependent(request, requestOptions));
+    }
+
+    private async __createDependent(
+        request: VitableConnect.CreateMemberDependentRequest,
+        requestOptions?: MembersClient.RequestOptions,
+    ): Promise<core.WithRawResponse<VitableConnect.SavedMemberDependentResponse>> {
+        const { member_id: memberId, "X-Vitable-Organization": vitableOrganization, ..._body } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.VitableConnectEnvironment.Production,
+                `v1/members/${core.url.encodePathParam(memberId)}/dependents`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: mergeAdditionalBodyParameters(_body, requestOptions?.additionalBodyParameters),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as VitableConnect.SavedMemberDependentResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new VitableConnect.BadRequestError(
+                        _response.error.body as VitableConnect.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 401:
+                    throw new VitableConnect.UnauthorizedError(
+                        _response.error.body as VitableConnect.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new VitableConnect.ForbiddenError(
+                        _response.error.body as VitableConnect.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 404:
+                    throw new VitableConnect.NotFoundError(
+                        _response.error.body as VitableConnect.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 409:
+                    throw new VitableConnect.ConflictError(
+                        _response.error.body as VitableConnect.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 422:
+                    throw new VitableConnect.UnprocessableEntityError(
+                        _response.error.body as VitableConnect.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 429:
+                    throw new VitableConnect.TooManyRequestsError(
+                        _response.error.body as VitableConnect.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 500:
+                    throw new VitableConnect.InternalServerError(
+                        _response.error.body as VitableConnect.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 502:
+                    throw new VitableConnect.BadGatewayError(
+                        _response.error.body as VitableConnect.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.VitableConnectError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
             "/v1/members/{member_id}/dependents",
         );
     }

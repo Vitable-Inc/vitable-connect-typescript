@@ -2189,6 +2189,82 @@ await client.members.listDependents({
 </dl>
 </details>
 
+<details><summary><code>client.members.<a href="/src/api/resources/members/client/Client.ts">createDependent</a>({ ...params }) -> VitableConnect.SavedMemberDependentResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Saves a dependent (spouse or child) for a member. Saving does not enroll the dependent or change the member's coverage or coverage tier. If the member already has an active dependent matching this person, that relationship is reused and returned with a 200 and `created: false`; otherwise a new one is created with a 201 and `created: true`. In both cases the dependent's address is set to the one supplied; other details of a person Vitable already has on file are not changed. When a new dependent is created at exactly the member's address, Vitable also adds them to the member's household where it can; this never fails the request. The returned IDs identify the saved dependent. Social Security numbers are not accepted, and a body with an `ssn` field returns a 400. The caller must have write access to the target member, and API access tokens cannot save dependents. A member not visible to the caller returns a 404 before the body is validated. Business-rule failures return a 422 with `child_over_max_age` (a child must be under 26), `duplicate_active_spouse` (the member already has a different active spouse), `same_member`, `member_creation_failed`, or `legal_dependent_creation_failed`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.members.createDependent({
+    member_id: "mbr_abc123def456",
+    first_name: "Sam",
+    last_name: "Doe",
+    date_of_birth: "2015-06-01",
+    sex_at_birth: "Male",
+    relationship: "Child",
+    address: {
+        address_line_1: "123 Main St",
+        city: "Detroit",
+        state: "MI",
+        zipcode: "48201"
+    }
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `VitableConnect.CreateMemberDependentRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `MembersClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.members.<a href="/src/api/resources/members/client/Client.ts">listEmployments</a>({ ...params }) -> VitableConnect.MemberEmploymentsResponse</code></summary>
 <dl>
 <dd>

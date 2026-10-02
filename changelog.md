@@ -1,3 +1,12 @@
+## 5.2.0 - 2026-10-02
+### Added
+* **`MembersClient.createDependent()`** — new method that saves a spouse or child dependent for a member, posting to `v1/members/{member_id}/dependents`; returns `SavedMemberDependentResponse` with a `created` flag indicating whether a new relationship was created or an existing one was reused.
+* **`CreateMemberDependentRequest`** — new request type for the `createDependent` method, with required fields `member_id`, `first_name`, `last_name`, `date_of_birth`, `relationship`, and `address`, plus optional fields for `suffix`, `sex_at_birth`, `gender`, `email`, and `phone`.
+* **`CreateMemberDependentAddressRequest`** — new address sub-type used within `CreateMemberDependentRequest`, supporting all US states and territories.
+* **`SavedMemberDependent`** and **`SavedMemberDependentResponse`** — new response types returned by `createDependent`, including the dependent's `member_id`, `legal_dependent_id`, `relationship`, `date_of_birth`, `age`, and a `created` boolean.
+### Fixed
+* **`Gender`** enum display labels corrected: `Non-binary` (was `Non Binary`) and `Prefer not to respond` (was `Prefer Not To Respond`).
+
 ## 5.1.2 - 2026-10-02
 * chore: clarify in_last_month_of_coverage field documentation
 * Update the JSDoc comment for `MemberEnrollment.in_last_month_of_coverage`

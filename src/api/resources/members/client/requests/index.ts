@@ -1,3 +1,4 @@
+export type { CreateMemberDependentRequest } from "./CreateMemberDependentRequest.js";
 export type { GetHouseholdMembersRequest } from "./GetHouseholdMembersRequest.js";
 export type { GetMembersRequest } from "./GetMembersRequest.js";
 export type { ListDependentsMembersRequest } from "./ListDependentsMembersRequest.js";

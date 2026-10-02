@@ -570,6 +570,485 @@ describe("MembersClient", () => {
         }).rejects.toThrow(VitableConnect.BadGatewayError);
     });
 
+    test("create_dependent (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new VitableConnectClient({
+            maxRetries: 0,
+            apiKeyAuth: { apiKey: "test" },
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            first_name: "Sam",
+            last_name: "Doe",
+            date_of_birth: "2015-06-01",
+            sex_at_birth: "Male",
+            relationship: "Child",
+            address: { address_line_1: "123 Main St", city: "Detroit", state: "MI", zipcode: "48201" },
+        };
+        const rawResponseBody = {
+            data: {
+                member_id: "mbr_AAAAAAAAAAAAAAAAAAAAAg",
+                primary_member_id: "mbr_AAAAAAAAAAAAAAAAAAAAAQ",
+                first_name: "Sam",
+                last_name: "Doe",
+                relationship: "Child",
+                date_of_birth: "2015-06-01",
+                age: 11,
+                sex_at_birth: "Male",
+                legal_dependent_id: "ldep_AAAAAAAAAAAAAAAAAAAAAQ",
+                created: false,
+            },
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/members/mbr_abc123def456/dependents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.members.createDependent({
+            member_id: "mbr_abc123def456",
+            first_name: "Sam",
+            last_name: "Doe",
+            date_of_birth: "2015-06-01",
+            sex_at_birth: "Male",
+            relationship: "Child",
+            address: {
+                address_line_1: "123 Main St",
+                city: "Detroit",
+                state: "MI",
+                zipcode: "48201",
+            },
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("create_dependent (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new VitableConnectClient({
+            maxRetries: 0,
+            apiKeyAuth: { apiKey: "test" },
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            first_name: "first_name",
+            last_name: "last_name",
+            date_of_birth: "2023-01-15",
+            relationship: "Spouse",
+            address: { address_line_1: "x", city: "x", state: "AL", zipcode: "x" },
+        };
+        const rawResponseBody = {
+            timestamp: "2024-01-15T09:30:00Z",
+            message: "message",
+            error: "error",
+            trace_id: "trace_id",
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/members/member_id/dependents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.members.createDependent({
+                member_id: "member_id",
+                first_name: "first_name",
+                last_name: "last_name",
+                date_of_birth: "2023-01-15",
+                relationship: "Spouse",
+                address: {
+                    address_line_1: "x",
+                    city: "x",
+                    state: "AL",
+                    zipcode: "x",
+                },
+            });
+        }).rejects.toThrow(VitableConnect.BadRequestError);
+    });
+
+    test("create_dependent (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new VitableConnectClient({
+            maxRetries: 0,
+            apiKeyAuth: { apiKey: "test" },
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            first_name: "first_name",
+            last_name: "last_name",
+            date_of_birth: "2023-01-15",
+            relationship: "Spouse",
+            address: { address_line_1: "x", city: "x", state: "AL", zipcode: "x" },
+        };
+        const rawResponseBody = {
+            timestamp: "2024-01-15T09:30:00Z",
+            message: "message",
+            error: "error",
+            trace_id: "trace_id",
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/members/member_id/dependents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.members.createDependent({
+                member_id: "member_id",
+                first_name: "first_name",
+                last_name: "last_name",
+                date_of_birth: "2023-01-15",
+                relationship: "Spouse",
+                address: {
+                    address_line_1: "x",
+                    city: "x",
+                    state: "AL",
+                    zipcode: "x",
+                },
+            });
+        }).rejects.toThrow(VitableConnect.UnauthorizedError);
+    });
+
+    test("create_dependent (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new VitableConnectClient({
+            maxRetries: 0,
+            apiKeyAuth: { apiKey: "test" },
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            first_name: "first_name",
+            last_name: "last_name",
+            date_of_birth: "2023-01-15",
+            relationship: "Spouse",
+            address: { address_line_1: "x", city: "x", state: "AL", zipcode: "x" },
+        };
+        const rawResponseBody = {
+            timestamp: "2024-01-15T09:30:00Z",
+            message: "message",
+            error: "error",
+            trace_id: "trace_id",
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/members/member_id/dependents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.members.createDependent({
+                member_id: "member_id",
+                first_name: "first_name",
+                last_name: "last_name",
+                date_of_birth: "2023-01-15",
+                relationship: "Spouse",
+                address: {
+                    address_line_1: "x",
+                    city: "x",
+                    state: "AL",
+                    zipcode: "x",
+                },
+            });
+        }).rejects.toThrow(VitableConnect.ForbiddenError);
+    });
+
+    test("create_dependent (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new VitableConnectClient({
+            maxRetries: 0,
+            apiKeyAuth: { apiKey: "test" },
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            first_name: "first_name",
+            last_name: "last_name",
+            date_of_birth: "2023-01-15",
+            relationship: "Spouse",
+            address: { address_line_1: "x", city: "x", state: "AL", zipcode: "x" },
+        };
+        const rawResponseBody = {
+            timestamp: "2024-01-15T09:30:00Z",
+            message: "message",
+            error: "error",
+            trace_id: "trace_id",
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/members/member_id/dependents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.members.createDependent({
+                member_id: "member_id",
+                first_name: "first_name",
+                last_name: "last_name",
+                date_of_birth: "2023-01-15",
+                relationship: "Spouse",
+                address: {
+                    address_line_1: "x",
+                    city: "x",
+                    state: "AL",
+                    zipcode: "x",
+                },
+            });
+        }).rejects.toThrow(VitableConnect.NotFoundError);
+    });
+
+    test("create_dependent (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new VitableConnectClient({
+            maxRetries: 0,
+            apiKeyAuth: { apiKey: "test" },
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            first_name: "first_name",
+            last_name: "last_name",
+            date_of_birth: "2023-01-15",
+            relationship: "Spouse",
+            address: { address_line_1: "x", city: "x", state: "AL", zipcode: "x" },
+        };
+        const rawResponseBody = {
+            timestamp: "2024-01-15T09:30:00Z",
+            message: "message",
+            error: "error",
+            trace_id: "trace_id",
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/members/member_id/dependents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(409)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.members.createDependent({
+                member_id: "member_id",
+                first_name: "first_name",
+                last_name: "last_name",
+                date_of_birth: "2023-01-15",
+                relationship: "Spouse",
+                address: {
+                    address_line_1: "x",
+                    city: "x",
+                    state: "AL",
+                    zipcode: "x",
+                },
+            });
+        }).rejects.toThrow(VitableConnect.ConflictError);
+    });
+
+    test("create_dependent (7)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new VitableConnectClient({
+            maxRetries: 0,
+            apiKeyAuth: { apiKey: "test" },
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            first_name: "first_name",
+            last_name: "last_name",
+            date_of_birth: "2023-01-15",
+            relationship: "Spouse",
+            address: { address_line_1: "x", city: "x", state: "AL", zipcode: "x" },
+        };
+        const rawResponseBody = {
+            timestamp: "2024-01-15T09:30:00Z",
+            message: "message",
+            error: "error",
+            trace_id: "trace_id",
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/members/member_id/dependents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.members.createDependent({
+                member_id: "member_id",
+                first_name: "first_name",
+                last_name: "last_name",
+                date_of_birth: "2023-01-15",
+                relationship: "Spouse",
+                address: {
+                    address_line_1: "x",
+                    city: "x",
+                    state: "AL",
+                    zipcode: "x",
+                },
+            });
+        }).rejects.toThrow(VitableConnect.UnprocessableEntityError);
+    });
+
+    test("create_dependent (8)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new VitableConnectClient({
+            maxRetries: 0,
+            apiKeyAuth: { apiKey: "test" },
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            first_name: "first_name",
+            last_name: "last_name",
+            date_of_birth: "2023-01-15",
+            relationship: "Spouse",
+            address: { address_line_1: "x", city: "x", state: "AL", zipcode: "x" },
+        };
+        const rawResponseBody = {
+            timestamp: "2024-01-15T09:30:00Z",
+            message: "message",
+            error: "error",
+            trace_id: "trace_id",
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/members/member_id/dependents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.members.createDependent({
+                member_id: "member_id",
+                first_name: "first_name",
+                last_name: "last_name",
+                date_of_birth: "2023-01-15",
+                relationship: "Spouse",
+                address: {
+                    address_line_1: "x",
+                    city: "x",
+                    state: "AL",
+                    zipcode: "x",
+                },
+            });
+        }).rejects.toThrow(VitableConnect.TooManyRequestsError);
+    });
+
+    test("create_dependent (9)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new VitableConnectClient({
+            maxRetries: 0,
+            apiKeyAuth: { apiKey: "test" },
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            first_name: "first_name",
+            last_name: "last_name",
+            date_of_birth: "2023-01-15",
+            relationship: "Spouse",
+            address: { address_line_1: "x", city: "x", state: "AL", zipcode: "x" },
+        };
+        const rawResponseBody = {
+            timestamp: "2024-01-15T09:30:00Z",
+            message: "message",
+            error: "error",
+            trace_id: "trace_id",
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/members/member_id/dependents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.members.createDependent({
+                member_id: "member_id",
+                first_name: "first_name",
+                last_name: "last_name",
+                date_of_birth: "2023-01-15",
+                relationship: "Spouse",
+                address: {
+                    address_line_1: "x",
+                    city: "x",
+                    state: "AL",
+                    zipcode: "x",
+                },
+            });
+        }).rejects.toThrow(VitableConnect.InternalServerError);
+    });
+
+    test("create_dependent (10)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new VitableConnectClient({
+            maxRetries: 0,
+            apiKeyAuth: { apiKey: "test" },
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            first_name: "first_name",
+            last_name: "last_name",
+            date_of_birth: "2023-01-15",
+            relationship: "Spouse",
+            address: { address_line_1: "x", city: "x", state: "AL", zipcode: "x" },
+        };
+        const rawResponseBody = {
+            timestamp: "2024-01-15T09:30:00Z",
+            message: "message",
+            error: "error",
+            trace_id: "trace_id",
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/members/member_id/dependents")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(502)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.members.createDependent({
+                member_id: "member_id",
+                first_name: "first_name",
+                last_name: "last_name",
+                date_of_birth: "2023-01-15",
+                relationship: "Spouse",
+                address: {
+                    address_line_1: "x",
+                    city: "x",
+                    state: "AL",
+                    zipcode: "x",
+                },
+            });
+        }).rejects.toThrow(VitableConnect.BadGatewayError);
+    });
+
     test("list_employments (1)", async () => {
         const server = mockServerPool.createServer();
         const client = new VitableConnectClient({

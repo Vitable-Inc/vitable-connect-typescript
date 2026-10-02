@@ -4,8 +4,8 @@
  * * `Male` - Male
  * * `Female` - Female
  * * `Transgender` - Transgender
- * * `Non-binary` - Non Binary
- * * `Prefer not to respond` - Prefer Not To Respond
+ * * `Non-binary` - Non-binary
+ * * `Prefer not to respond` - Prefer not to respond
  */
 export const Gender = {
     Male: "Male",
