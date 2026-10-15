@@ -1,3 +1,7 @@
+## 6.0.0 - 2026-10-15
+### Breaking Changes
+* **`MemberEnrollment.in_last_month_of_coverage`** has been renamed to **`plan_year_ends_this_month`**. Update all references from `enrollment.in_last_month_of_coverage` to `enrollment.plan_year_ends_this_month`. The field now specifically reflects whether today falls in the final month of the plan year (driving Reissue availability), rather than the member's individual coverage window.
+
 ## 5.2.0 - 2026-10-02
 ### Added
 * **`MembersClient.createDependent()`** — new method that saves a spouse or child dependent for a member, posting to `v1/members/{member_id}/dependents`; returns `SavedMemberDependentResponse` with a `created` flag indicating whether a new relationship was created or an existing one was reused.
