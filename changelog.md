@@ -1,3 +1,9 @@
+## 6.1.0 - 2026-10-16
+### Added
+* **`Member.individual_income_in_cents`** — new optional field exposing the member's annual individual income in cents, if provided.
+* **`Member.household_income_in_cents`** — new optional field exposing the member's annual household income in cents, if provided.
+* **`MemberAddress.county_name`** — new optional field exposing the member's county name, if known.
+
 ## 6.0.0 - 2026-10-15
 ### Breaking Changes
 * **`MemberEnrollment.in_last_month_of_coverage`** has been renamed to **`plan_year_ends_this_month`**. Update all references from `enrollment.in_last_month_of_coverage` to `enrollment.plan_year_ends_this_month`. The field now specifically reflects whether today falls in the final month of the plan year (driving Reissue availability), rather than the member's individual coverage window.

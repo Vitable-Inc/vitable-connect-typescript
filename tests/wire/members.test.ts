@@ -26,6 +26,7 @@ describe("MembersClient", () => {
                     city: "San Francisco",
                     state: "CA",
                     zipcode: "94102",
+                    county_name: "San Francisco",
                 },
                 name: "Jane Doe",
                 date_of_birth: "1990-04-12",
@@ -34,7 +35,8 @@ describe("MembersClient", () => {
                 gender: "Female",
                 preferred_language: "en",
                 tobacco_status: false,
-                marital_status: "Single",
+                individual_income_in_cents: 6500000,
+                household_income_in_cents: 9800000,
                 status: "onboarded",
             },
         };

@@ -78,4 +78,6 @@ export interface MemberAddress {
     state: VitableConnect.State;
     /** ZIP code (5 or 9 digit) */
     zipcode: string;
+    /** County name, if known */
+    county_name?: (string | null) | undefined;
 }

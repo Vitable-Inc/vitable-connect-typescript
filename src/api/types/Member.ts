@@ -77,6 +77,10 @@ export interface Member {
      * * `Married` - Married
      */
     marital_status?: (VitableConnect.MaritalStatus | null) | undefined;
+    /** Member's annual individual income in cents, if provided */
+    individual_income_in_cents?: (number | null) | undefined;
+    /** Member's annual household income in cents, if provided */
+    household_income_in_cents?: (number | null) | undefined;
     /** Member profile status (onboarded or pending onboarding) */
     status?: VitableConnect.MemberStatus | undefined;
 }

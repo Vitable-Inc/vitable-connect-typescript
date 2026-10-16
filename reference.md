@@ -2071,7 +2071,7 @@ await client.groups.update({
 <dl>
 <dd>
 
-Retrieves a member's profile by ID — identity, demographics, address, contact details, tobacco status, and profile status. Access is scoped to the authenticated principal; a member not visible to the caller returns a 404.
+Retrieves a member's profile by ID — identity, demographics, address (with county), contact details, tobacco status, marital status, individual and household income, and profile status. Access is scoped to the authenticated principal; a member not visible to the caller returns a 404.
 </dd>
 </dl>
 </dd>
