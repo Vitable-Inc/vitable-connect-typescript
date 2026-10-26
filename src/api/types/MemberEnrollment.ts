@@ -71,6 +71,8 @@ export interface MemberEnrollment {
     issued_date: string;
     /** Date the member enrolled (YYYY-MM-DD); null unless the row is an election */
     enrolled_date: string | null;
+    /** When the employee enrolled or waived */
+    answered_at: string | null;
     /** First date the member could answer this enrollment (YYYY-MM-DD). Open enrollment's start date for a row issued before open enrollment opened, otherwise the date the row was issued -- an enrollment is never answerable before it exists, so this is never earlier than `issued_date`. */
     enrollment_window_start: string;
     /** Enrollment / open-enrollment window end date (YYYY-MM-DD); null when open-ended */

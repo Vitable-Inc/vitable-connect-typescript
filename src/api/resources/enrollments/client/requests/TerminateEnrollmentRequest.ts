@@ -14,6 +14,13 @@ import type * as VitableConnect from "../../../../index.js";
  * @example
  *     {
  *         enrollment_id: "enrl_AAAAAAAAAAAAAAAAAAAAAQ",
+ *         reason: "Member cancelled directly with the carrier.",
+ *         carrier_coverage_end_date: "2026-08-31"
+ *     }
+ *
+ * @example
+ *     {
+ *         enrollment_id: "enrl_AAAAAAAAAAAAAAAAAAAAAQ",
  *         reason: "Member requested coverage termination."
  *     }
  */
@@ -28,4 +35,6 @@ export interface TerminateEnrollmentRequest {
     ticket_number?: string | null;
     /** Accepted member qualifying life event identifier (qle_*) */
     qualifying_life_event_id?: string | null;
+    /** Last day the carrier policy covered the member, when it ended before this termination. Accepted for ICHRA enrollments only; coverage end is derived when omitted */
+    carrier_coverage_end_date?: string | null;
 }

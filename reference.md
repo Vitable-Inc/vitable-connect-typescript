@@ -1722,7 +1722,7 @@ await client.enrollments.reissue({
 <dl>
 <dd>
 
-Terminates enrolled coverage immediately. An accepted qualifying life event owned by the enrollment member is required unless the plan is VPC or ICHRA. User-backed callers must provide a reason; it is optional for organization API-key callers. API keys may act across the caller organization's book. Tenant mismatches return the same non-disclosing 404 before the request body is validated.
+Terminates enrolled coverage; it ends on the last day of the termination month, or on the termination date for VPC. An accepted qualifying life event owned by the enrollment member is required unless the plan is VPC or ICHRA. ICHRA callers may pass the date the carrier policy actually ended, which can be in the past. User-backed callers must provide a reason; it is optional for organization API-key callers. API keys may act across the caller organization's book. Tenant mismatches return the same non-disclosing 404 before the request body is validated.
 </dd>
 </dl>
 </dd>

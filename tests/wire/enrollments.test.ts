@@ -659,6 +659,34 @@ describe("EnrollmentsClient", () => {
             apiKeyAuth: { apiKey: "test" },
             environment: server.baseUrl,
         });
+        const rawRequestBody = {
+            reason: "Member cancelled directly with the carrier.",
+            carrier_coverage_end_date: "2026-08-31",
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/enrollments/enrl_AAAAAAAAAAAAAAAAAAAAAQ/terminate")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .build();
+
+        const response = await client.enrollments.terminate({
+            enrollment_id: "enrl_AAAAAAAAAAAAAAAAAAAAAQ",
+            reason: "Member cancelled directly with the carrier.",
+            carrier_coverage_end_date: "2026-08-31",
+        });
+        expect(response).toEqual(undefined);
+    });
+
+    test("terminate (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new VitableConnectClient({
+            maxRetries: 0,
+            apiKeyAuth: { apiKey: "test" },
+            environment: server.baseUrl,
+        });
         const rawRequestBody = { reason: "Member requested coverage termination." };
 
         server
@@ -676,7 +704,7 @@ describe("EnrollmentsClient", () => {
         expect(response).toEqual(undefined);
     });
 
-    test("terminate (3)", async () => {
+    test("terminate (4)", async () => {
         const server = mockServerPool.createServer();
         const client = new VitableConnectClient({
             maxRetries: 0,
@@ -707,7 +735,7 @@ describe("EnrollmentsClient", () => {
         }).rejects.toThrow(VitableConnect.BadRequestError);
     });
 
-    test("terminate (4)", async () => {
+    test("terminate (5)", async () => {
         const server = mockServerPool.createServer();
         const client = new VitableConnectClient({
             maxRetries: 0,
@@ -738,7 +766,7 @@ describe("EnrollmentsClient", () => {
         }).rejects.toThrow(VitableConnect.UnauthorizedError);
     });
 
-    test("terminate (5)", async () => {
+    test("terminate (6)", async () => {
         const server = mockServerPool.createServer();
         const client = new VitableConnectClient({
             maxRetries: 0,
@@ -769,7 +797,7 @@ describe("EnrollmentsClient", () => {
         }).rejects.toThrow(VitableConnect.ForbiddenError);
     });
 
-    test("terminate (6)", async () => {
+    test("terminate (7)", async () => {
         const server = mockServerPool.createServer();
         const client = new VitableConnectClient({
             maxRetries: 0,
@@ -800,7 +828,7 @@ describe("EnrollmentsClient", () => {
         }).rejects.toThrow(VitableConnect.NotFoundError);
     });
 
-    test("terminate (7)", async () => {
+    test("terminate (8)", async () => {
         const server = mockServerPool.createServer();
         const client = new VitableConnectClient({
             maxRetries: 0,
@@ -831,7 +859,7 @@ describe("EnrollmentsClient", () => {
         }).rejects.toThrow(VitableConnect.ConflictError);
     });
 
-    test("terminate (8)", async () => {
+    test("terminate (9)", async () => {
         const server = mockServerPool.createServer();
         const client = new VitableConnectClient({
             maxRetries: 0,
@@ -862,7 +890,7 @@ describe("EnrollmentsClient", () => {
         }).rejects.toThrow(VitableConnect.UnprocessableEntityError);
     });
 
-    test("terminate (9)", async () => {
+    test("terminate (10)", async () => {
         const server = mockServerPool.createServer();
         const client = new VitableConnectClient({
             maxRetries: 0,
@@ -893,7 +921,7 @@ describe("EnrollmentsClient", () => {
         }).rejects.toThrow(VitableConnect.TooManyRequestsError);
     });
 
-    test("terminate (10)", async () => {
+    test("terminate (11)", async () => {
         const server = mockServerPool.createServer();
         const client = new VitableConnectClient({
             maxRetries: 0,
@@ -924,7 +952,7 @@ describe("EnrollmentsClient", () => {
         }).rejects.toThrow(VitableConnect.InternalServerError);
     });
 
-    test("terminate (11)", async () => {
+    test("terminate (12)", async () => {
         const server = mockServerPool.createServer();
         const client = new VitableConnectClient({
             maxRetries: 0,

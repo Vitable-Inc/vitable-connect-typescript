@@ -288,7 +288,7 @@ export class EnrollmentsClient {
     }
 
     /**
-     * Terminates enrolled coverage immediately. An accepted qualifying life event owned by the enrollment member is required unless the plan is VPC or ICHRA. User-backed callers must provide a reason; it is optional for organization API-key callers. API keys may act across the caller organization's book. Tenant mismatches return the same non-disclosing 404 before the request body is validated.
+     * Terminates enrolled coverage; it ends on the last day of the termination month, or on the termination date for VPC. An accepted qualifying life event owned by the enrollment member is required unless the plan is VPC or ICHRA. ICHRA callers may pass the date the carrier policy actually ended, which can be in the past. User-backed callers must provide a reason; it is optional for organization API-key callers. API keys may act across the caller organization's book. Tenant mismatches return the same non-disclosing 404 before the request body is validated.
      *
      * @param {VitableConnect.TerminateEnrollmentRequest} request
      * @param {EnrollmentsClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -311,6 +311,13 @@ export class EnrollmentsClient {
      *         reason: "Member requested coverage termination after a qualifying event.",
      *         ticket_number: "BPT-1234",
      *         qualifying_life_event_id: "qle_AAAAAAAAAAAAAAAAAAAAAQ"
+     *     })
+     *
+     * @example
+     *     await client.enrollments.terminate({
+     *         enrollment_id: "enrl_AAAAAAAAAAAAAAAAAAAAAQ",
+     *         reason: "Member cancelled directly with the carrier.",
+     *         carrier_coverage_end_date: "2026-08-31"
      *     })
      *
      * @example

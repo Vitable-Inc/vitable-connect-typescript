@@ -1,3 +1,8 @@
+## 6.2.0 - 2026-10-26
+### Added
+* **`TerminateEnrollmentRequest.carrier_coverage_end_date`** — new optional field allowing ICHRA callers to supply the actual last day the carrier policy covered the member; coverage end is derived automatically when omitted.
+* **`MemberEnrollment.answered_at`** — new optional field exposing the timestamp when the employee enrolled or waived.
+
 ## 6.1.0 - 2026-10-16
 ### Added
 * **`Member.individual_income_in_cents`** — new optional field exposing the member's annual individual income in cents, if provided.
