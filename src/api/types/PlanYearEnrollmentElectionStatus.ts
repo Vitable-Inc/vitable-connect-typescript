@@ -4,12 +4,14 @@
  * * `Enrolled` - Enrolled
  * * `Waived` - Waived
  * * `Pending` - Pending
+ * * `Upcoming` - Upcoming
  * * `Expired` - Expired
  */
 export const PlanYearEnrollmentElectionStatus = {
     Enrolled: "Enrolled",
     Waived: "Waived",
     Pending: "Pending",
+    Upcoming: "Upcoming",
     Expired: "Expired",
 } as const;
 export type PlanYearEnrollmentElectionStatus =

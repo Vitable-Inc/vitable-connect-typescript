@@ -4,6 +4,7 @@ export const ElectionStatusItem = {
     Enrolled: "Enrolled",
     Expired: "Expired",
     Pending: "Pending",
+    Upcoming: "Upcoming",
     Waived: "Waived",
 } as const;
 export type ElectionStatusItem = (typeof ElectionStatusItem)[keyof typeof ElectionStatusItem];

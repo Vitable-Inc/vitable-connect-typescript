@@ -1,3 +1,7 @@
+## 6.3.0 - 2026-11-03
+### Added
+* **`ElectionStatusItem.Upcoming`** and **`PlanYearEnrollmentElectionStatus.Upcoming`** — new enum value representing an enrollment whose window has not yet opened; the `election_status` field on `MemberEnrollment` and `PlanYearEnrollment` will now return `"Upcoming"` for such enrollments.
+
 ## 6.2.0 - 2026-10-26
 ### Added
 * **`TerminateEnrollmentRequest.carrier_coverage_end_date`** — new optional field allowing ICHRA callers to supply the actual last day the carrier policy covered the member; coverage end is derived automatically when omitted.
