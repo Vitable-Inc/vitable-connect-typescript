@@ -43,6 +43,8 @@ export interface MemberEnrollment {
     product_code: VitableConnect.ProductCode;
     /** Whether a qualifying life event would be required to reissue this enrollment under the product and open-enrollment rule at the time this list was read */
     requires_qle_for_reissue: boolean;
+    /** Whether this enrollment's benefit product requires the member to choose an external health plan through a carrier application */
+    requires_external_plan: boolean;
     /** Display name of the benefit product */
     product_name: string;
     /** Name of the employer the enrollment is through */

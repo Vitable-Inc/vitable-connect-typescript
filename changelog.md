@@ -1,3 +1,7 @@
+## 7.0.0 - 2026-11-05
+### Breaking Changes
+* **`MemberEnrollment.requires_external_plan`** — new required boolean field added to the `MemberEnrollment` interface; callers that construct or mock `MemberEnrollment` objects directly must add `requires_external_plan: boolean` to avoid compile errors.
+
 ## 6.3.0 - 2026-11-03
 ### Added
 * **`ElectionStatusItem.Upcoming`** and **`PlanYearEnrollmentElectionStatus.Upcoming`** — new enum value representing an enrollment whose window has not yet opened; the `election_status` field on `MemberEnrollment` and `PlanYearEnrollment` will now return `"Upcoming"` for such enrollments.
