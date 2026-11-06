@@ -143,7 +143,7 @@ await client.employees.get({
 <dl>
 <dd>
 
-Updates employee personal, contact, address, and employment fields. This endpoint currently supports email, phone, gender, address, employee_class, start_date, and compensation_type. effective_date is required and applies to employee_class and compensation_type when those fields are included in the request.
+Updates employee personal, contact, address, and employment fields. This endpoint currently supports email, phone, gender, address, employee_class, start_date, and compensation_type. effective_date is required and applies to employee_class and compensation_type when those fields are included in the request. Returns 409 employer_has_hris_connection when the request changes employee_class, compensation_type or start_date for an employer with an active, pending or inactive HRIS connection (paused connections do not block); re-sending the current values with a new effective_date is allowed.
 </dd>
 </dl>
 </dd>

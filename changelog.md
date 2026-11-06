@@ -1,3 +1,17 @@
+## 7.0.1 - 2026-11-06
+* chore: update JSDoc for employee update endpoint with 409 conflict detail
+* Expand the documentation comment on the employee update method to describe
+* the new 409 `employer_has_hris_connection` error response. The comment now
+* clarifies which operations are blocked when an employer has an active,
+* pending, or inactive HRIS connection, and notes that paused connections
+* do not block requests. Re-sending current values with a new effective_date
+* remains allowed.
+* Key changes:
+* Updated JSDoc on `EmployeesClient` patch/update method to document the 409 conflict behavior for employers with HRIS connections
+* Clarified that paused HRIS connections do not block the request
+* Noted that re-sending current values with a new effective_date is permitted
+* 🌿 Generated with Fern
+
 ## 7.0.0 - 2026-11-05
 ### Breaking Changes
 * **`MemberEnrollment.requires_external_plan`** — new required boolean field added to the `MemberEnrollment` interface; callers that construct or mock `MemberEnrollment` objects directly must add `requires_external_plan: boolean` to avoid compile errors.
