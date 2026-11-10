@@ -2,7 +2,7 @@
 
 import type { BaseClientOptions, BaseRequestOptions } from "../../../../BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../BaseClient.js";
-import { mergeHeaders } from "../../../../core/headers.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
 import * as core from "../../../../core/index.js";
 import { mergeAdditionalBodyParameters } from "../../../../core/requestBody.js";
 import * as environments from "../../../../environments.js";
@@ -59,11 +59,12 @@ export class EmployeesClient {
         request: VitableConnect.GetEmployeesRequest,
         requestOptions?: EmployeesClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.EmployeeResponse>> {
-        const { employee_id: employeeId } = request;
+        const { employee_id: employeeId, "X-Vitable-Organization": vitableOrganization } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -141,7 +142,11 @@ export class EmployeesClient {
     }
 
     /**
-     * Updates employee personal, contact, address, and employment fields. This endpoint currently supports email, phone, gender, address, employee_class, start_date, and compensation_type. effective_date is required and applies to employee_class and compensation_type when those fields are included in the request. Returns 409 employer_has_hris_connection when the request changes employee_class, compensation_type or start_date for an employer with an active, pending or inactive HRIS connection (paused connections do not block); re-sending the current values with a new effective_date is allowed.
+     * Updates employee personal, contact, address, and employment fields. This endpoint currently supports email, phone, gender, address, employee_class, start_date, and compensation_type. effective_date is required and applies to employee_class and compensation_type when those fields are included in the request. Returns 409 `employer_has_hris_connection` when the request changes employee_class, compensation_type or start_date while an HRIS connection manages this employer's employees; re-sending the current values with a new effective_date is allowed.
+     *
+     * Returns 404 if the employee does not exist or is not accessible to the caller, and 403 `organization_access_denied` when an API key sends `X-Vitable-Organization` for an organization other than its own.
+     *
+     * 422 `app_error_code` values: `email_taken` (the email belongs to another person's Vitable account), `invalid_account_update` (another account detail, such as the phone, belongs to another person). 400 is returned for malformed input and for changes the employee record rejects (`invalid_employee_update`, `employee_already_terminated`).
      *
      * @param {VitableConnect.PatchedUpdateEmployeeRequest} request
      * @param {EmployeesClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -151,6 +156,7 @@ export class EmployeesClient {
      * @throws {@link VitableConnect.ForbiddenError}
      * @throws {@link VitableConnect.NotFoundError}
      * @throws {@link VitableConnect.ConflictError}
+     * @throws {@link VitableConnect.UnprocessableEntityError}
      * @throws {@link VitableConnect.TooManyRequestsError}
      * @throws {@link VitableConnect.InternalServerError}
      * @throws {@link VitableConnect.BadGatewayError}
@@ -177,11 +183,12 @@ export class EmployeesClient {
         request: VitableConnect.PatchedUpdateEmployeeRequest,
         requestOptions?: EmployeesClient.RequestOptions,
     ): Promise<core.WithRawResponse<VitableConnect.EmployeeResponse>> {
-        const { employee_id: employeeId, ..._body } = request;
+        const { employee_id: employeeId, "X-Vitable-Organization": vitableOrganization, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
+            mergeOnlyDefinedHeaders({ "X-Vitable-Organization": vitableOrganization }),
             requestOptions?.headers,
         );
         const _response = await (this._options.fetcher ?? core.fetcher)({
@@ -231,6 +238,11 @@ export class EmployeesClient {
                     );
                 case 409:
                     throw new VitableConnect.ConflictError(
+                        _response.error.body as VitableConnect.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 422:
+                    throw new VitableConnect.UnprocessableEntityError(
                         _response.error.body as VitableConnect.ErrorResponse,
                         _response.rawResponse,
                     );

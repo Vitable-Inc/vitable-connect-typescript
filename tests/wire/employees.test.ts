@@ -562,6 +562,38 @@ describe("EmployeesClient", () => {
             .patch("/v1/employees/employee_id")
             .jsonBody(rawRequestBody)
             .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.employees.update({
+                employee_id: "employee_id",
+                effective_date: "2023-01-15",
+            });
+        }).rejects.toThrow(VitableConnect.UnprocessableEntityError);
+    });
+
+    test("update (8)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new VitableConnectClient({
+            maxRetries: 0,
+            apiKeyAuth: { apiKey: "test" },
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { effective_date: "2023-01-15" };
+        const rawResponseBody = {
+            timestamp: "2024-01-15T09:30:00Z",
+            message: "message",
+            error: "error",
+            trace_id: "trace_id",
+        };
+
+        server
+            .mockEndpoint()
+            .patch("/v1/employees/employee_id")
+            .jsonBody(rawRequestBody)
+            .respondWith()
             .statusCode(429)
             .jsonBody(rawResponseBody)
             .build();
@@ -574,7 +606,7 @@ describe("EmployeesClient", () => {
         }).rejects.toThrow(VitableConnect.TooManyRequestsError);
     });
 
-    test("update (8)", async () => {
+    test("update (9)", async () => {
         const server = mockServerPool.createServer();
         const client = new VitableConnectClient({
             maxRetries: 0,
@@ -606,7 +638,7 @@ describe("EmployeesClient", () => {
         }).rejects.toThrow(VitableConnect.InternalServerError);
     });
 
-    test("update (9)", async () => {
+    test("update (10)", async () => {
         const server = mockServerPool.createServer();
         const client = new VitableConnectClient({
             maxRetries: 0,

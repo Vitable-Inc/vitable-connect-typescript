@@ -1,3 +1,9 @@
+## 7.1.0 - 2026-11-10
+### Added
+* **`GetEmployeesRequest["X-Vitable-Organization"]`** — new optional field that forwards an `X-Vitable-Organization` header, letting callers with multi-organization credentials specify which organization to act as.
+* **`PatchedUpdateEmployeeRequest["X-Vitable-Organization"]`** — same optional organization-scoping header for the employee update endpoint.
+* **`UnprocessableEntityError`** — the employee update method now throws `UnprocessableEntityError` on 422 responses (e.g. `email_taken`, `invalid_account_update`).
+
 ## 7.0.1 - 2026-11-06
 * chore: update JSDoc for employee update endpoint with 409 conflict detail
 * Expand the documentation comment on the employee update method to describe
