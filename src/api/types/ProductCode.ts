@@ -16,6 +16,8 @@
  * * `ICHRA` - Ichra
  * * `ICHRA_PREMIUM_PLUS` - Ichra Premium Plus
  * * `ICHRA_REIMBURSEMENT_ONLY` - Ichra Reimbursement Only
+ * * `QSEHRA_REIMBURSEMENT_ONLY` - Qsehra Reimbursement Only
+ * * `GCHRA_REIMBURSEMENT_ONLY` - Gchra Reimbursement Only
  */
 export const ProductCode = {
     Eba: "EBA",
@@ -33,5 +35,7 @@ export const ProductCode = {
     Ichra: "ICHRA",
     IchraPremiumPlus: "ICHRA_PREMIUM_PLUS",
     IchraReimbursementOnly: "ICHRA_REIMBURSEMENT_ONLY",
+    QsehraReimbursementOnly: "QSEHRA_REIMBURSEMENT_ONLY",
+    GchraReimbursementOnly: "GCHRA_REIMBURSEMENT_ONLY",
 } as const;
 export type ProductCode = (typeof ProductCode)[keyof typeof ProductCode];

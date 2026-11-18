@@ -1,3 +1,10 @@
+## 8.0.0 - 2026-11-18
+### Breaking Changes
+* **`MemberLegalDependent.legal_dependent_id`** — new required `string` field added to the `MemberLegalDependent` interface; callers that construct or mock `MemberLegalDependent` objects directly must add `legal_dependent_id: string` to avoid compile errors.
+### Added
+* **`BenefitFamily.Hra`** and **`BenefitFamilyParamItem.Hra`** — new `"hra"` enum value added to both benefit-family enumerations.
+* **`ProductCode.QsehraReimbursementOnly`** and **`ProductCode.GchraReimbursementOnly`** — two new product-code values (`QSEHRA_REIMBURSEMENT_ONLY`, `GCHRA_REIMBURSEMENT_ONLY`) added to the `ProductCode` enum and reflected in the JSDoc of `BenefitSummary`, `DigitalBenefitCard`, and `MemberEnrollment`.
+
 ## 7.1.0 - 2026-11-10
 ### Added
 * **`GetEmployeesRequest["X-Vitable-Organization"]`** — new optional field that forwards an `X-Vitable-Organization` header, letting callers with multi-organization credentials specify which organization to act as.

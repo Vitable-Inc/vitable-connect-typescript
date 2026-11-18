@@ -6,6 +6,8 @@ import type * as VitableConnect from "../index.js";
  * Wire serializer for :class:`MemberLegalDependentDTO` (one legal-dependent row).
  */
 export interface SavedMemberDependent {
+    /** Identifier of the dependent relationship, with 'ldep_' prefix */
+    legal_dependent_id: string;
     /** The dependent's own member identifier with 'mbr_' prefix */
     member_id?: string | undefined;
     /** The primary member's identifier with 'mbr_' prefix */
@@ -34,8 +36,6 @@ export interface SavedMemberDependent {
      * * `Unknown` - Unknown
      */
     sex_at_birth?: (VitableConnect.SexAtBirth | null) | undefined;
-    /** Identifier of the dependent relationship, with 'ldep_' prefix */
-    legal_dependent_id: string;
     /** True when the relationship was created by this request, false when an existing one was reused */
     created: boolean;
 }

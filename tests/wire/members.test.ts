@@ -306,6 +306,7 @@ describe("MembersClient", () => {
         const rawResponseBody = {
             data: [
                 {
+                    legal_dependent_id: "ldep_AAAAAAAAAAAAAAAAAAAAAQ",
                     member_id: "member_id",
                     primary_member_id: "primary_member_id",
                     first_name: "first_name",
@@ -589,6 +590,7 @@ describe("MembersClient", () => {
         };
         const rawResponseBody = {
             data: {
+                legal_dependent_id: "ldep_AAAAAAAAAAAAAAAAAAAAAQ",
                 member_id: "mbr_AAAAAAAAAAAAAAAAAAAAAg",
                 primary_member_id: "mbr_AAAAAAAAAAAAAAAAAAAAAQ",
                 first_name: "Sam",
@@ -597,7 +599,6 @@ describe("MembersClient", () => {
                 date_of_birth: "2015-06-01",
                 age: 11,
                 sex_at_birth: "Male",
-                legal_dependent_id: "ldep_AAAAAAAAAAAAAAAAAAAAAQ",
                 created: false,
             },
         };

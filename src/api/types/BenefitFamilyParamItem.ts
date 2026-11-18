@@ -4,6 +4,7 @@
  * * `mec` - mec
  * * `mvp` - mvp
  * * `ichra` - ichra
+ * * `hra` - hra
  * * `vpc` - vpc
  * * `dental` - dental
  * * `vision` - vision
@@ -12,6 +13,7 @@ export const BenefitFamilyParamItem = {
     Mec: "mec",
     Mvp: "mvp",
     Ichra: "ichra",
+    Hra: "hra",
     Vpc: "vpc",
     Dental: "dental",
     Vision: "vision",

@@ -6,6 +6,8 @@ import type * as VitableConnect from "../index.js";
  * Wire serializer for :class:`MemberLegalDependentDTO` (one legal-dependent row).
  */
 export interface MemberLegalDependent {
+    /** Identifier of the dependent relationship, with 'ldep_' prefix */
+    legal_dependent_id: string;
     /** The dependent's own member identifier with 'mbr_' prefix */
     member_id?: string | undefined;
     /** The primary member's identifier with 'mbr_' prefix */

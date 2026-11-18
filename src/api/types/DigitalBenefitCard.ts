@@ -43,6 +43,8 @@ export interface DigitalBenefitCard {
      * * `ICHRA` - Ichra
      * * `ICHRA_PREMIUM_PLUS` - Ichra Premium Plus
      * * `ICHRA_REIMBURSEMENT_ONLY` - Ichra Reimbursement Only
+     * * `QSEHRA_REIMBURSEMENT_ONLY` - Qsehra Reimbursement Only
+     * * `GCHRA_REIMBURSEMENT_ONLY` - Gchra Reimbursement Only
      */
     benefit_code?: (VitableConnect.ProductCode | null) | undefined;
     /** Provider network shown on the card; null for an rx card */
