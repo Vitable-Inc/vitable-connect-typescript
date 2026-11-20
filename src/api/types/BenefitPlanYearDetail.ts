@@ -32,9 +32,9 @@ export interface BenefitPlanYearDetail {
     product_name: string;
     /** Carrier name, or null (e.g. ICHRA). */
     carrier: string | null;
-    /** Displayed networks: ["multi"] for ICHRA, otherwise the plan year's distinct network names. */
+    /** Displayed networks: ["multi"] for external-plan benefits, empty for benefits without plan selection, otherwise the plan year's distinct network names. */
     network_names: string[];
-    /** Monthly premium in cents; only for an ICHRA benefit with effective coverage. */
+    /** Monthly premium in cents; only for an external-plan benefit with effective coverage. */
     premium_in_cents: number | null;
     /** Employee contribution range. */
     employee_contribution: VitableConnect.ContributionRange | null;
@@ -63,7 +63,7 @@ export interface BenefitPlanYearDetail {
     enrollment_rate: VitableConnect.EnrollmentRate;
     /** Summary Plan Description (SPD) link, or null. */
     spd_file_url: string | null;
-    /** How the plan year prices contributions (ICHRA classes or coverage tiers). */
+    /** How the plan year prices contributions (allowance classes or coverage tiers). */
     contribution_strategy: VitableConnect.ContributionStrategy;
     /** The plan year's active eligibility policy, or null. */
     eligibility_policy: VitableConnect.EligibilityPolicy | null;

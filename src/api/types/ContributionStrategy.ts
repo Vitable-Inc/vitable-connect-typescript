@@ -3,12 +3,12 @@
 import type * as VitableConnect from "../index.js";
 
 /**
- * How the plan year prices contributions: exactly one collection is populated, determined by the
- * plan year's ``family`` (ICHRA vs tier-priced).
+ * How the plan year prices contributions: exactly one collection is populated, determined by
+ * whether the product is allowance-based (allowance classes vs tier-priced).
  */
 export interface ContributionStrategy {
-    /** ICHRA contribution classes; empty for tier-priced benefits. */
+    /** Allowance contribution classes; empty for tier-priced benefits. */
     ichra_contribution_classes: VitableConnect.IchraContributionClass[];
-    /** Coverage tiers and their costs; empty for ICHRA benefits. */
+    /** Coverage tiers and their costs; empty for allowance-based benefits. */
     contribution_tiers: VitableConnect.ContributionTier[];
 }

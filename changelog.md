@@ -1,3 +1,14 @@
+## 8.0.1 - 2026-11-20
+* chore: update JSDoc to generalize ICHRA-specific terminology
+* Replace ICHRA-specific language in documentation comments with broader
+* terminology that reflects support for all external-plan and allowance-based
+* benefits, not just ICHRA.
+* Key changes:
+* Updated `BenefitPlanYearDetail` and `BenefitPlanYearList` JSDoc: `network_names` now documents "external-plan benefits" and empty-array case; `premium_in_cents` now references "external-plan benefit" instead of "ICHRA benefit"
+* Updated `ContributionStrategy` JSDoc: description and field comments now use "allowance-based" / "allowance classes" instead of "ICHRA"
+* Updated `IchraContributionClass` JSDoc: class-level comment now reads "allowance contribution class" instead of "ICHRA contribution class"
+* 🌿 Generated with Fern
+
 ## 8.0.0 - 2026-11-18
 ### Breaking Changes
 * **`MemberLegalDependent.legal_dependent_id`** — new required `string` field added to the `MemberLegalDependent` interface; callers that construct or mock `MemberLegalDependent` objects directly must add `legal_dependent_id: string` to avoid compile errors.
