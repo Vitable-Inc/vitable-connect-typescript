@@ -35,6 +35,6 @@ export interface TerminateEnrollmentRequest {
     ticket_number?: string | null;
     /** Accepted member qualifying life event identifier (qle_*) */
     qualifying_life_event_id?: string | null;
-    /** Last day the carrier policy covered the member, when it ended before this termination. Accepted for ICHRA enrollments only; coverage end is derived when omitted */
+    /** Last day the carrier policy covered the member, when it ended before this termination. Accepted only for enrollments whose benefit requires an external plan (`requires_external_plan` on the member enrollment row); coverage end is derived when omitted */
     carrier_coverage_end_date?: string | null;
 }

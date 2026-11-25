@@ -8,10 +8,10 @@
         "includeApiReference": true,
         "offsetSemantics": "page-index"
     },
-    "originGitCommit": "dafe06f3a08cb5c96de8fbb9774dcee7e8dc7746",
+    "originGitCommit": "98caa49db44459db1603355eb838244ac822c858",
     "originGitCommitIsDirty": false,
     "invokedBy": "ci",
     "requestedVersion": "AUTO",
     "ciProvider": "gitlab",
-    "sdkVersion": "8.0.1"
+    "sdkVersion": "9.0.0"
 }

@@ -1,3 +1,11 @@
+## 9.0.0 - 2026-11-25
+### Breaking Changes
+* **`MemberEnrollment.requires_qle_for_termination`** — new required `boolean` field added to `MemberEnrollment`; callers that construct or mock `MemberEnrollment` objects must add `requires_qle_for_termination: boolean` to avoid compile errors.
+* **`MemberEnrollment.plan_selection_required`** — new required `boolean` field added to `MemberEnrollment`; callers that construct or mock `MemberEnrollment` objects must add `plan_selection_required: boolean` to avoid compile errors.
+### Changed
+* **`TerminateEnrollmentRequest.carrier_coverage_end_date`** — JSDoc updated to clarify the field is accepted for any enrollment whose benefit requires an external plan (`requires_external_plan`), not only ICHRA enrollments.
+* **`EnrollmentsClient` termination method** — documentation updated to reflect that a qualifying life event is not required for any allowance-based benefit (ICHRA, QSEHRA, or GCHRA), not just ICHRA.
+
 ## 8.0.1 - 2026-11-20
 * chore: update JSDoc to generalize ICHRA-specific terminology
 * Replace ICHRA-specific language in documentation comments with broader
